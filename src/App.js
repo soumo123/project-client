@@ -1,24 +1,61 @@
+import { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Header/Navbar';
+import axios from 'axios'
+import { fetchUserDetails } from './redux/actions/userAction';
+import { useDispatch } from 'react-redux'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './components/Header/Home/Home';
+import AllProduct from './components/products/AllProduct';
+import Footer from './components/Footer/Footer';
+
 
 function App() {
+  const dispatch = useDispatch()
+
+  const userId = localStorage.getItem("userId")
+  const token = localStorage.getItem("token")
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_PRODUCTION_URL}/api/v1/getUser?userId=${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Replace `yourAccessToken` with the actual access token you want to send
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("responsesssssssss", response.data.data)
+        dispatch(fetchUserDetails(response.data.data))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (userId) {
+      getUser()
+    }
+  }, [userId])
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route exact={true} path="/" element={<Home />} />
+          <Route exact={true} path="/products" element={<AllProduct/>} />
+
+        </Routes>
+      </BrowserRouter>
+      <Footer />
+    </>
   );
 }
 
