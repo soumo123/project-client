@@ -13,33 +13,83 @@ const AllProduct = () => {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [productData, setProductData] = useState([])
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(12);
     const [offset, setOffset] = useState(0)
+    const [totalPages, setTotalPages] = useState(0);
+    const[totalData,setTotalData]=useState("")
+    const [lastTypingTime, setLastTypingTime] = useState(null);
+    const[price,setPrice]=useState("");
+    const[tagss,setTagss]=useState("")
+
     const handleSearch = (query) => {
+        setLastTypingTime(new Date().getTime())
         setSearchQuery(query);
+        setOffset(0)
     };
 
+    const handlePriceChange = (price)=>{
+        setLastTypingTime(new Date().getTime())
+        setPrice(price)
+    }
+
+    const handleTagsChange = (tags)=>{
+
+        setTagss(tags)
+    }
+    console.log("tagss",tagss)
 
     const getAllProducts = async () => {
-
         try {
-
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery}&tags=2`)
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${""}&tags=${""}&startprice=${0}&lastprice=${10000}&isBestSelling=${true}&isFeatured=${true}&isTopSelling=${true}&isBranded=${true}`)
             if (response.status === 200) {
                 setProductData(response.data.data)
+                setTotalPages(Math.ceil(response.data.totalData / limit));
+                setTotalData(response.data.totalData)
             }
         } catch (error) {
-            console.log(error)
+            setProductData([])
         }
-
-
     }
 
     useEffect(() => {
-        getAllProducts()
-    }, [])
+        getAllProducts();
+    }, [offset,limit,tagss]);
 
-    console.log("productData", productData)
+    const handlePageChange = (event, value) => {
+        setOffset((value - 1) * limit);
+    };
+
+
+    useEffect(() => {
+        if (lastTypingTime) {
+          const timer = setTimeout(() => {
+            const getAllProducts = async () => {
+                try {
+                    const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=0&type=1&key=${searchQuery}&tags=${tagss}&startprice=${price[0]}&lastprice=${price[1]}&isBestSelling=${true}&isFeatured=${true}&isTopSelling=${true}&isBranded=${true}`)
+                    if (response.status === 200) {
+                        setProductData(response.data.data)
+                        setTotalPages(Math.ceil(response.data.totalData / limit));
+                        setTotalData(response.data.totalData)
+                    }
+                } catch (error) {
+                    setProductData([])
+                }
+            };
+    
+            getAllProducts();
+    
+          }, 1000);
+          return () => clearTimeout(timer)
+        }
+      }, [searchQuery,price])
+
+    //   useEffect(() => {
+    //    if(searchQuery.length===0){
+    //     setOffset(0)
+    //    }
+    //   }, [searchQuery])
+      
+
 
     return (
         <>
@@ -49,18 +99,22 @@ const AllProduct = () => {
                         <div className="row g-4">
                             <div className="col-xl-3">
                                 <Sidebar onSearch={handleSearch} />
-                                <Filter />
-                                <SideContents />
+                                <Filter onChange={handlePriceChange}/>
+                                <SideContents onChange={handleTagsChange}/>
                                 <Contents />
                             </div>
                             <div class="col-xl-9">
                                 <div class="shop-grid">
                                     <div class="listing-top d-flex align-items-center justify-content-between flex-wrap gap-3 bg-white rounded-2 px-4 py-5 mb-6">
-                                        <p class="mb-0 fw-bold">Showing 1-12 of 45 results</p>
+                                        <p class="mb-0 fw-bold">Showing 1-{productData.length} of {totalData} results</p>
                                         <div class="listing-top-right text-end d-inline-flex align-items-center gap-3 flex-wrap">
-                                            <div class="number-count-filter d-flex align-items-center gap-3">
+                                        <div class="select-filter d-inline-flex align-items-center gap-3">
                                                 <label class="fw-bold fs-xs text-dark flex-shrink-0">Show:</label>
-                                                <input type="number" value="16" />
+                                                <select class="form-select fs-xxs fw-medium theme-select select-sm" onChange={(e)=>setLimit(e.target.value)}>
+                                                    <option value={20}>20</option>
+                                                    <option value={40}>40</option>
+                                                    <option value={60}>60</option>
+                                                </select>
                                             </div>
                                             <div class="select-filter d-inline-flex align-items-center gap-3">
                                                 <label class="fw-bold fs-xs text-dark flex-shrink-0">Sort by:</label>
@@ -88,16 +142,16 @@ const AllProduct = () => {
                                     <div class="row g-4 justify-content-center">
                                         {
                                             productData && productData.length === 0 ? (
-                                                <span>No data found</span>
+                                               <div>No Product Found</div>
                                             ) : (
                                                 <>
                                                     {
                                                         productData.map((ele) => (
                                                             <div class="col-lg-4 col-md-6 col-sm-10">
                                                                 <div class="vertical-product-card rounded-2 position-relative border-0 bg-white bg-white">
-                                                                    <span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>
+                                                                    {ele.discount===0 ? (""):(<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)}
                                                                     <div class="thumbnail position-relative text-center p-4">
-                                                                        <img src={ele.thumbnailimage} alt="apple" class="img-fluid" />
+                                                                        <img src={ele.thumbnailimage} alt="" class="img-fluid" />
                                                                         <div class="product-btns position-absolute d-flex gap-2 flex-column">
                                                                             <a href="#" class="rounded-btn"><FavoriteBorderIcon/></a>
                                                                             <a href="#" class="rounded-btn">
@@ -140,10 +194,14 @@ const AllProduct = () => {
 
                                     </div>
                                     <ul className="template-pagination d-flex align-items-center mt-6">
-                                        <Pagination count={10} color="primary" />
+                                        {
+                                            productData && productData.length === 0  ? (""):(
+
+                                                <Pagination count={totalPages} color="primary" onChange={handlePageChange} />
+                                            )
+                                        }
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
                     </div>

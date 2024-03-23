@@ -6,12 +6,13 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const Filter = () => {
+const Filter = ({onChange}) => {
 
-  const [value, setValue] = React.useState([20, 37]);
+  const [value, setValue] = React.useState([0, 10000]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    onChange(newValue)
   };
 
 

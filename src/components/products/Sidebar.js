@@ -25,7 +25,7 @@ const Sidebar = ({onSearch }) => {
                         <span className="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
                     </div>
                     <form className="search-form d-flex align-items-center mt-4">
-                    <input type="text" value={searchValue} onChange={handleChange} placeholder="Search..." />
+                    <input type="text" value={searchValue} onChange={handleChange} placeholder="Search Products..." />
                         <button type="submit" className="submit-icon-btn-secondary"><i className="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                 </div>

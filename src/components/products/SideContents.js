@@ -1,7 +1,57 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Rating from '@mui/material/Rating';
+import axios from 'axios'
 
-const SideContents = () => {
+
+const SideContents = ({onChange}) => {
+
+    const [tagsData,setTagsData]=useState([])
+
+    const[selectedTags,setSelectedTags]=useState([])
+    const [selectedTagsValues, setSelectedTagsValues] = useState([]);
+
+    const getAllTags = async()=>{
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getalltags?type=1`)
+            if (response.status === 200) {
+                setTagsData(response.data.data)
+            }else{
+                setTagsData([])
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const handleTag = (tag) => {
+        const index = selectedTags.findIndex(selectedTag => selectedTag.value === tag.value);
+        if (index === -1) {
+            // Tag is not selected, add it to the selected tags
+            setSelectedTags([...selectedTags, tag]);
+            setSelectedTagsValues([...selectedTagsValues, tag.value]);
+        } else {
+            // Tag is already selected, remove it from the selected tags
+            const updatedSelectedTags = selectedTags.filter(selectedTag => selectedTag.value !== tag.value);
+            const updatedSelectedTagsValues = selectedTagsValues.filter(value => value !== tag.value);
+            setSelectedTags(updatedSelectedTags);
+            setSelectedTagsValues(updatedSelectedTagsValues);
+        }
+    };
+    
+    useEffect(() => {
+        console.log("selectedTags", selectedTags);
+        let output = selectedTags.map(item => item.value).join(',');
+        onChange(output);
+    }, [selectedTags]);
+
+
+
+    useEffect(() => {
+        getAllTags()
+    }, [])
+    
+
+
     return (
 
         <>
@@ -71,15 +121,17 @@ const SideContents = () => {
                     <span className="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
                 </div>
                 <div className="mt-4 d-flex gap-2 flex-wrap">
-                    <a href="#" className="btn btn-outline btn-sm">Vegetable</a>
-                    <a href="#" className="btn btn-outline btn-sm">Healthy</a>
-                    <a href="#" className="btn btn-outline btn-sm">Meat</a>
-                    <a href="#" className="btn btn-outline btn-sm">Organic</a>
-                    <a href="#" className="btn btn-outline btn-sm">Nature</a>
-                    <a href="#" className="btn btn-outline btn-sm">food</a>
-                    <a href="#" className="btn btn-outline btn-sm">bd food</a>
-                    <a href="#" className="btn btn-outline btn-sm">fish</a>
-                    <a href="#" className="btn btn-outline btn-sm">vegetable</a>
+                {tagsData.map((tag) => (
+                        <span
+                            key={tag.value}
+                            className={`btn btn-outline btn-sm ${selectedTags.includes(tag) ? 'selected' : ''}`}
+                            style={{ backgroundColor: selectedTags.includes(tag) ? '#6eb356' : '', color: selectedTags.includes(tag) ? 'white' : '' }}
+                            onClick={() => handleTag(tag)}
+                        >
+                            {tag.label}
+                        </span>
+                    ))}
+                   
                 </div>
             </div>
 
