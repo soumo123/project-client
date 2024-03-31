@@ -137,6 +137,7 @@ const Navbar = () => {
                     toast.error("Invalid email or password")
                }
           } catch (error) {
+               console.log(error.stack,"errorrrrrrrrrrrrrrrrr")
                toast.error("Invalid email or password")
           }
 
@@ -172,9 +173,9 @@ const Navbar = () => {
 
           } catch (error) {
                setCarts([])
-               dispatch(fetchCartProductsFail([]))
+               // dispatch(fetchCartProductsFail([]))
 
-               console.log(error)
+               console.log(error.stack,"errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
           }
      }
 
