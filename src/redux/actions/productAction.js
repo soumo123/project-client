@@ -6,6 +6,7 @@ import {
 } from '../constants/productConstant'
 
 export const fetchProducts = (productData) => {
+    console.log("productDataproductDataproductDataproductData",productData)
     return {
         type: GET_ALL_PRODUCTS_SUCCESS,
         data: productData,
