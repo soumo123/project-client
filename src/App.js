@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './components/Header/Home/Home';
 import AllProduct from './components/products/AllProduct';
 import Footer from './components/Footer/Footer';
+import Cart from './components/cart/Cart';
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
         <Routes>
           <Route exact={true} path="/" element={<Home />} />
           <Route exact={true} path="/products" element={<AllProduct/>} />
+          <Route exact={true} path="/cart" element={<Cart/>} />
 
         </Routes>
       </BrowserRouter>

@@ -1,28 +1,48 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Rating from '@mui/material/Rating';
 import axios from 'axios'
 
 
-const SideContents = ({onChange}) => {
+const SideContents = ({ onChange }) => {
 
-    const [tagsData,setTagsData]=useState([])
+    const [tagsData, setTagsData] = useState([])
+    const [ratings, setRatingsData] = useState([])
 
-    const[selectedTags,setSelectedTags]=useState([])
+
+    const [selectedTags, setSelectedTags] = useState([])
     const [selectedTagsValues, setSelectedTagsValues] = useState([]);
 
-    const getAllTags = async()=>{
+    const getAllTags = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getalltags?type=1`)
             if (response.status === 200) {
                 setTagsData(response.data.data)
-            }else{
+            } else {
                 setTagsData([])
             }
-            
+
         } catch (error) {
             console.log(error)
         }
     }
+
+    const getRatings = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getallratings?type=1`)
+            if (response.status === 200) {
+                setRatingsData(response.data)
+            } else {
+                setRatingsData([])
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
     const handleTag = (tag) => {
         const index = selectedTags.findIndex(selectedTag => selectedTag.value === tag.value);
         if (index === -1) {
@@ -37,7 +57,7 @@ const SideContents = ({onChange}) => {
             setSelectedTagsValues(updatedSelectedTagsValues);
         }
     };
-    
+
     useEffect(() => {
         console.log("selectedTags", selectedTags);
         let output = selectedTags.map(item => item.value).join(',');
@@ -48,8 +68,9 @@ const SideContents = ({onChange}) => {
 
     useEffect(() => {
         getAllTags()
+        getRatings()
     }, [])
-    
+
 
 
     return (
@@ -65,53 +86,53 @@ const SideContents = ({onChange}) => {
                     <li className="d-flex align-items-center justify-content-between">
                         <div className="custom-checkbox d-inline-flex">
                             <div className="theme-checkbox flex-shrink-0">
-                                <input type="checkbox" />
-                                <span className="checkbox-field"><i className="fa-solid fa-check"></i></span>
+                                {/* <input type="checkbox" /> */}
+                                {/* <span className="checkbox-field"><i className="fa-solid fa-check"></i></span> */}
                             </div>
                             <div className="rating-field text-warning fs-xs d-flex align-items-center ms-1">
-                            <Rating name="size-small"  defaultValue={5} precision={0.5} readOnly size="small"/>
+                                <Rating name="size-small" defaultValue={5} precision={0.5} readOnly size="small" />
                             </div>
                         </div>
-                        <span className="fw-bold fs-xs total-count">48</span>
+                        <span className="fw-bold fs-xs total-count">{ratings.fivestar}</span>
                     </li>
                     <li className="d-flex align-items-center justify-content-between">
                         <div className="custom-checkbox d-inline-flex">
                             <div className="theme-checkbox flex-shrink-0">
-                                <input type="checkbox" />
-                                <span className="checkbox-field"><i className="fa-solid fa-check"></i></span>
+                                {/* <input type="checkbox" /> */}
+                                {/* <span className="checkbox-field"><i className="fa-solid fa-check"></i></span> */}
                             </div>
                             <div className="rating-field text-warning fs-xs d-flex align-items-center ms-1">
-                            <Rating name="size-small"  defaultValue={4} precision={0.5} readOnly size="small"/>
+                                <Rating name="size-small" defaultValue={4} precision={0.5} readOnly size="small" />
 
                             </div>
                         </div>
-                        <span className="fw-bold fs-xs total-count">14</span>
+                        <span className="fw-bold fs-xs total-count">{ratings.fourtar}</span>
                     </li>
                     <li className="d-flex align-items-center justify-content-between">
                         <div className="custom-checkbox d-inline-flex">
                             <div className="theme-checkbox flex-shrink-0">
-                                <input type="checkbox" />
-                                <span className="checkbox-field"><i className="fa-solid fa-check"></i></span>
+                                {/* <input type="checkbox" /> */}
+                                {/* <span className="checkbox-field"><i className="fa-solid fa-check"></i></span> */}
                             </div>
                             <div className="rating-field text-warning fs-xs d-flex align-items-center ms-1">
-                            <Rating name="size-small"  defaultValue={3} precision={0.5} readOnly size="small"/>
+                                <Rating name="size-small" defaultValue={3} precision={0.5} readOnly size="small" />
 
                             </div>
                         </div>
-                        <span className="fw-bold fs-xs total-count">36</span>
+                        <span className="fw-bold fs-xs total-count">{ratings.threestar}</span>
                     </li>
                     <li className="d-flex align-items-center justify-content-between">
                         <div className="custom-checkbox d-inline-flex">
                             <div className="theme-checkbox flex-shrink-0">
-                                <input type="checkbox" />
-                                <span className="checkbox-field"><i className="fa-solid fa-check"></i></span>
+                                {/* <input type="checkbox" /> */}
+                                {/* <span className="checkbox-field"><i className="fa-solid fa-check"></i></span> */}
                             </div>
                             <div className="rating-field text-warning fs-xs d-flex align-items-center ms-1">
-                            <Rating name="size-small"  defaultValue={2} precision={0.5} readOnly size="small"/>
+                                <Rating name="size-small" defaultValue={2} precision={0.5} readOnly size="small" />
 
                             </div>
                         </div>
-                        <span className="fw-bold fs-xs total-count">24</span>
+                        <span className="fw-bold fs-xs total-count">{ratings.twostar}</span>
                     </li>
                 </ul>
             </div>
@@ -121,7 +142,7 @@ const SideContents = ({onChange}) => {
                     <span className="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
                 </div>
                 <div className="mt-4 d-flex gap-2 flex-wrap">
-                {tagsData.map((tag) => (
+                    {tagsData.map((tag) => (
                         <span
                             key={tag.value}
                             className={`btn btn-outline btn-sm ${selectedTags.includes(tag) ? 'selected' : ''}`}
@@ -131,7 +152,7 @@ const SideContents = ({onChange}) => {
                             {tag.label}
                         </span>
                     ))}
-                   
+
                 </div>
             </div>
 
