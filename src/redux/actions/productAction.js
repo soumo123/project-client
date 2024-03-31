@@ -6,11 +6,18 @@ import {
 } from '../constants/productConstant'
 
 export const fetchProducts = (productData) => {
-    console.log("productDataproductDataproductDataproductData",productData)
-    return {
-        type: GET_ALL_PRODUCTS_SUCCESS,
-        data: productData,
-    };
+    console.log("productDataproductDataproductDataproductData", productData)
+
+    try {
+
+        return {
+            type: GET_ALL_PRODUCTS_SUCCESS,
+            data: productData,
+        };
+    } catch (error) {
+     console.log(error)
+    }
+
 };
 
 export const fetchProductsFail = (error) => {

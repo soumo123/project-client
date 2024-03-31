@@ -30,11 +30,10 @@ function App() {
         }
       );
       if (response.status === 200) {
-        console.log("responsesssssssss", response.data.data)
         dispatch(fetchUserDetails(response.data.data))
       }
     } catch (error) {
-      console.log(error)
+      console.log(error,"login error")
     }
   }
 

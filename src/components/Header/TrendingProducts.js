@@ -56,7 +56,6 @@ const TrendingProducts = ({ topSellingData }) => {
 
     return (
         <>
-            <ToastContainer autoClose={1000} position="top-center" />
             <section className="pt-8 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
                 <img src="assets/img/shapes/garlic.png" alt="garlic" className="position-absolute garlic z--1" data-parallax='{"y": 100}' />
                 <img src="assets/img/shapes/carrot.png" alt="carrot" className="position-absolute carrot z--1" data-parallax='{"y": -100}' />
