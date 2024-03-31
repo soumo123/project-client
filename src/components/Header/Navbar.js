@@ -473,7 +473,7 @@ const Navbar = () => {
                                                   <nav className="gshop-navmenu ms-3 d-none d-xl-block">
                                                        <ul className="d-flex align-itmes-center justify-content-end">
                                                             <li>
-                                                                 <a href="index.html">Home<span className="ms-1 fs-xs float-end"></span></a>
+                                                                 <Link to="/">Home<span className="ms-1 fs-xs float-end"></span></Link>
                                                             </li>
                                                             <li className="">
                                                                  <Link to="/products">Products</Link>
