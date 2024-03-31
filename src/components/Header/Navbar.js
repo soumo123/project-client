@@ -173,7 +173,7 @@ const Navbar = () => {
 
           } catch (error) {
                setCarts([])
-               dispatch(fetchCartProductsFail(error))
+               dispatch(fetchCartProductsFail([]))
 
                console.log(error.stack, "errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
           }

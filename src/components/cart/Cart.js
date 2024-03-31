@@ -55,7 +55,7 @@ const Cart = () => {
         }
     };
 
-    console.log("selectedIds", selectedIds)
+    console.log("cartData", cartData)
 
     return (
 
