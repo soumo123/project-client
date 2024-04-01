@@ -10,8 +10,16 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchProducts } from '../../redux/actions/productAction'
+import addToCart from '../../utils/addToCart';
+import { noteRefs } from '../../redux/actions/userAction'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAlert } from 'react-alert'
+
 
 const AllProduct = () => {
+    
+    const alert = useAlert()
 
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState('');
@@ -92,6 +100,36 @@ const AllProduct = () => {
     }, [searchQuery, price])
 
 
+    const handleCart = async (id, data) => {
+        try {
+            let json = {
+                name: data.name,
+                description: data.description,
+                price: data.actualpricebydiscount,
+                itemCount: 1,
+                discount: data.discount,
+                thumbImage: data.thumbnailimage,
+                totalPrice: data.actualpricebydiscount * 1
+            }
+            console.log("json", json)
+
+            const response = await addToCart(id, json)
+
+            if (response) {
+                alert.success("Product added in cart")
+                dispatch(noteRefs(new Date().getSeconds()))
+
+            }else{
+                alert.error("Product alreday in cart")
+
+            }
+
+        } catch (error) {
+            alert.error("Product not added in cart")
+
+        }
+    }
+    
 
 
     return (
@@ -182,7 +220,7 @@ const AllProduct = () => {
                                                                             <span class="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                                         </div>
                                                                         <h6 class="price text-danger mb-4"> ₹ {ele.actualpricebydiscount}</h6>
-                                                                        <a href="#" class="btn btn-outline-secondary d-block btn-md">Add to Cart</a>
+                                                                        <span href="#" class="btn btn-outline-secondary d-block btn-md" onClick={() => handleCart(ele.productId, ele)}>Add to Cart</span>
                                                                     </div>
                                                                 </div>
                                                             </div>

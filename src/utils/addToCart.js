@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+
 const userId = localStorage.getItem('userId')
 
 const addToCart = async (productId, cartData) => {

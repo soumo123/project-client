@@ -48,10 +48,12 @@ import { Link } from 'react-router-dom'
 import { noteRefs } from '../../redux/actions/userAction'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StayCurrentPortraitIcon from '@mui/icons-material/StayCurrentPortrait';
+import { useAlert } from 'react-alert'
 
 
 const Navbar = () => {
 
+     const alert = useAlert()
      const [showLan, setShowLan] = useState(false)
      const [showCurrency, setShowCurrency] = useState(false)
      const [browseCategory, setBrowseCat] = useState(false)
@@ -137,7 +139,7 @@ const Navbar = () => {
                }
                const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/signin`, json, config)
                if (response.status === 200) {
-                    toast.success("User Sign in successfully")
+                    alert.success("User Sign in successfully")
                     setEmail("")
                     setPassword("")
                     setOpen(false)
@@ -148,7 +150,7 @@ const Navbar = () => {
                     localStorage.setItem("profile", JSON.stringify(profileData))
                     dispatch(fetchUserDetails(response.data.user))
                } else {
-                    toast.error("Invalid email or password")
+                    alert.error("Invalid email or password")
                }
           } catch (error) {
                console.log(error.stack, "errorrrrrrrrrrrrrrrrr")
@@ -161,7 +163,7 @@ const Navbar = () => {
           localStorage.removeItem("token")
           localStorage.removeItem("userId")
           localStorage.removeItem("profile")
-          toast.success("Logout successfully")
+          alert.success("Logout successfully")
           setLogOutOpen(false);
           dispatch(fetchUserDetails([]))
      }
@@ -197,7 +199,7 @@ const Navbar = () => {
 
           try {
 
-               const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/deleteCart?type=1&userId=${userId === null ? "" : userId}&productId=${pd_id}`)
+               const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/deleteById?type=1&userId=${userId === null ? "" : userId}&productId=${pd_id}`)
 
                if (response.status === 200) {
                     dispatch(noteRefs(new Date().getSeconds()))
@@ -256,13 +258,13 @@ const Navbar = () => {
                const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/signup`, formDataToSend, config);
 
                if (response.status === 200) {
-                    toast.success("User Sign up successfully")
+                    alert.success("User Sign up successfully")
                     setFormData({})
                     setOpen(false);
                     setMode("1")
 
                } else {
-                    toast.error("User Sign up successfully")
+                    alert.error("User Sign up successfully")
                }
           } catch (error) {
                console.error('Error signing up:', error);
@@ -272,7 +274,6 @@ const Navbar = () => {
 
      return (
           <>
-               <ToastContainer position="top-center" autoClose={3000} />
                <div className="main-wrapper">
                     <header className="gheader position-relative z-2 header-sticky">
                          <div className="ghead-topbar bg-primary d-none d-lg-block">
