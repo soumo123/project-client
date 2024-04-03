@@ -1,11 +1,17 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {Link} from 'react-router-dom'
 
 const Banner2 = () => {
+
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
+
     return (
         <>
 
             <section className="banner-section position-relative z-1 overflow-hidden">
-                <img src="assets/img/shapes/bg-shape-4.png" alt="bg shape" className="position-absolute start-0 bottom-0 w-100 z--1" />
+                <img src={images?.middle_banner3} alt="bg shape" className="position-absolute start-0 bottom-0 w-100 z--1" />
                 <div className="container">
                     <div className="row g-4">
                         <div className="col-xl-8">
@@ -17,7 +23,7 @@ const Banner2 = () => {
                         </div>
                         <div className="col-xl-4">
                             <div className="banner-img rounded-3 overflow-hidden">
-                                <img src="assets/img/banner/banner-3.png" alt="banner" className="img-fluid" />
+                                <img src={images?.middle_banner4} alt="banner" className="img-fluid" />
                             </div>
                         </div>
                     </div>

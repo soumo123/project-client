@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Header/Navbar';
 import axios from 'axios'
-import { fetchUserDetails } from './redux/actions/userAction';
+import { fetchImages, fetchUserDetails } from './redux/actions/userAction';
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './components/Header/Home/Home';
@@ -37,11 +37,36 @@ function App() {
     }
   }
 
+
+
+
+  const allImages = async()=>{
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_PRODUCTION_URL}/api/v1/getImages?type=1`
+      );
+        
+      dispatch(fetchImages(response.data.data[0]))
+
+
+    } catch (error) {
+      console.log(error,"login error")
+    }
+
+
+  }
+
   useEffect(() => {
     if (userId) {
       getUser()
+      allImages()
     }
   }, [userId])
+
+
+
+
 
 
   return (

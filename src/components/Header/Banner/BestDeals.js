@@ -3,8 +3,13 @@ import Rating from '@mui/material/Rating';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useSelector } from 'react-redux'
+import {Link} from 'react-router-dom'
+
+
 
 const BestDeals = ({ dealsData }) => {
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
 
     const [data, setData] = useState([])
 
@@ -29,9 +34,9 @@ const BestDeals = ({ dealsData }) => {
                                 <h6 className="mb-0">Vegetable</h6>
                                 <h4 className="mb-2">Fresh & Healthy</h4>
                                 <p className="fw-medium mb-5">Get 50% Off on Selected Organic Items</p>
-                                <a href="product-details.html" className="btn btn-primary btn-md">Show Now<span className="ms-2"><i className="fas fa-arrow-right"></i></span></a>
+                                <a href="product-details.html" className="btn btn-primary btn-md">Show Now<span className="ms-2"><ArrowForwardIcon/></span></a>
                                 <div className="banner-img-wrapper text-end mt--40">
-                                    <img src="assets/img/banner/vegetables.png" alt="vegetables" className="" />
+                                    <img src={images?.middle_banner2} alt="vegetables" className="" />
                                 </div>
                             </div>
                         </div>

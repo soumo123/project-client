@@ -1,6 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {Link} from 'react-router-dom'
 
 const Posts = () => {
+
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
+
   return (
     <>
      <section className="blog-section pb-120 position-relative overflow-hidden z-1">
@@ -19,7 +25,7 @@ const Posts = () => {
                     <div className="col-xl-4 col-md-6">
                         <article className="blog-card rounded-2 overflow-hidden bg-white">
                             <div className="thumbnail overflow-hidden">
-                                <a href="blog-details.html"><img src="assets/img/blog/blog-thumb-1.jpg" alt="blog thumb" className="img-fluid"/></a>
+                                <a href="blog-details.html"><img src={images?.middle_banner6} alt="blog thumb" className="img-fluid"/></a>
                             </div>
                             <div className="blog-card-content">
                                 <div className="blog-meta d-flex align-items-center gap-3 mb-1">
@@ -37,7 +43,7 @@ const Posts = () => {
                     <div className="col-xl-4 col-md-6">
                         <article className="blog-card rounded-2 overflow-hidden bg-white">
                             <div className="thumbnail overflow-hidden">
-                                <a href="blog-details.html"><img src="assets/img/blog/blog-thumb-2.jpg" alt="blog thumb" className="img-fluid"/></a>
+                                <a href="blog-details.html"><img src={images?.middle_banner7} alt="blog thumb" className="img-fluid"/></a>
                             </div>
                             <div className="blog-card-content">
                                 <div className="blog-meta d-flex align-items-center gap-3 mb-1">
@@ -55,7 +61,7 @@ const Posts = () => {
                     <div className="col-xl-4 col-md-6">
                         <article className="blog-card rounded-2 overflow-hidden bg-white">
                             <div className="thumbnail overflow-hidden">
-                                <a href="blog-details.html"><img src="assets/img/blog/blog-thumb-3.jpg" alt="blog thumb" className="img-fluid"/></a>
+                                <a href="blog-details.html"><img src={images?.middle_banner8} alt="blog thumb" className="img-fluid"/></a>
                             </div>
                             <div className="blog-card-content">
                                 <div className="blog-meta d-flex align-items-center gap-3 mb-1">

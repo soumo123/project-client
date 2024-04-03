@@ -3,13 +3,16 @@ import Rating from '@mui/material/Rating';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useSelector } from 'react-redux'
+
 
 const FeatureProducts = ({ featuredData }) => {
 
     const [firstHalf, setFirstHalf] = useState([]);
     const [secondHalf, setSecondHalf] = useState([]);
 
-
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
+    
     useEffect(() => {
         const halfwayIndex = Math.ceil(featuredData.length / 2);
         const firstHalfData = featuredData.slice(0, halfwayIndex);
@@ -95,12 +98,12 @@ const FeatureProducts = ({ featuredData }) => {
                                         <h4 class="mb-0">Fresh Fruits</h4>
                                         <h3 class="mb-3">Healthy Juice</h3>
                                         <p class="mb-4">Get 50% Off on Selected Organic Items</p>
-                                        <a href="product-details.html" class="btn btn-secondary">Shop Now <span class="ms-2"><i class="fas fa-arrow-right"></i></span></a>
+                                        <a href="product-details.html" class="btn btn-secondary">Shop Now <span class="ms-2"><ArrowForwardIcon/></span></a>
                                     </div>
 
                                     <div class="thumbnail position-relative z-1">
-                                        <img src="assets/img/products/pago.png" alt="pago" class="img-fluid p-4" />
-                                        <img src="assets/img/shapes/circle-md.png" alt="circle" class="position-absolute end-0 bottom-0 z--1 d-none d-sm-block" />
+                                        <img src={images?.middle_banner1} alt="pago" class="img-fluid p-4" />
+                                        {/* <img src="assets/img/shapes/circle-md.png" alt="circle" class="position-absolute end-0 bottom-0 z--1 d-none d-sm-block" /> */}
                                     </div>
                                 </div>
                             </div>

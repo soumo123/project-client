@@ -1,4 +1,5 @@
 import {LOGIN_USER_SUCCESS,LOGIN__USER_FAIL} from '../constants/userConstant'
+import {GET_ALL_IMAGES_SUCCESS} from '../constants/imagesConstant'
 
 export const fetchUserDetails = (userData) => {
     return {
@@ -13,3 +14,12 @@ export const fetchUserDetails = (userData) => {
       data: e,
     };
   }
+
+
+  export const fetchImages = (images) =>{
+    return {
+      type: GET_ALL_IMAGES_SUCCESS,
+      data: images,
+    };
+  }
+

@@ -74,6 +74,9 @@ const Navbar = () => {
      const [errorMessage, setErrorMessage] = useState('');
 
      const userData = useSelector((state) => state.userDetails.user)
+     const images = useSelector((state) => state.imageReducer.images.staticImages)
+
+     console.log("images",images)
 
      const [formData, setFormData] = useState({
           name: '',
@@ -394,7 +397,7 @@ const Navbar = () => {
                                    <div className="row align-items-center">
                                         <div className="col-xxl-2 col-xl-3 col-md-3 col-5">
                                              <Link to="/" className="logo">
-                                                  <img src={Logo} alt="logo" className="img-fluid" />
+                                                  <img src={images?.logo} alt="logo" className="img-fluid" />
 
                                              </Link>
                                         </div>

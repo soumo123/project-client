@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import Rating from '@mui/material/Rating';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-
+import { useSelector } from 'react-redux'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {Link} from 'react-router-dom'
 
 
 const Others = ({ newProducts }) => {
     const [firstHalf, setFirstHalf] = useState([]);
     const [secondHalf, setSecondHalf] = useState([]);
+
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
 
     useEffect(() => {
         const halfwayIndex = Math.ceil(newProducts.length / 2);
@@ -112,7 +115,8 @@ const Others = ({ newProducts }) => {
                             </div>
                         </div>
                         <div className="col-xxl-3 col-xl-4 col-lg-5 col-md-6 col-sm-8 col-10">
-                            <div className="vertical-banner text-center bg-white rounded-2" data-background="assets/img/banner/banner-4.jpg">
+                            <div className="vertical-banner text-center bg-white rounded-2" >
+                                <img src={images?.middle_banner5} className="img-fluid"/>
                                 <h5 className="mb-1">Fresh & Organic Spice</h5>
                                 <div className="d-flex align-items-center justify-content-center gap-2">
                                     <span className="hot-badge bg-danger fw-bold fs-xs position-relative text-white">HOT</span>
