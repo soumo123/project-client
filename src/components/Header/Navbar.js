@@ -274,6 +274,7 @@ const Navbar = () => {
           }
      };
 
+     console.log("formDataformDataformData",formData)
 
      return (
           <>
