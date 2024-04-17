@@ -6,11 +6,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useSelector,useDispatch} from 'react-redux'
 import { noteRefs } from '../../redux/actions/userAction'
-import { useAlert } from 'react-alert'
+
 
 
 const TrendingProducts = ({ topSellingData }) => {
-    const alert = useAlert()
+
 
      const userData = useSelector((state) => state.userDetails.user)
 
@@ -31,7 +31,7 @@ const TrendingProducts = ({ topSellingData }) => {
         try {
 
             if(userData.length===0){
-                alert.error("Please signin")
+                alert("Please signin")
                 return
             }
 
@@ -49,16 +49,16 @@ const TrendingProducts = ({ topSellingData }) => {
             const response = await addToCart(id, json)
 
             if (response) {
-                alert.success("Product added in cart")
+                alert("Product added in cart")
                 dispatch(noteRefs(new Date().getSeconds()))
 
             }else{
-                alert.error("Product alreday in cart")
+                alert("Product alreday in cart")
 
             }
 
         } catch (error) {
-            alert.error("Product not added in cart")
+            alert("Product not added in cart")
 
         }
     }

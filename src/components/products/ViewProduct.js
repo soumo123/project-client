@@ -5,7 +5,6 @@ import Rating from '@mui/material/Rating';
 import addToCart from '../../utils/addToCart';
 import { noteRefs } from '../../redux/actions/userAction'
 import { useDispatch } from 'react-redux'
-import { useAlert } from 'react-alert'
 import Slider from "react-slick";
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
@@ -17,7 +16,6 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
 
     const [selectedImage, setSelectedImage] = useState(""); // State to hold the selected image
     const [count,setCount] = useState(1)
-    const alert = useAlert();
     const dispatch = useDispatch();
     console.log("viewData", viewData);
 
@@ -41,16 +39,16 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
             const response = await addToCart(id, json)
 
             if (response) {
-                alert.success("Product added in cart")
+                alert("Product added in cart")
                 dispatch(noteRefs(new Date().getSeconds()))
 
             } else {
-                alert.error("Product already in cart")
+                alert("Product already in cart")
 
             }
 
         } catch (error) {
-            alert.error("Product not added in cart")
+            alert("Product not added in cart")
 
         }
     }

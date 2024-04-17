@@ -48,12 +48,10 @@ import { Link } from 'react-router-dom'
 import { noteRefs } from '../../redux/actions/userAction'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StayCurrentPortraitIcon from '@mui/icons-material/StayCurrentPortrait';
-import { useAlert } from 'react-alert'
 
 
 const Navbar = () => {
 
-     const alert = useAlert()
      const [showLan, setShowLan] = useState(false)
      const [showCurrency, setShowCurrency] = useState(false)
      const [browseCategory, setBrowseCat] = useState(false)
@@ -142,7 +140,7 @@ const Navbar = () => {
                }
                const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/signin`, json, config)
                if (response.status === 200) {
-                    alert.success("User Sign in successfully")
+                    alert("User Sign in successfully")
                     setEmail("")
                     setPassword("")
                     setOpen(false)
@@ -153,7 +151,7 @@ const Navbar = () => {
                     localStorage.setItem("profile", JSON.stringify(profileData))
                     dispatch(fetchUserDetails(response.data.user))
                } else {
-                    alert.error("Invalid email or password")
+                    alert("Invalid email or password")
                }
           } catch (error) {
                console.log(error.stack, "errorrrrrrrrrrrrrrrrr")
@@ -166,7 +164,7 @@ const Navbar = () => {
           localStorage.removeItem("token")
           localStorage.removeItem("userId")
           localStorage.removeItem("profile")
-          alert.success("Logout successfully")
+          alert("Logout successfully")
           setLogOutOpen(false);
           dispatch(fetchUserDetails([]))
      }
@@ -261,13 +259,13 @@ const Navbar = () => {
                const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/signup`, formDataToSend, config);
 
                if (response.status === 200) {
-                    alert.success("User Sign up successfully")
+                    alert("User Sign up successfully")
                     setFormData({})
                     setOpen(false);
                     setMode("1")
 
                } else {
-                    alert.error("User Sign up successfully")
+                    alert("User Sign up successfully")
                }
           } catch (error) {
                console.error('Error signing up:', error);

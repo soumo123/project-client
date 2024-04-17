@@ -12,13 +12,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchProducts } from '../../redux/actions/productAction'
 import addToCart from '../../utils/addToCart';
 import { noteRefs } from '../../redux/actions/userAction'
-import { useAlert } from 'react-alert'
 import ViewProduct from './ViewProduct';
 
 
 const AllProduct = () => {
 
-    const alert = useAlert()
+
 
     const dispatch = useDispatch()
     const [searchQuery, setSearchQuery] = useState('');
@@ -116,16 +115,16 @@ const AllProduct = () => {
             const response = await addToCart(id, json)
 
             if (response) {
-                alert.success("Product added in cart")
+                alert("Product added in cart")
                 dispatch(noteRefs(new Date().getSeconds()))
 
             } else {
-                alert.error("Product alreday in cart")
+                alert("Product alreday in cart")
 
             }
 
         } catch (error) {
-            alert.error("Product not added in cart")
+            alert("Product not added in cart")
 
         }
     }
