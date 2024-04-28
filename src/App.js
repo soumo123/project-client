@@ -5,18 +5,34 @@ import Navbar from './components/Header/Navbar';
 import axios from 'axios'
 import { fetchImages, fetchUserDetails } from './redux/actions/userAction';
 import { useDispatch } from 'react-redux'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route  } from "react-router-dom";
+import { useLocation } from 'react-router-dom'; 
 import Home from './components/Header/Home/Home';
 import AllProduct from './components/products/AllProduct';
 import Footer from './components/Footer/Footer';
 import Cart from './components/cart/Cart';
+import Whishlist from './components/Header/Home/Whishlist';
 
 
 function App() {
   const dispatch = useDispatch()
-
   const userId = localStorage.getItem("userId")
   const token = localStorage.getItem("token")
+  const type = localStorage.getItem("type")
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search); // Parse query parameters
+  const typess = queryParams.get('type');
+  useEffect(() => {
+    if(typess) {
+      localStorage.setItem("type",typess)
+    }else{
+      localStorage.setItem("type",1)
+    }
+  }, [typess])
+  
+
+
 
   const getUser = async () => {
     try {
@@ -44,7 +60,7 @@ function App() {
 
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_PRODUCTION_URL}/api/v1/getImages?type=1`
+        `${process.env.REACT_APP_PRODUCTION_URL}/api/v1/getImages?type=${typess? typess:1}`
       );
         
       dispatch(fetchImages(response.data.data[0]))
@@ -58,11 +74,11 @@ function App() {
   }
 
   useEffect(() => {
-    if (userId) {
+    if (type||userId) {
       getUser()
       allImages()
     }
-  }, [userId])
+  }, [type,userId])
 
 
 
@@ -71,15 +87,17 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+
         <Navbar />
         <Routes>
           <Route exact={true} path="/" element={<Home />} />
           <Route exact={true} path="/products" element={<AllProduct/>} />
           <Route exact={true} path="/cart" element={<Cart/>} />
+          <Route exact={true} path="/whishlist" element={<Whishlist/>} />
+
 
         </Routes>
-      </BrowserRouter>
+  
       <Footer />
     </>
   );

@@ -12,6 +12,7 @@ import Posts from '../Posts'
 import axios from 'axios'
 import {useDispatch} from 'react-redux'
 import {fetchProducts} from '../../../redux/actions/productAction'
+import { useParams } from 'react-router-dom'
 
 const Home = () => {
 
@@ -23,8 +24,18 @@ const Home = () => {
     const [brandData,setBrandData] = useState([])
     const[dealsData,setDealsData] = useState([])
     const[newProducts,setNewProducts]=useState([])
+    const [load,setLoad] = useState(false)
+    // const {id} = useParams()
 
+    // console.log("idididid",id)
 
+    // useEffect(() => {
+    //     if(id){
+
+    //         localStorage.setItem("type",id)
+    //     }
+    // }, [id])
+    
     const getFeatureProducts = async () => {
 
         try {
@@ -49,20 +60,20 @@ const Home = () => {
 
     useEffect(() => {
         getFeatureProducts()
-    }, [])
+    }, [load])
 
 
     return (
         <>
             <HomeSlider />
             <HomeTopCategory />
-            <FeatureProducts featuredData={featuredData}/>
-            <TrendingProducts topSellingData = {topSellingData}/>
+            <FeatureProducts featuredData={featuredData} load={load} setLoad={setLoad}/>
+            <TrendingProducts topSellingData = {topSellingData} load={load} setLoad={setLoad}/>
             <Banner />
-            <BestDeals dealsData={dealsData}/>
+            <BestDeals dealsData={dealsData} load={load} setLoad={setLoad}/>
             <Banner2/>
             <ViewData />
-            <Others newProducts={newProducts}/>
+            <Others newProducts={newProducts} load={load} setLoad={setLoad}/>
             <Posts />
            
         </>

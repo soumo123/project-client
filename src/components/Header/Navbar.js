@@ -26,7 +26,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import WalletIcon from '@mui/icons-material/Wallet';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import  ClickAwayListener  from '@mui/base/ClickAwayListener';
+import ClickAwayListener from '@mui/base/ClickAwayListener';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -44,14 +44,16 @@ import { fetchUserDetails } from '../../redux/actions/userAction';
 import { fetchCartProducts, fetchCartProductsFail } from '../../redux/actions/productAction'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import { noteRefs } from '../../redux/actions/userAction'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StayCurrentPortraitIcon from '@mui/icons-material/StayCurrentPortrait';
-
+import { useAlert } from 'react-alert'
+import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = () => {
-
+     const alert = useAlert()
+     const navigate = useNavigate()
      const [showLan, setShowLan] = useState(false)
      const [showCurrency, setShowCurrency] = useState(false)
      const [browseCategory, setBrowseCat] = useState(false)
@@ -70,11 +72,11 @@ const Navbar = () => {
      const [totalPrice, setTotalPrice] = useState("")
      const [logoutOpen, setLogOutOpen] = useState(false);
      const [errorMessage, setErrorMessage] = useState('');
-
+     const [showLoader, setShowLoader] = useState(true);
      const userData = useSelector((state) => state.userDetails.user)
      const images = useSelector((state) => state.imageReducer.images.staticImages)
+     const [search,setSearch] = useState("")
 
-     console.log("images",images)
 
      const [formData, setFormData] = useState({
           name: '',
@@ -83,13 +85,10 @@ const Navbar = () => {
           mobile: '',
           file: null // for storing the selected file
      });
-
-     console.log("userData", userData)
-
      const userDetails = useSelector((state) => state.userDetails.user)
      const dataRefe = useSelector((state) => state.noteRef.arr);
 
-     console.log("userDetailsuserDetails", userDetails)
+
 
      const userId = localStorage.getItem("userId")
 
@@ -140,7 +139,7 @@ const Navbar = () => {
                }
                const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/signin`, json, config)
                if (response.status === 200) {
-                    alert("User Sign in successfully")
+                    alert.success("login Successfull")
                     setEmail("")
                     setPassword("")
                     setOpen(false)
@@ -148,14 +147,15 @@ const Navbar = () => {
                     const profileData = response.data
                     localStorage.setItem("token", response.data.token)
                     localStorage.setItem("userId", response.data.user.userId)
+                    localStorage.setItem("type", response.data.user.type)
                     localStorage.setItem("profile", JSON.stringify(profileData))
                     dispatch(fetchUserDetails(response.data.user))
                } else {
-                    alert("Invalid email or password")
+                    alert.error("Invalid email or password")
                }
           } catch (error) {
                console.log(error.stack, "errorrrrrrrrrrrrrrrrr")
-               toast.error("Invalid email or password")
+               alert.error("Invalid email or password")
           }
 
      }
@@ -164,7 +164,7 @@ const Navbar = () => {
           localStorage.removeItem("token")
           localStorage.removeItem("userId")
           localStorage.removeItem("profile")
-          alert("Logout successfully")
+          alert.success("Logout successfully")
           setLogOutOpen(false);
           dispatch(fetchUserDetails([]))
      }
@@ -259,23 +259,43 @@ const Navbar = () => {
                const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/signup`, formDataToSend, config);
 
                if (response.status === 200) {
-                    alert("User Sign up successfully")
+                    alert.success("Sign up successfully")
                     setFormData({})
                     setOpen(false);
                     setMode("1")
 
                } else {
-                    alert("User Sign up successfully")
+                    alert.error("Sign up Failed")
                }
           } catch (error) {
                console.error('Error signing up:', error);
           }
      };
 
-     console.log("formDataformDataformData",formData)
+     const handleSearchChange = (e)=>{
+          e.preventDefault();
+          navigate(`/products?search=${search}`)
+          setSearch("")
+     }
+
+
+
+     useEffect(() => {
+          // Hide the preloader after 2 seconds
+          const timer = setTimeout(() => {
+               setShowLoader(false);
+          }, 2000);
+
+          return () => clearTimeout(timer);
+     }, []);
 
      return (
           <>
+               {showLoader && (
+                    <div id="preloader">
+                         <img src={images && images?.loader} alt="preloader" width="450" className="img-fluid" />
+                    </div>
+               )}
                <div className="main-wrapper">
                     <header className="gheader position-relative z-2 header-sticky">
                          <div className="ghead-topbar bg-primary d-none d-lg-block">
@@ -283,7 +303,7 @@ const Navbar = () => {
                                    <div className="row align-items-center">
                                         <div className="col-xxl-4 col-xl-3">
                                              <div className="topbar-info d-none d-xl-block">
-                                                  <p className="text-white fs-sm fw-medium mb-0">Welcome to our Creamyafairs</p>
+                                                  <p className="text-white fs-sm fw-medium mb-0">Welcome to our Creamy affairs</p>
                                              </div>
                                         </div>
                                         <div className="col-xxl-8 col-xl-9">
@@ -563,9 +583,8 @@ const Navbar = () => {
                                                             </button>
                                                             <div className="dropdown-menu dropdown-menu-end border-0">
                                                                  <form className="search-form d-flex align-items-center" action="#">
-                                                                      <input type="text" placeholder="Search products..." className="w-100" />
-                                                                      <button type="submit" className="submit-icon-btn-secondary"><i
-                                                                           className="fa-solid fa-magnifying-glass"></i></button>
+                                                                      <input type="text" placeholder="Search products..." value={search} onChange={(e)=>setSearch(e.target.value)}className="w-100" />
+                                                                      <button type="submit" className="submit-icon-btn-secondary" onClick={handleSearchChange}><SearchIcon/></button>
                                                                  </form>
                                                             </div>
                                                        </div>
@@ -594,7 +613,7 @@ const Navbar = () => {
 
                                                                       )}
                                                                       <li><Link to="/cart"><span className="me-2"><SellIcon /></span>My Cart</Link></li>
-                                                                      <li><a href="wishlist.html"><span className="me-2"><FavoriteIcon /></span>My Wishlist</a></li>
+                                                                      <li><Link to="/whishlist"><span className="me-2"><FavoriteIcon /></span>My Wishlist</Link></li>
                                                                       {
                                                                            userDetails.length === 0 ? (
 

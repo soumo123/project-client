@@ -16,6 +16,8 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import {Link} from 'react-router-dom'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const HomeSlider = () => {
 
@@ -50,14 +52,14 @@ const HomeSlider = () => {
                                         <h1 className="display-4 mb-3">Online Fresh <br />Grocery <mark className="p-0 bg-transparent text-secondary">Products</mark></h1>
                                         <p className="mb-7 fs-6">Assertively target market-driven intellectual capital with worldwide human capital holistic.</p>
                                         <div className="hero-btns d-flex align-items-center gap-3 gap-sm-5 flex-wrap">
-                                            <a href="shop-grid.html" className="btn btn-secondary">Shop Now<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a>
-                                            <a href="about.html" className="btn btn-primary">About Us<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a>
+                                            <Link to="/products" className="btn btn-secondary">Shop Now<span className="ms-2"><ArrowForwardIcon/></span></Link>
+                                            {/* <a href="about.html" className="btn btn-primary">About Us<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a> */}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-xl-6 col-lg-7">
                                     <div className="hero-right text-center position-relative z-1 mt-8 mt-xl-0">
-                                        <img src={Fruits} alt="fruits" className="img-fluid position-absolute end-0 top-50 hero-img" />
+                                        <img src={Fruits} alt="fruits" className="img-fluid position-absolute end-0  hero-img" />
                                         <img src={Tree} alt="tree" className="img-fluid position-absolute tree z-1" />
                                         <img src={Orange} alt="orange" className="position-absolute orange-1 z-1" />
                                         <img src={Orange2} alt="orange" className="position-absolute orange-2 z-1" />
@@ -76,14 +78,14 @@ const HomeSlider = () => {
                                             <h1 className="display-4 mb-3">Online Fresh <br />Grocery <mark className="p-0 bg-transparent text-secondary">Products</mark></h1>
                                             <p className="mb-7 fs-6">Assertively target market-driven intellectual capital with worldwide human capital holistic.</p>
                                             <div className="hero-btns d-flex align-items-center gap-3 gap-sm-5 flex-wrap">
-                                                <a href="shop-grid.html" className="btn btn-secondary">Shop Now<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a>
-                                                <a href="about.html" className="btn btn-primary">About Us<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a>
+                                            <Link to="/products" className="btn btn-secondary">Shop Now<span className="ms-2"><ArrowForwardIcon/></span></Link>
+                                                {/* <a href="about.html" className="btn btn-primary">About Us<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a> */}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-7">
                                         <div className="hero-right text-center position-relative z-1 mt-8 mt-xl-0">
-                                            <img src={Banner2} alt="fruits" className="img-fluid position-absolute end-0 top-50 hero-img" />
+                                            <img src={Banner2} alt="fruits" className="img-fluid position-absolute end-0" />
                                             <img src={Orange} alt="orange" className="position-absolute orange-1 z-1" />
                                             <img src={Orange2} alt="orange" className="position-absolute orange-2 z-1" />
                                             <img src={Heroimage} alt="circle shape" className="img-fluid hero-circle" />
@@ -102,14 +104,14 @@ const HomeSlider = () => {
                                             <h1 className="display-4 mb-3">Online Fresh <br />Grocery <mark className="p-0 bg-transparent text-secondary">Products</mark></h1>
                                             <p className="mb-7 fs-6">Assertively target market-driven intellectual capital with worldwide human capital holistic.</p>
                                             <div className="hero-btns d-flex align-items-center gap-3 gap-sm-5 flex-wrap">
-                                                <a href="shop-grid.html" className="btn btn-secondary">Shop Now<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a>
-                                                <a href="about.html" className="btn btn-primary">About Us<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a>
+                                            <Link to="/products" className="btn btn-secondary">Shop Now<span className="ms-2"><ArrowForwardIcon/></span></Link>
+                                                {/* <a href="about.html" className="btn btn-primary">About Us<span className="ms-2"><i className="fa-solid fa-arrow-right"></i></span></a> */}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-xl-6 col-lg-7">
                                         <div className="hero-right text-center position-relative z-1 mt-8 mt-xl-0">
-                                            <img src={Banner3} alt="fruits" className="img-fluid position-absolute end-0 top-50 hero-img" />
+                                            <img src={Banner3} alt="fruits" className="img-fluid position-absolute end-0" />
                                             <img src={Orange} alt="orange" className="position-absolute orange-1 z-1" />
                                             <img src={Orange2} alt="orange" className="position-absolute orange-2 z-1" />
                                             <img src={Heroimage} alt="circle shape" className="img-fluid hero-circle" />

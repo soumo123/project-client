@@ -13,13 +13,15 @@ import { fetchProducts } from '../../redux/actions/productAction'
 import addToCart from '../../utils/addToCart';
 import { noteRefs } from '../../redux/actions/userAction'
 import ViewProduct from './ViewProduct';
-
+import { useAlert } from 'react-alert'
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useLocation } from 'react-router-dom'; 
 
 const AllProduct = () => {
 
-
-
+    const alert = useAlert()
     const dispatch = useDispatch()
+    const location = useLocation();
     const [searchQuery, setSearchQuery] = useState('');
     const [productData, setProductData] = useState([])
     const [limit, setLimit] = useState(12);
@@ -29,11 +31,17 @@ const AllProduct = () => {
     const [lastTypingTime, setLastTypingTime] = useState(null);
     const [price, setPrice] = useState("");
     const [tagss, setTagss] = useState("")
-
+    const [showLoader, setShowLoader] = useState(true);
     const products = useSelector((state) => state.productDetails.products.allData)
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
+    const dataRefe = useSelector((state) => state.noteRef.arr);
+    const queryParams = new URLSearchParams(location.search);
+    const searchData = queryParams.get('search');
+    const userId = localStorage.getItem("userId");
+    const type = localStorage.getItem("type")
 
     const [viewData, setViewData] = useState([])
-    const[open,setOpen]= useState(false)
+    const [open, setOpen] = useState(false)
 
     const handleSearch = (query) => {
         setLastTypingTime(new Date().getTime())
@@ -54,7 +62,7 @@ const AllProduct = () => {
 
     const getAllProducts = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery}&tags=${tagss}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}`)
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery || searchData || ""}&tags=${tagss}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}`)
             if (response.status === 200) {
                 setTotalPages(Math.ceil(response.data.totalData / limit));
                 setTotalData(response.data.totalData)
@@ -68,8 +76,51 @@ const AllProduct = () => {
 
     useEffect(() => {
         getAllProducts();
-    }, [offset, limit, tagss]);
+    }, [offset, limit,searchData, tagss,dataRefe]);
 
+
+    const handleAddWhish = async (status, productId ,name,description, price,discount,thumbnailimage,stock,ratings,numOfReviews) => {
+        try {
+
+            if (!userId || userId === undefined || userId === null) {
+                alert.error("Please Signin First")
+                return
+            }
+            let json = {
+                name:name,
+                description:description, 
+                price:price,
+                discount:discount,
+                thumbnailimage:thumbnailimage,
+                stock:stock,
+                numOfReviews:numOfReviews,
+                ratings:ratings
+            }
+            const config = {
+                headers: {
+                    'Content-Type': "application/json",
+                },
+                withCredentials: true
+            }
+            const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/add_whishlist?status=${status}&userId=${userId}&type=${Number(type)}&productId=${productId}`, json,config)
+            if (response.status === 200) {
+                if(status===true || status==="true"){
+                    alert.success("Product add to whsihlist");
+                    dispatch(noteRefs(new Date().getSeconds()))
+
+                }else{
+                    alert.success("Product remove to whsihlist");
+                    dispatch(noteRefs(new Date().getSeconds()))
+
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
     const handlePageChange = (event, value) => {
         setOffset((value - 1) * limit);
     };
@@ -115,30 +166,42 @@ const AllProduct = () => {
             const response = await addToCart(id, json)
 
             if (response) {
-                alert("Product added in cart")
+                alert.success("Item added in cart")
                 dispatch(noteRefs(new Date().getSeconds()))
 
             } else {
-                alert("Product alreday in cart")
+                alert.error("Item alreday in cart")
 
             }
 
         } catch (error) {
-            alert("Product not added in cart")
+            alert.error("Item not added in cart")
 
         }
     }
 
 
-    const handleModalOpen = (e)=>{
+    const handleModalOpen = (e) => {
         setViewData(e)
         setOpen(true)
     }
 
+    useEffect(() => {
+        // Hide the preloader after 2 seconds
+        const timer = setTimeout(() => {
+            setShowLoader(false);
+        }, 2000);
 
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <>
+            {showLoader && (
+                <div id="preloader">
+                    <img src={images && images?.loader} alt="preloader" width="450" className="img-fluid" />
+                </div>
+            )}
             <div className="main-wrapper">
                 <section className="gshop-gshop-grid ptb-120">
                     <div className="container">
@@ -199,13 +262,16 @@ const AllProduct = () => {
                                                                     <div class="thumbnail position-relative text-center p-4">
                                                                         <img src={ele.thumbnailimage} alt="" class="img-fluid" />
                                                                         <div class="product-btns position-absolute d-flex gap-2 flex-column">
-                                                                            <a href="#" class="rounded-btn"><FavoriteBorderIcon /></a>
-                                                                            <a href="#" class="rounded-btn">
-                                                                                <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.705 0.201222C10.4317 0.469526 10.4317 0.904522 10.705 1.17283L11.6101 2.06107H7.70001C6.15364 2.06107 4.90001 3.29144 4.90001 4.80917V5.49619C4.90001 5.87564 5.21341 6.18322 5.60001 6.18322C5.98662 6.18322 6.30001 5.87564 6.30001 5.49619V4.80917C6.30001 4.0503 6.92679 3.43512 7.70001 3.43512H11.6101L10.705 4.32337C10.4317 4.59166 10.4317 5.02668 10.705 5.29496C10.9784 5.56325 11.4216 5.56325 11.695 5.29496L13.795 3.2339C14.0683 2.96559 14.0683 2.5306 13.795 2.26229L11.695 0.201222C11.4216 -0.0670741 10.9784 -0.0670741 10.705 0.201222ZM8.40001 4.80917C8.0134 4.80917 7.70001 5.11675 7.70001 5.49619V6.18322C7.70001 6.9421 7.07323 7.55726 6.30001 7.55726H2.38995L3.29498 6.66901C3.56835 6.40073 3.56835 5.9657 3.29498 5.69742C3.02161 5.42914 2.5784 5.42914 2.30503 5.69742L0.205023 7.75849C-0.0683411 8.02678 -0.0683411 8.4618 0.205023 8.73008L2.30503 10.7912C2.5784 11.0594 3.02161 11.0594 3.29498 10.7912C3.56835 10.5229 3.56835 10.0878 3.29498 9.81957L2.38995 8.93131H6.30001C7.84638 8.93131 9.10001 7.70092 9.10001 6.18322V5.49619C9.10001 5.11675 8.78662 4.80917 8.40001 4.80917Z" fill="#AEB1B9"></path>
-                                                                                </svg>
-                                                                            </a>
-                                                                            <span  style={{cursor: 'pointer'}}class="rounded-btn" onClick={()=>handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
+                                                                            {
+                                                                                ele.whishListIds && ele.whishListIds.includes(userId) ? (
+                                                                                    <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteIcon /></span>
+
+                                                                                ) : (
+                                                                                    <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteBorderIcon /></span>
+                                                                                )
+                                                                            }
+
+                                                                            <span style={{ cursor: 'pointer' }} class="rounded-btn" onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-content">
@@ -254,7 +320,7 @@ const AllProduct = () => {
 
 
 
-            <ViewProduct setOpen={setOpen} open={open} viewData={viewData}/>
+            <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
 
         </>
     )

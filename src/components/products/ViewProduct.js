@@ -9,11 +9,12 @@ import Slider from "react-slick";
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useAlert } from 'react-alert'
 
 
 
 const ViewProduct = ({ open, viewData, setOpen }) => {
-
+    const alert = useAlert() 
     const [selectedImage, setSelectedImage] = useState(""); // State to hold the selected image
     const [count,setCount] = useState(1)
     const dispatch = useDispatch();
@@ -39,16 +40,16 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
             const response = await addToCart(id, json)
 
             if (response) {
-                alert("Product added in cart")
+                alert.success("Item added in cart")
                 dispatch(noteRefs(new Date().getSeconds()))
 
             } else {
-                alert("Product already in cart")
+                alert.error("Item already in cart")
 
             }
 
         } catch (error) {
-            alert("Product not added in cart")
+            alert.error("Item not added in cart")
 
         }
     }

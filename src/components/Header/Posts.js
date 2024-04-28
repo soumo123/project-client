@@ -36,7 +36,7 @@ const Posts = () => {
                                     <h4 className="mb-3">Holiday Home Delivery We have Recently Ordered</h4>
                                 </a>
                                 <p className="mb-0 mb-5">Holisticly exploit equity invested growth strategies whereas enterpris</p>
-                                <a href="blog-details.html" className="btn btn-primary-light btn-md">Explore More<span className="ms-2"><i className="fas fa-arrow-right"></i></span></a>
+                                <a href="blog-details.html" className="btn btn-primary-light btn-md">Explore More<span className="ms-2"><ArrowForwardIcon/></span></a>
                             </div>
                         </article>
                     </div>
@@ -54,7 +54,7 @@ const Posts = () => {
                                     <h4 className="mb-3">Holiday Home Delivery We have Recently Ordered</h4>
                                 </a>
                                 <p className="mb-0 mb-5">Holisticly exploit equity invested growth strategies whereas enterpris</p>
-                                <a href="blog-details.html" className="btn btn-primary-light btn-md">Explore More<span className="ms-2"><i className="fas fa-arrow-right"></i></span></a>
+                                <a href="blog-details.html" className="btn btn-primary-light btn-md">Explore More<span className="ms-2"><ArrowForwardIcon/></span></a>
                             </div>
                         </article>
                     </div>
@@ -72,7 +72,7 @@ const Posts = () => {
                                     <h4 className="mb-3">Holiday Home Delivery We have Recently Ordered</h4>
                                 </a>
                                 <p className="mb-0 mb-5">Holisticly exploit equity invested growth strategies whereas enterpris</p>
-                                <a href="blog-details.html" className="btn btn-primary-light btn-md">Explore More<span className="ms-2"><i className="fas fa-arrow-right"></i></span></a>
+                                <a href="blog-details.html" className="btn btn-primary-light btn-md">Explore More<span className="ms-2"><ArrowForwardIcon/></span></a>
                             </div>
                         </article>
                     </div>

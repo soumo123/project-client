@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "homepage":"http://1kliq.com/creamyaffairs",
+  "homepage": "http://creamyaffairs/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,6 +16,8 @@
     "fs": "0.0.1-security",
     "prop-types": "15.8.1",
     "react": "^18.2.0",
+    "react-alert": "^7.0.3",
+    "react-alert-template-basic": "^1.0.2",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
