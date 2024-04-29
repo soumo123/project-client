@@ -15,12 +15,13 @@ import { noteRefs } from '../../redux/actions/userAction'
 import ViewProduct from './ViewProduct';
 import { useAlert } from 'react-alert'
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useLocation } from 'react-router-dom'; 
+import { useNavigate,useLocation } from 'react-router-dom'; 
 
 const AllProduct = () => {
 
     const alert = useAlert()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const location = useLocation();
     const [searchQuery, setSearchQuery] = useState('');
     const [productData, setProductData] = useState([])
@@ -37,6 +38,8 @@ const AllProduct = () => {
     const dataRefe = useSelector((state) => state.noteRef.arr);
     const queryParams = new URLSearchParams(location.search);
     const searchData = queryParams.get('search');
+    const tagssearch = queryParams.get('tags');
+
     const userId = localStorage.getItem("userId");
     const type = localStorage.getItem("type")
 
@@ -62,7 +65,7 @@ const AllProduct = () => {
 
     const getAllProducts = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery || searchData || ""}&tags=${tagss}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}`)
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery || searchData || ""}&tags=${tagss || tagssearch || ""}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}`)
             if (response.status === 200) {
                 setTotalPages(Math.ceil(response.data.totalData / limit));
                 setTotalData(response.data.totalData)
@@ -76,7 +79,7 @@ const AllProduct = () => {
 
     useEffect(() => {
         getAllProducts();
-    }, [offset, limit,searchData, tagss,dataRefe]);
+    }, [offset, limit,searchData, tagss,tagssearch,dataRefe]);
 
 
     const handleAddWhish = async (status, productId ,name,description, price,discount,thumbnailimage,stock,ratings,numOfReviews) => {
@@ -194,6 +197,10 @@ const AllProduct = () => {
 
         return () => clearTimeout(timer);
     }, []);
+
+
+
+
 
     return (
         <>

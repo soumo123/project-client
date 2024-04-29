@@ -6,6 +6,7 @@ import productDetailsReducer from './redux/reducers/productReducer'
 import noteRef from './redux/reducers/noteRef'
 import cartReducer from './redux/reducers/cartReducer'
 import imageReducer from './redux/reducers/imageReducer'
+import categoryReducer from './redux/reducers/categoriesReducer'
 
 
 
@@ -14,6 +15,7 @@ const reducer = combineReducers({
     productDetails:productDetailsReducer,
     noteRef:noteRef,
     cartDetails:cartReducer,
+    categoryDetails:categoryReducer,
     imageReducer:imageReducer
 })
 

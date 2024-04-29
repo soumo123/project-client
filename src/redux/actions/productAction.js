@@ -2,7 +2,9 @@ import {
     GET_ALL_PRODUCTS_SUCCESS,
     GET_ALL_PRODUCTS_FAIL,
     GET_CART_PRODUCTS_SUCCESS,
-    GET_CART_PRODUCTS_FAIL
+    GET_CART_PRODUCTS_FAIL,
+    GET_ALL_CATEGORIES_SUCCESS,
+    GET_ALL_CATEGORIES_FAIL
 } from '../constants/productConstant'
 
 export const fetchProducts = (productData) => {
@@ -45,6 +47,21 @@ export const fetchCartProducts = (cart) => {
 export const fetchCartProductsFail = (error) => {
     return {
         type: GET_CART_PRODUCTS_FAIL,
+        data: error,
+    };
+};
+
+
+export const fetchCategoriesSuccess = (data) => {
+    return {
+        type: GET_ALL_CATEGORIES_SUCCESS,
+        data: data,
+    };
+};
+
+export const fetchCategoriesFail = (error) => {
+    return {
+        type: GET_ALL_CATEGORIES_FAIL,
         data: error,
     };
 };

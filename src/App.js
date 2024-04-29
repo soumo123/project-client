@@ -12,6 +12,7 @@ import AllProduct from './components/products/AllProduct';
 import Footer from './components/Footer/Footer';
 import Cart from './components/cart/Cart';
 import Whishlist from './components/Header/Home/Whishlist';
+import { fetchCategoriesSuccess } from './redux/actions/productAction';
 
 
 function App() {
@@ -73,10 +74,26 @@ function App() {
 
   }
 
+
+  const browseAllCategories = async()=>{
+
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getalltags?type=${typess? typess:1}`)
+      if(response.status===200){
+        dispatch(fetchCategoriesSuccess(response.data.data))
+
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     if (type||userId) {
       getUser()
       allImages()
+      browseAllCategories()
     }
   }, [type,userId])
 

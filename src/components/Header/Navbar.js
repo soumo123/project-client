@@ -2,22 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Eng from '../../images/usd.svg'
 import Bdt from '../../images/bdt.svg'
 import Inr from '../../images/inr.svg'
-import Logo from '../../images/logo.png'
-import BabyCare from '../../images/baby-care.png'
-import Clean from '../../images/cleaning.png'
-import Bakery from '../../images/bakery-biscuits.png'
-import Coffe from '../../images/coffee-drinks.png'
-import Beauty from '../../images/beauty-health.png'
-import Brealfast from '../../images/breakfast.png'
-import ColdDrink from '../../images/cold-drinks.png'
-import Fruits from '../../images/fresh-fruits.png'
-import Honey from '../../images/honey.png'
-import Organic from '../../images/fresh-organic.png'
-import Jelly from '../../images/jam-jelly.png'
-import Sports from '../../images/sports-fitness.png'
-import SeaFish from '../../images/sea-fish.png'
-import Pet from '../../images/pet-care.png'
-import Meat from '../../images/meat.png'
 import PersonIcon from '@mui/icons-material/Person';
 import SellIcon from '@mui/icons-material/Sell';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -42,9 +26,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { fetchUserDetails } from '../../redux/actions/userAction';
 import { fetchCartProducts, fetchCartProductsFail } from '../../redux/actions/productAction'
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link ,useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { noteRefs } from '../../redux/actions/userAction'
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StayCurrentPortraitIcon from '@mui/icons-material/StayCurrentPortrait';
@@ -75,7 +58,9 @@ const Navbar = () => {
      const [showLoader, setShowLoader] = useState(true);
      const userData = useSelector((state) => state.userDetails.user)
      const images = useSelector((state) => state.imageReducer.images.staticImages)
-     const [search,setSearch] = useState("")
+     const categories = useSelector((state) => state.categoryDetails.categories)
+     const [search, setSearch] = useState("")
+
 
 
      const [formData, setFormData] = useState({
@@ -272,10 +257,15 @@ const Navbar = () => {
           }
      };
 
-     const handleSearchChange = (e)=>{
+     const handleSearchChange = (e) => {
           e.preventDefault();
           navigate(`/products?search=${search}`)
           setSearch("")
+     }
+
+
+     const handleCategoryChange = (value)=>{
+          navigate(`/products?tags=${value}`)
      }
 
 
@@ -318,7 +308,7 @@ const Navbar = () => {
                                                                            fill="white" />
                                                                  </svg>
                                                             </span>
-                                                            creamyafairs@support.com
+                                                            rudipta@hotmail.com
                                                        </a>
                                                   </li>
                                                   <li className="nav-item">
@@ -336,7 +326,7 @@ const Navbar = () => {
                                                                       fill="white" stroke="white" stroke-width="0.3" />
                                                             </svg>
                                                        </span>
-                                                       China 254230
+                                                       Baidyopati,712222
                                                   </li>
 
                                                   <li className="nav-item dropdown tt-language-dropdown">
@@ -379,7 +369,7 @@ const Navbar = () => {
                                                             showCurrency ? (
                                                                  <ClickAwayListener onClick={(e) => setShowCurrency(false)}>
                                                                       <ul className="dropdown-menu dropdown-menu-end">
-                                                                           <li>
+                                                                           {/* <li>
                                                                                 <a className="dropdown-item fs-xs" href="#">
                                                                                      $ USD
                                                                                 </a>
@@ -388,17 +378,17 @@ const Navbar = () => {
                                                                                 <a className="dropdown-item fs-xs" href="#">
                                                                                      ৳ BDT
                                                                                 </a>
-                                                                           </li>
+                                                                           </li> */}
                                                                            <li>
                                                                                 <a className="dropdown-item fs-xs" href="#">
                                                                                      ₹ INR
                                                                                 </a>
                                                                            </li>
-                                                                           <li>
+                                                                           {/* <li>
                                                                                 <a className="dropdown-item fs-xs" href="#">
                                                                                      € EUR
                                                                                 </a>
-                                                                           </li>
+                                                                           </li> */}
                                                                       </ul>
                                                                  </ClickAwayListener>
                                                             ) : ""
@@ -432,126 +422,20 @@ const Navbar = () => {
                                                                  <ClickAwayListener onClickAway={() => setBrowseCat(false)}>
                                                                       <div className="category-dropdown-box scrollbar active">
                                                                            <ul className="category-dropdown-menu">
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={BabyCare} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Baby Care</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Clean} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Cleaning</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Bakery} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Bakery & Biscuits</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Coffe} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Coffee & Drinks</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Beauty} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Beauty & Health</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Brealfast} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Breakfast</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={ColdDrink} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Cold Drinks</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Fruits} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Fresh Fruits</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Honey} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Honey</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Organic} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Fresh & Organic</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Jelly} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Jam & Jelly</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Sports} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Sports & Fitness</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={SeaFish} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Sea Fish</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Pet} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Pet Care</span>
-                                                                                     </a>
-                                                                                </li>
-                                                                                <li>
-                                                                                     <a href="shop-grid.html" className="d-flex align-items-center">
-                                                                                          <div className="me-2 avatar-icon">
-                                                                                               <img src={Meat} alt="vegetables" className="w-100 h-100 rounded-circle" />
-                                                                                          </div>
-                                                                                          <span>Meat</span>
-                                                                                     </a>
-                                                                                </li>
+                                                                                {
+                                                                                     categories && categories.map((ele) => (
+                                                                                          <li>
+                                                                                               <span  className="d-flex align-items-center" style={{cursor: 'pointer'}} onClick={(e)=>handleCategoryChange(ele.value)}>
+                                                                                                    <div className="me-2 avatar-icon">
+                                                                                                         <img src={ele.thumbnailImage} alt="vegetables" className="w-100 h-100 rounded-circle" />
+                                                                                                    </div>
+                                                                                                    <span>{ele.label}</span>
+                                                                                               </span>
+                                                                                          </li>
+                                                                                     ))
+                                                                                }
+
+
                                                                            </ul>
                                                                       </div>
                                                                  </ClickAwayListener>
@@ -583,8 +467,8 @@ const Navbar = () => {
                                                             </button>
                                                             <div className="dropdown-menu dropdown-menu-end border-0">
                                                                  <form className="search-form d-flex align-items-center" action="#">
-                                                                      <input type="text" placeholder="Search products..." value={search} onChange={(e)=>setSearch(e.target.value)}className="w-100" />
-                                                                      <button type="submit" className="submit-icon-btn-secondary" onClick={handleSearchChange}><SearchIcon/></button>
+                                                                      <input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-100" />
+                                                                      <button type="submit" className="submit-icon-btn-secondary" onClick={handleSearchChange}><SearchIcon /></button>
                                                                  </form>
                                                             </div>
                                                        </div>
