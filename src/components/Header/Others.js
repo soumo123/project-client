@@ -25,13 +25,15 @@ const Others = ({ newProducts ,load,setLoad}) => {
         setOpen(true)
     }
 
-
     useEffect(() => {
-        const halfwayIndex = Math.ceil(newProducts.length / 2);
-        const firstHalfData = newProducts.slice(0, halfwayIndex);
-        const secondHalfData = newProducts.slice(halfwayIndex);
-        setFirstHalf(firstHalfData); // Set the first half to the state
-        setSecondHalf(secondHalfData); // Set the second half to the state
+        if(newProducts.length>0){
+
+            const halfwayIndex = Math.ceil(newProducts.length / 2);
+            const firstHalfData = newProducts.slice(0, halfwayIndex);
+            const secondHalfData = newProducts.slice(halfwayIndex);
+            setFirstHalf(firstHalfData); // Set the first half to the state
+            setSecondHalf(secondHalfData); // Set the second half to the state
+        }
     }, [newProducts])
 
     console.log("firstHalf , secondHalf", firstHalf, secondHalf)

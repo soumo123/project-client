@@ -13,6 +13,7 @@ import Footer from './components/Footer/Footer';
 import Cart from './components/cart/Cart';
 import Whishlist from './components/Header/Home/Whishlist';
 import { fetchCategoriesSuccess } from './redux/actions/productAction';
+import {fetchSettingData} from './redux/actions/settingAction'
 
 
 function App() {
@@ -89,10 +90,27 @@ function App() {
     }
   }
 
+  const allSettings = async()=>{
+
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/settings/setting_rules?type=${typess? typess:1}`)
+      if(response.status===200){
+        dispatch(fetchSettingData(response.data.data))
+
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
   useEffect(() => {
     if (type||userId) {
       getUser()
       allImages()
+      allSettings()
       browseAllCategories()
     }
   }, [type,userId])

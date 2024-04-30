@@ -7,6 +7,7 @@ import noteRef from './redux/reducers/noteRef'
 import cartReducer from './redux/reducers/cartReducer'
 import imageReducer from './redux/reducers/imageReducer'
 import categoryReducer from './redux/reducers/categoriesReducer'
+import settingReducer from './redux/reducers/settingReducer'
 
 
 
@@ -16,7 +17,8 @@ const reducer = combineReducers({
     noteRef:noteRef,
     cartDetails:cartReducer,
     categoryDetails:categoryReducer,
-    imageReducer:imageReducer
+    imageReducer:imageReducer,
+    settingReducer:settingReducer,
 })
 
 
