@@ -120,9 +120,9 @@ const TrendingProducts = ({ topSellingData ,load,setLoad}) => {
     return (
         <>
             <section className="pt-8 pb-100 bg-white position-relative overflow-hidden z-1 trending-products-area">
-                <img src="assets/img/shapes/garlic.png" alt="garlic" className="position-absolute garlic z--1" data-parallax='{"y": 100}' />
+                {/* <img src="assets/img/shapes/garlic.png" alt="garlic" className="position-absolute garlic z--1" data-parallax='{"y": 100}' />
                 <img src="assets/img/shapes/carrot.png" alt="carrot" className="position-absolute carrot z--1" data-parallax='{"y": -100}' />
-                <img src="assets/img/shapes/mashrom.png" alt="mashrom" className="position-absolute mashrom z--1" data-parallax='{"x": 100}' />
+                <img src="assets/img/shapes/mashrom.png" alt="mashrom" className="position-absolute mashrom z--1" data-parallax='{"x": 100}' /> */}
                 <div className="container">
                     <div className="row align-items-center">
                         <div className="col-xl-5">
@@ -147,7 +147,7 @@ const TrendingProducts = ({ topSellingData ,load,setLoad}) => {
                                     <div className="vertical-product-card rounded-2 position-relative">
                                         {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)}
                                         <div className="thumbnail position-relative text-center p-4">
-                                            <a href="product-details.html"><img src={ele.thumbnailimage} alt="apple" className="img-fluid" /></a>
+                                           <img src={ele.thumbnailimage} alt="apple" className="img-fluid"/>
                                             <div className="product-btns position-absolute d-flex gap-2 flex-column">
                                             {
                                                     ele.whishListIds && ele.whishListIds.includes(userId) ? (
@@ -160,9 +160,12 @@ const TrendingProducts = ({ topSellingData ,load,setLoad}) => {
                                                 <span className="rounded-btn" style={{cursor: 'pointer'}} onClick={()=>handleModalOpen(ele)}><VisibilityOutlinedIcon/></span>
                                             </div>
                                         </div>
+                                        <Link to={`/details/${ele.productId}`}>
+
+                                        
                                         <div className="card-content">
                                             <a href="shop-grid.html" className="mb-2 d-inline-block text-secondary fw-semibold fs-xxs">Fresh Organic</a>
-                                            <a href="product-details.html" className="card-title fw-bold d-block mb-2">{ele.name}</a>
+                                            <span className="card-title fw-bold d-block mb-2">{ele.name}</span>
                                             <div className="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
                                                 <ul className="d-flex align-items-center me-2">
                                                     <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
@@ -175,6 +178,7 @@ const TrendingProducts = ({ topSellingData ,load,setLoad}) => {
                                             </div>
                                             <p className="mb-0 fw-semibold">Available: <span className="fw-bold text-secondary">{ele.stock}/100</span></p>
                                         </div>
+                                        </Link>
                                         <div className="card-btn bg-white">
                                             <span className="btn btn-secondary d-block btn-md rounded-1" onClick={() => handleCart(ele.productId, ele)}>Add to Cart</span>
                                         </div>

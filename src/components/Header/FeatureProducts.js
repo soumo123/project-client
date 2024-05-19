@@ -84,8 +84,8 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
     return (
         <>
             <section className="featured-products pt-120 pb-200 bg-shade position-relative overflow-hidden z-1">
-                <img src="assets/img/shapes/roll-1.png" alt="roll" className="position-absolute roll-1 z--1" data-parallax='{"y": -120}' />
-                <img src="assets/img/shapes/roll-2.png" alt="roll" className="position-absolute roll-2 z--1" data-parallax='{"y": 120}' />
+                {/* <img src="assets/img/shapes/roll-1.png" alt="roll" className="position-absolute roll-1 z--1" data-parallax='{"y": -120}' />
+                <img src="assets/img/shapes/roll-2.png" alt="roll" className="position-absolute roll-2 z--1" data-parallax='{"y": 120}' /> */}
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-xl-6">
@@ -99,9 +99,10 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                         <div className="col-xxl-4 col-lg-6">
                             {
                                 firstHalf && firstHalf.map((ele) => (
+                                
                                     <div className="horizontal-product-card d-sm-flex align-items-center p-3 bg-white rounded-2 gap-4 mt-4">
                                         <div className="thumbnail position-relative rounded-2">
-                                            <a href="product-details.html"><img src={ele.thumbnailimage} alt="product" className="img-fluid" /></a>
+                                            <img src={ele.thumbnailimage} alt="product" className="img-fluid" />
                                             <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
                                                 {
                                                     ele.whishListIds && ele.whishListIds.includes(userId) ? (
@@ -115,6 +116,7 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                                                 
                                             </div>
                                         </div>
+                                        <Link to={`/details/${ele.productId}`}>
                                         <div className="card-content mt-4 mt-sm-0">
                                             <div className="d-flex align-items-center flex-nowrap star-rating">
                                                 <ul className="d-flex align-items-center me-2">
@@ -123,14 +125,16 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                                                 </ul>
                                                 <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                             </div>
-                                            <a href="product-details.html" className="fw-bold text-heading title d-block">{ele.name}</a>
+                                            <span className="fw-bold text-heading title d-block">{ele.name}</span>
                                             <div className="pricing mt-2">
                                                 <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele.price}</span>
                                                 <span className="fw-bold h4 text-danger"> ₹ {ele.actualpricebydiscount}</span>
                                             </div>
                                             <Link to="/order" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></Link>
                                         </div>
+                                        </Link>
                                     </div>
+                                   
                                 ))
                             }
 
@@ -175,9 +179,10 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                         <div className="col-xxl-4 col-lg-6 order-2 order-xxl-3">
                             {
                                 secondHalf && secondHalf.map((ele) => (
+                                    
                                     <div className="horizontal-product-card d-sm-flex align-items-center p-3 bg-white rounded-2 gap-4 mt-4">
                                         <div className="thumbnail position-relative rounded-2">
-                                            <a href="product-details.html"><img src={ele.thumbnailimage} alt="product" className="img-fluid" /></a>
+                                        <img src={ele.thumbnailimage} alt="product" className="img-fluid" />
                                             <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
                                                 {
                                                     ele.whishListIds && ele.whishListIds.includes(userId) ? (
@@ -191,6 +196,7 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                                                 
                                             </div>
                                         </div>
+                                        <Link to={`/details/${ele.productId}`}>
                                         <div className="card-content mt-4 mt-sm-0">
                                             <div className="d-flex align-items-center flex-nowrap star-rating">
                                                 <ul className="d-flex align-items-center me-2">
@@ -199,14 +205,16 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                                                 </ul>
                                                 <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                             </div>
-                                            <a href="product-details.html" className="fw-bold text-heading title d-block">{ele.name}</a>
+                                            <span className="fw-bold text-heading title d-block">{ele.name}</span>
                                             <div className="pricing mt-2">
                                                 <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele.price}</span>
                                                 <span className="fw-bold h4 text-danger"> ₹ {ele.actualpricebydiscount}</span>
                                             </div>
                                             <Link to="/order" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></Link>
                                         </div>
+                                        </Link>
                                     </div>
+                                   
                                 ))
                             }
 
@@ -214,7 +222,7 @@ const FeatureProducts = ({ featuredData ,load,setLoad}) => {
                         </div>
                     </div>
                 </div>
-                <img src="assets/img/shapes/bg-shape-2.png" alt="bg shape" className="position-absolute start-0 bottom-0 w-100 z--1" />
+                {/* <img src="assets/img/shapes/bg-shape-2.png" alt="bg shape" className="position-absolute start-0 bottom-0 w-100 z--1" /> */}
             </section>
             <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
         </>

@@ -33,6 +33,12 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import StayCurrentPortraitIcon from '@mui/icons-material/StayCurrentPortrait';
 import { useAlert } from 'react-alert'
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 const Navbar = () => {
      const alert = useAlert()
@@ -61,8 +67,8 @@ const Navbar = () => {
      const categories = useSelector((state) => state.categoryDetails.categories)
      const settings = useSelector((state) => state.settingReducer.settings)
      const [search, setSearch] = useState("")
-
-console.log("settingssettings",settings)
+     const [aboutOpen, setAboutOpen] = useState(false)
+     console.log("settingssettings", settings)
 
      const [formData, setFormData] = useState({
           name: '',
@@ -218,8 +224,13 @@ console.log("settingssettings",settings)
           }
      };
 
+     const handleAbout = () => {
+          setAboutOpen(!aboutOpen);
+     }
 
-
+     const handleCloseAbout = () => {
+          setAboutOpen(false);
+     }
 
      const handleSubmit = async (e) => {
           e.preventDefault();
@@ -265,11 +276,14 @@ console.log("settingssettings",settings)
      }
 
 
-     const handleCategoryChange = (value)=>{
+     const handleCategoryChange = (value) => {
           navigate(`/products?tags=${value}`)
      }
 
-
+     const handleAboutRedirect = () => {
+          setAboutOpen(false)
+          navigate('/about-us')
+     }
 
      useEffect(() => {
           // Hide the preloader after 2 seconds
@@ -315,25 +329,25 @@ console.log("settingssettings",settings)
                                                   {
                                                        settings && settings?.location ? (
                                                             <li className="nav-item">
-                                                            <span className="me-1">
-                                                                 <svg width="12" height="17" viewBox="0 0 12 17" fill="none"
-                                                                      xmlns="http://www.w3.org/2000/svg">
-                                                                      <path
-                                                                           d="M6.00011 8.16427C7.44543 8.16427 8.62131 6.98781 8.62131 5.54175C8.62131 4.09569 7.44543 2.91925 6.00011 2.91925C4.55478 2.91925 3.37891 4.09569 3.37891 5.54175C3.37891 6.98781 4.55478 8.16427 6.00011 8.16427ZM6.00011 3.85662C6.92883 3.85662 7.68441 4.61259 7.68441 5.54175C7.68441 6.47093 6.92886 7.2269 6.00011 7.2269C5.07136 7.2269 4.31581 6.47093 4.31581 5.54175C4.31581 4.61259 5.07139 3.85662 6.00011 3.85662Z"
-                                                                           fill="white" stroke="white" stroke-width="0.3" />
-                                                                      <path
-                                                                           d="M3.14593 10.2541C3.85594 11.2159 3.57069 10.8418 5.61579 13.7635C5.80167 14.0301 6.19695 14.0314 6.38389 13.7639C8.43824 10.8284 8.15557 11.2002 8.85403 10.254C9.56155 9.29555 10.2932 8.30443 10.6941 7.14299C11.2744 5.46171 11.0236 3.79818 9.9879 2.45881C9.98787 2.45881 9.98787 2.45878 9.98784 2.45878C9.03913 1.23225 7.54834 0.5 5.99998 0.5C4.45163 0.5 2.96083 1.23225 2.01209 2.45884C0.976407 3.79821 0.725568 5.46177 1.30588 7.14305C1.70675 8.30446 2.43841 9.29558 3.14593 10.2541ZM2.75305 3.03246C3.52562 2.03369 4.73944 1.43737 5.99998 1.43737C7.26052 1.43737 8.47434 2.03369 9.24691 3.03246L9.24684 3.03243C10.0828 4.11343 10.2822 5.46462 9.80852 6.83705C9.4544 7.86293 8.76606 8.79539 8.10039 9.69717C7.5821 10.3993 7.73721 10.1845 5.99998 12.6763C4.26456 10.187 4.41771 10.399 3.89957 9.69717C3.2339 8.79539 2.54556 7.86289 2.19144 6.83705C1.71775 5.46459 1.91718 4.11343 2.75305 3.03246Z"
-                                                                           fill="white" stroke="white" stroke-width="0.3" />
-                                                                      <path
-                                                                           d="M3.53116 12.2865C3.393 12.0677 3.10369 12.0023 2.88495 12.1405L1.55299 12.9823C1.26243 13.1659 1.26214 13.591 1.55299 13.7748L5.75031 16.4276C5.90312 16.5242 6.09787 16.5241 6.25065 16.4276L10.448 13.7748C10.7386 13.5912 10.7388 13.1661 10.448 12.9823L9.116 12.1405C8.8972 12.0023 8.60792 12.0677 8.46979 12.2865C8.3316 12.5053 8.39693 12.7948 8.61567 12.933L9.32065 13.3786L6.00046 15.4769L2.6803 13.3786L3.38529 12.933C3.60402 12.7948 3.66933 12.5053 3.53116 12.2865Z"
-                                                                           fill="white" stroke="white" stroke-width="0.3" />
-                                                                 </svg>
-                                                            </span>
-                                                            {settings && settings?.location}
-                                                       </li>
-                                                       ):("")
+                                                                 <span className="me-1">
+                                                                      <svg width="12" height="17" viewBox="0 0 12 17" fill="none"
+                                                                           xmlns="http://www.w3.org/2000/svg">
+                                                                           <path
+                                                                                d="M6.00011 8.16427C7.44543 8.16427 8.62131 6.98781 8.62131 5.54175C8.62131 4.09569 7.44543 2.91925 6.00011 2.91925C4.55478 2.91925 3.37891 4.09569 3.37891 5.54175C3.37891 6.98781 4.55478 8.16427 6.00011 8.16427ZM6.00011 3.85662C6.92883 3.85662 7.68441 4.61259 7.68441 5.54175C7.68441 6.47093 6.92886 7.2269 6.00011 7.2269C5.07136 7.2269 4.31581 6.47093 4.31581 5.54175C4.31581 4.61259 5.07139 3.85662 6.00011 3.85662Z"
+                                                                                fill="white" stroke="white" stroke-width="0.3" />
+                                                                           <path
+                                                                                d="M3.14593 10.2541C3.85594 11.2159 3.57069 10.8418 5.61579 13.7635C5.80167 14.0301 6.19695 14.0314 6.38389 13.7639C8.43824 10.8284 8.15557 11.2002 8.85403 10.254C9.56155 9.29555 10.2932 8.30443 10.6941 7.14299C11.2744 5.46171 11.0236 3.79818 9.9879 2.45881C9.98787 2.45881 9.98787 2.45878 9.98784 2.45878C9.03913 1.23225 7.54834 0.5 5.99998 0.5C4.45163 0.5 2.96083 1.23225 2.01209 2.45884C0.976407 3.79821 0.725568 5.46177 1.30588 7.14305C1.70675 8.30446 2.43841 9.29558 3.14593 10.2541ZM2.75305 3.03246C3.52562 2.03369 4.73944 1.43737 5.99998 1.43737C7.26052 1.43737 8.47434 2.03369 9.24691 3.03246L9.24684 3.03243C10.0828 4.11343 10.2822 5.46462 9.80852 6.83705C9.4544 7.86293 8.76606 8.79539 8.10039 9.69717C7.5821 10.3993 7.73721 10.1845 5.99998 12.6763C4.26456 10.187 4.41771 10.399 3.89957 9.69717C3.2339 8.79539 2.54556 7.86289 2.19144 6.83705C1.71775 5.46459 1.91718 4.11343 2.75305 3.03246Z"
+                                                                                fill="white" stroke="white" stroke-width="0.3" />
+                                                                           <path
+                                                                                d="M3.53116 12.2865C3.393 12.0677 3.10369 12.0023 2.88495 12.1405L1.55299 12.9823C1.26243 13.1659 1.26214 13.591 1.55299 13.7748L5.75031 16.4276C5.90312 16.5242 6.09787 16.5241 6.25065 16.4276L10.448 13.7748C10.7386 13.5912 10.7388 13.1661 10.448 12.9823L9.116 12.1405C8.8972 12.0023 8.60792 12.0677 8.46979 12.2865C8.3316 12.5053 8.39693 12.7948 8.61567 12.933L9.32065 13.3786L6.00046 15.4769L2.6803 13.3786L3.38529 12.933C3.60402 12.7948 3.66933 12.5053 3.53116 12.2865Z"
+                                                                                fill="white" stroke="white" stroke-width="0.3" />
+                                                                      </svg>
+                                                                 </span>
+                                                                 {settings && settings?.location}
+                                                            </li>
+                                                       ) : ("")
                                                   }
-                                               
+
 
                                                   <li className="nav-item dropdown tt-language-dropdown">
                                                        <a href="#" className="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onClick={() => setShowLan(!showLan)}>
@@ -419,8 +433,18 @@ console.log("settingssettings",settings)
                                         <div className="col-xxl-10 col-xl-9 col-md-9 col-7">
                                              <div className="gshop-navbar-right d-flex align-items-center justify-content-end position-relative">
                                                   <div className="category-dropdown position-relative d-none d-md-inline-block">
-                                                       <span className="category-dropdown-btn fw-bold d-none d-sm-inline-block" onClick={() => setBrowseCat(!browseCategory)}>Browse Category<span
-                                                            className="ms-1"><KeyboardArrowDownIcon /></span></span>
+
+
+                                                       {
+                                                            settings && settings.browse_category ? (
+                                                                 <span className="category-dropdown-btn fw-bold d-none d-sm-inline-block" onClick={() => setBrowseCat(!browseCategory)}>Browse Category
+                                                                      <span
+                                                                           className="ms-1"><KeyboardArrowDownIcon />
+                                                                      </span>
+                                                                 </span>
+                                                            ) : ("")
+                                                       }
+
                                                        <a href="javascript:void(0)" className="category-dropdown-btn fw-bold d-sm-none">Categories
                                                             <span className="ms-1"><KeyboardArrowDownIcon /></span></a>
                                                        {
@@ -431,7 +455,7 @@ console.log("settingssettings",settings)
                                                                                 {
                                                                                      categories && categories.map((ele) => (
                                                                                           <li>
-                                                                                               <span  className="d-flex align-items-center" style={{cursor: 'pointer'}} onClick={(e)=>handleCategoryChange(ele.value)}>
+                                                                                               <span className="d-flex align-items-center" style={{ cursor: 'pointer' }} onClick={(e) => handleCategoryChange(ele.value)}>
                                                                                                     <div className="me-2 avatar-icon">
                                                                                                          <img src={ele.thumbnailImage} alt="vegetables" className="w-100 h-100 rounded-circle" />
                                                                                                     </div>
@@ -452,32 +476,46 @@ console.log("settingssettings",settings)
                                                   <nav className="gshop-navmenu ms-3 d-none d-xl-block">
                                                        <ul className="d-flex align-itmes-center justify-content-end">
                                                             <li>
-                                                                 <Link to="/">Home<span className="ms-1 fs-xs float-end"></span></Link>
+                                                                 {settings && settings.home ? (
+                                                                      <Link to="/">Home<span className="ms-1 fs-xs float-end"></span></Link>
+                                                                 ) : ("")}
                                                             </li>
+
                                                             <li className="">
-                                                                 <Link to="/products">Products</Link>
+                                                                 {settings && settings.home ? (
+                                                                      <Link to="/products">Products</Link>
+                                                                 ) : ("")}
+
                                                             </li>
                                                             <li>
-                                                                 <a href="blog.html">Blog<span className="ms-1 fs-xs float-end"></span></a>
+                                                                 {settings && settings.home ? (
+                                                                      <Link to="/blogs">Blog<span className="ms-1 fs-xs float-end"></span></Link>
+                                                                 ) : ("")}
+
                                                             </li>
                                                        </ul>
                                                   </nav>
                                                   <div className="gshop-header-icons d-none d-md-inline-flex align-items-center justify-content-end ms-3">
-                                                       <div className="gshop-header-search dropdown">
-                                                            <button type="button" className="header-icon" data-bs-toggle="dropdown">
+                                                       {
+                                                            settings && settings.search ? (
+                                                                 <div className="gshop-header-search dropdown">
+                                                                      <button type="button" className="header-icon" data-bs-toggle="dropdown">
 
-                                                                 <svg width="18" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                      <path d="M9.68859 0.5C4.34645 0.5 0 4.84646 0 10.1886C0 15.5311 4.34645 19.8772 9.68859 19.8772C15.031 19.8772 19.3772 15.5311 19.3772 10.1886C19.3772 4.84646 15.031 0.5 9.68859 0.5ZM9.68859 18.0886C5.33261 18.0886 1.78866 14.5447 1.78866 10.1887C1.78866 5.83266 5.33261 2.28867 9.68859 2.28867C14.0446 2.28867 17.5885 5.83262 17.5885 10.1886C17.5885 14.5446 14.0446 18.0886 9.68859 18.0886Z" fill="#5D6374" />
-                                                                      <path d="M21.7406 20.9824L16.6436 15.8853C16.2962 15.538 15.7338 15.538 15.3865 15.8853C15.0391 16.2323 15.0391 16.7954 15.3865 17.1424L20.4835 22.2395C20.6571 22.4131 20.8845 22.5 21.1121 22.5C21.3393 22.5 21.5669 22.4131 21.7406 22.2395C22.0879 21.8925 22.0879 21.3294 21.7406 20.9824Z" fill="#5D6374" />
-                                                                 </svg>
-                                                            </button>
-                                                            <div className="dropdown-menu dropdown-menu-end border-0">
-                                                                 <form className="search-form d-flex align-items-center" action="#">
-                                                                      <input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-100" />
-                                                                      <button type="submit" className="submit-icon-btn-secondary" onClick={handleSearchChange}><SearchIcon /></button>
-                                                                 </form>
-                                                            </div>
-                                                       </div>
+                                                                           <svg width="18" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M9.68859 0.5C4.34645 0.5 0 4.84646 0 10.1886C0 15.5311 4.34645 19.8772 9.68859 19.8772C15.031 19.8772 19.3772 15.5311 19.3772 10.1886C19.3772 4.84646 15.031 0.5 9.68859 0.5ZM9.68859 18.0886C5.33261 18.0886 1.78866 14.5447 1.78866 10.1887C1.78866 5.83266 5.33261 2.28867 9.68859 2.28867C14.0446 2.28867 17.5885 5.83262 17.5885 10.1886C17.5885 14.5446 14.0446 18.0886 9.68859 18.0886Z" fill="#5D6374" />
+                                                                                <path d="M21.7406 20.9824L16.6436 15.8853C16.2962 15.538 15.7338 15.538 15.3865 15.8853C15.0391 16.2323 15.0391 16.7954 15.3865 17.1424L20.4835 22.2395C20.6571 22.4131 20.8845 22.5 21.1121 22.5C21.3393 22.5 21.5669 22.4131 21.7406 22.2395C22.0879 21.8925 22.0879 21.3294 21.7406 20.9824Z" fill="#5D6374" />
+                                                                           </svg>
+                                                                      </button>
+                                                                      <div className="dropdown-menu dropdown-menu-end border-0">
+                                                                           <form className="search-form d-flex align-items-center" action="#">
+                                                                                <input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-100" />
+                                                                                <button type="submit" className="submit-icon-btn-secondary" onClick={handleSearchChange}><SearchIcon /></button>
+                                                                           </form>
+                                                                      </div>
+                                                                 </div>
+                                                            ) : ("")
+                                                       }
+
                                                        <div className="gshop-header-user position-relative">
                                                             <button type="button" className="header-icon">
 
@@ -499,7 +537,7 @@ console.log("settingssettings",settings)
                                                                  <ul className="user-menu">
 
                                                                       {userDetails.length === 0 ? ("") : (
-                                                                           <li><a href="my-account.html"><span className="me-2"><PersonIcon /></span>My Account</a></li>
+                                                                           <li><Link to="/account"><span className="me-2"><PersonIcon /></span>My Account</Link></li>
 
                                                                       )}
                                                                       <li><Link to="/cart"><span className="me-2"><SellIcon /></span>My Cart</Link></li>
@@ -507,10 +545,10 @@ console.log("settingssettings",settings)
                                                                       {
                                                                            userDetails.length === 0 ? (
 
-                                                                                <li><span className="me-2" onClick={handleClickOpen}><LoginIcon /></span>Signin</li>
+                                                                                <li><a className="me-2" onClick={handleClickOpen}><LoginIcon />  Signin</a></li>
                                                                            ) : (
 
-                                                                                <li><span className="me-2" onClick={handleClickModalOpen}><LogoutIcon /></span>SignOut</li>
+                                                                                <li><a className="me-2" onClick={handleClickModalOpen}><LogoutIcon />SignOut</a></li>
                                                                            )
                                                                       }
 
@@ -571,61 +609,37 @@ console.log("settingssettings",settings)
                                                                            className="me-2"><WalletIcon /></span>Checkout</Link>
                                                                  </div>
                                                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                                        </div>
-
-
-
-
-
-
-
-
                                                   </div>
                                                   {
-                                                   settings && settings?.phone ? (
-                                                       <>
-                                                       <div className="gshop-header-contact ms-7 position-relative d-none d-lg-flex d-xl-none d-xxl-flex">
-                                                       <a href={`tel:${settings && settings?.phone}`} className="d-flex align-items-center">
-                                                            <span
-                                                                 className="icon d-inline-flex rounded-circle justify-content-center align-items-center bg-secondary-light">
-                                                                 <svg width="20" height="24" viewBox="0 0 23 24" fill="none"
-                                                                      xmlns="http://www.w3.org/2000/svg">
-                                                                      <path
-                                                                           d="M1.98193 3.44444C1.98193 2.09441 2.97352 1 4.19672 1H7.82812C8.30477 1 8.72795 1.33664 8.87867 1.83572L10.5373 7.3277C10.7116 7.90472 10.475 8.53538 9.98206 8.8074L7.48236 10.1868C8.70297 13.1748 10.884 15.5821 13.5913 16.9292L14.8411 14.1703C15.0876 13.6263 15.659 13.3651 16.1818 13.5575L21.1577 15.3881C21.61 15.5545 21.915 16.0215 21.915 16.5476V20.5556C21.915 21.9056 20.9234 23 19.7002 23H18.5928C9.41887 23 1.98193 14.7919 1.98193 4.66667V3.44444Z"
-                                                                           stroke="#FF7C08" stroke-width="2" stroke-linecap="round"
-                                                                           stroke-linejoin="round" />
-                                                                 </svg>
-                                                            </span>
-                                                           
-                                                                      <div className="ms-3">
-                                                                 <span className="text-muted fs-xs">Phone & Telephone</span>
-                                                                 <h6 className="mb-0 mt-1 fs-sm"> {settings && settings?.phone}</h6>
-                                                            </div>
-                                                                
-                                                            
-                                                       </a>
-                                                  </div>
-                                                       </>
-                                                   ):("")
+                                                       settings && settings?.phone ? (
+                                                            <>
+                                                                 <div className="gshop-header-contact ms-7 position-relative d-none d-lg-flex d-xl-none d-xxl-flex">
+                                                                      <a href={`tel:${settings && settings?.phone}`} className="d-flex align-items-center">
+                                                                           <span
+                                                                                className="icon d-inline-flex rounded-circle justify-content-center align-items-center bg-secondary-light">
+                                                                                <svg width="20" height="24" viewBox="0 0 23 24" fill="none"
+                                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                                     <path
+                                                                                          d="M1.98193 3.44444C1.98193 2.09441 2.97352 1 4.19672 1H7.82812C8.30477 1 8.72795 1.33664 8.87867 1.83572L10.5373 7.3277C10.7116 7.90472 10.475 8.53538 9.98206 8.8074L7.48236 10.1868C8.70297 13.1748 10.884 15.5821 13.5913 16.9292L14.8411 14.1703C15.0876 13.6263 15.659 13.3651 16.1818 13.5575L21.1577 15.3881C21.61 15.5545 21.915 16.0215 21.915 16.5476V20.5556C21.915 21.9056 20.9234 23 19.7002 23H18.5928C9.41887 23 1.98193 14.7919 1.98193 4.66667V3.44444Z"
+                                                                                          stroke="#FF7C08" stroke-width="2" stroke-linecap="round"
+                                                                                          stroke-linejoin="round" />
+                                                                                </svg>
+                                                                           </span>
+
+                                                                           <div className="ms-3">
+                                                                                <span className="text-muted fs-xs">Phone & Telephone</span>
+                                                                                <h6 className="mb-0 mt-1 fs-sm"> {settings && settings?.phone}</h6>
+                                                                           </div>
+
+
+                                                                      </a>
+                                                                 </div>
+                                                            </>
+                                                       ) : ("")
                                                   }
-                                                  
-                                                  <button className="gshop-offcanvas-btn offcanvas-toggle ms-3">
+
+                                                  <button className="gshop-offcanvas-btn offcanvas-toggle ms-3" onClick={handleAbout}>
                                                        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M3.5892 0C1.66061 0 0.0917969 1.56893 0.0917969 3.4974C0.0917969 5.42588 1.65997 6.9947 3.5892 6.9947C5.51844 6.9947 7.08661 5.42588 7.08661 3.4974C7.08661 1.56893 5.51768 0 3.5892 0Z" fill="white" />
                                                             <path d="M14.909 0C12.9805 0 11.4116 1.56893 11.4116 3.4974C11.4116 5.42588 12.9805 6.9947 14.909 6.9947C16.8376 6.9947 18.4068 5.42588 18.4068 3.4974C18.4068 1.56893 16.8383 0 14.909 0Z" fill="white" />
@@ -644,6 +658,42 @@ console.log("settingssettings",settings)
                               </div>
                          </div>
                     </header>
+                    {
+                         aboutOpen ? (
+                              <div class="offcanvas_menu position-fixed">
+                                   <div class="tt-short-info d-none d-md-none d-lg-none d-xl-block">
+                                        <button class="offcanvas-close" onClick={handleCloseAbout}><CloseIcon /></button>
+                                        <span class="logo-wrapper d-inline-block mb-5"><img src={images && images?.logo} alt="logo" /></span>
+                                        <div class="offcanvas-content">
+                                             <h4 class="mb-4">About Us</h4>
+                                             <p>
+                                                  Welcome to Creamy Affairs, your one-stop destination for an exquisite array of confectionery delights. At Creamy Affairs, we take pride in offering a diverse range of delectable treats, from our velvety smooth ice creams to our heavenly pastries and decadent cakes. Indulge your senses with our artisanal beverages, crafted with precision to satisfy even the most discerning palate. Craving something savory? Dive into our tantalizing selection of momos and savory snacks, each bite bursting with flavor. And for those with a sweet tooth, our handcrafted chocolates are sure to delight. With a passion for quality and a commitment to culinary innovation, Creamy Affairs invites you to experience a world of flavor where every moment is a celebration of taste and texture.
+                                             </p>
+                                             <p>
+                                                  Creamy Affairs, inspired by the legacy of renowned ice cream brands Havmor and Kwality Walls, brings you a world of frozen delights. With a commitment to quality and a dedication to flavor, we embody the spirit of these iconic names while adding our own unique twist. From the nostalgia-inducing classics to innovative new creations, Creamy Affairs offers an unparalleled ice cream experience that delights taste buds and creates lasting memories. Join us as we continue the tradition of excellence set forth by these esteemed brands, while carving our own path in the realm of frozen treats.
+                                             </p>
+                                             <button onClick={handleAboutRedirect} class="btn btn-primary mt-4">About Us</button>
+                                        </div>
+                                        <div class="offcanvas-contact mt-5">
+                                             <h5 class="mb-20">Contact Info</h5>
+                                             <address>
+                                                  {settings && settings?.location}<br />
+                                                  <a href={`tel:${settings && settings?.phone}`}>{settings && settings?.phone}</a> <br />
+                                                  <a href={`mailto:${settings && settings?.email}`}>{settings && settings?.email}</a>
+                                             </address>
+                                        </div>
+                                        <div class="social-contact offcanvas_social mt-4">
+                                             <a href="#" class="social-btn"><FacebookIcon /></a>
+                                             <a href="#" class="social-btn"><InstagramIcon /></a>
+                                             <a href="#" class="social-btn"><LinkedInIcon /></a>
+                                             <a href="#" class="social-btn"><TwitterIcon /></a>
+                                             <a href="#" class="social-btn"><YouTubeIcon /></a>
+                                        </div>
+                                   </div>
+
+                              </div>
+                         ) : ("")
+                    }
 
                     <Dialog
                          open={open}
@@ -783,13 +833,13 @@ console.log("settingssettings",settings)
                          <DialogTitle id="alert-dialog-title">
                          </DialogTitle>
                          <DialogContent>
-                              <DialogContentText id="alert-dialog-description">
+                              <DialogContentText id="alert-dialog-description" style={{ fontSize: "larger" }}>
                                    Are you sure you want to log out?
                               </DialogContentText>
                          </DialogContent>
                          <DialogActions>
-                              <Button onClick={handleSignout}>Yes</Button>
-                              <Button onClick={handleLogoutModalClose} autoFocus>
+                              <Button className="submit" onClick={handleSignout}>Yes</Button>
+                              <Button className="submi1" onClick={handleLogoutModalClose} autoFocus>
                                    No
                               </Button>
                          </DialogActions>

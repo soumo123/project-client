@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import SearchIcon from '@mui/icons-material/Search';
 
 const Sidebar = ({onSearch }) => {
 
@@ -26,10 +27,10 @@ const Sidebar = ({onSearch }) => {
                     </div>
                     <form className="search-form d-flex align-items-center mt-4">
                     <input type="text" value={searchValue} onChange={handleChange} placeholder="Search Products..." />
-                        <button type="submit" className="submit-icon-btn-secondary"><i className="fa-solid fa-magnifying-glass"></i></button>
+                        <button type="submit" className="submit-icon-btn-secondary"><SearchIcon/></button>
                     </form>
                 </div>
-                <div className="sidebar-widget category-widget bg-white py-5 px-4 border-top">
+                {/* <div className="sidebar-widget category-widget bg-white py-5 px-4 border-top">
                     <div className="widget-title d-flex">
                         <h6 className="mb-0 flex-shrink-0">Categories</h6>
                         <span className="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
@@ -43,7 +44,7 @@ const Sidebar = ({onSearch }) => {
                         <li><a href="#" className="d-flex justify-content-between align-items-center">Juice Drinks<span className="fw-bold fs-xs total-count">15</span></a></li>
                         <li><a href="#" className="d-flex justify-content-between align-items-center">Fresh Fish<span className="fw-bold fs-xs total-count">18</span></a></li>
                     </ul>
-                </div>
+                </div> */}
             </div>
 
         </>

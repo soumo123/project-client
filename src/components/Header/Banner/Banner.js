@@ -13,7 +13,7 @@ const Banner = () => {
     return (
         <>
             <section className="banner-section position-relative z-1 overflow-hidden bg-white pt-2">
-                <img src="assets/img/shapes/bg-shape-3.png" alt="bg shape" className="position-absolute start-0 bottom-0 z--1 w-100" />
+                {/* <img src="assets/img/shapes/bg-shape-3.png" alt="bg shape" className="position-absolute start-0 bottom-0 z--1 w-100" /> */}
                 <div className="container">
                     <div className="row align-items-center g-4 justify-content-center">
                     <div className="col-xl-4 col-md-6" style={{cursor:"pointer"}}>

@@ -1,6 +1,13 @@
 import React from 'react'
-
+import BorderLine from '../../images/shapes/border-line.svg'
+import Visa from '../../images/brands/visa.png'
+import MaterCard from '../../images/brands/mastercard.png'
+import Payoner from '../../images/brands/payoneer.png'
+import Paypal from '../../images/brands/paypal.png'
+import { useSelector, useDispatch } from 'react-redux'
 const Footer = () => {
+     const images = useSelector((state) => state.imageReducer.images.staticImages)
+
   return (
     <>
     
@@ -8,7 +15,7 @@ const Footer = () => {
             <span className="position-absolute section-curve-wrapper top-0 h-100" data-background="assets/img/shapes/section-curve.png"></span>
         </div>
         <footer className="gshop-footer position-relative pt-8 bg-dark z-1 overflow-hidden">
-            <img src="assets/img/shapes/tomato.svg" alt="tomato" className="position-absolute z--1 tomato vector-shape"/>
+            {/* <img src="assets/img/shapes/tomato.svg" alt="tomato" className="position-absolute z--1 tomato vector-shape"/>
             <img src="assets/img/shapes/pata-lg.svg" alt="pata" className="position-absolute z--1 pata-lg vector-shape"/>
             <img src="assets/img/shapes/pata-xs.svg" alt="pata" className="position-absolute z--1 pata-xs vector-shape"/>
             <img src="assets/img/shapes/frame-circle.svg" alt="frame" className="position-absolute z--1 frame-circle vector-shape"/>
@@ -17,12 +24,12 @@ const Footer = () => {
             <img src="assets/img/shapes/leaf.svg" alt="pata" className="position-absolute leaf-2 z--1 vector-shape"/>
             <img src="assets/img/shapes/pata-xs.svg" alt="pata" className="position-absolute pata-xs-2 z--1 vector-shape"/>
             <img src="assets/img/shapes/tomato-slice.svg" alt="tomato slice" className="position-absolute tomato-slice vector-shape z--1"/>
-            <img src="assets/img/shapes/tomato-half.svg" alt="tomato" className="position-absolute tomato-half z--1 vector-shape"/>
+            <img src="assets/img/shapes/tomato-half.svg" alt="tomato" className="position-absolute tomato-half z--1 vector-shape"/> */}
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-xl-5 col-lg-6">
                         <div className="gshop_subscribe_form text-center">
-                            <h4 className="text-white gshop-title">Subscribe to the G-Shop <mark className="p-0 position-relative text-secondary bg-transparent">New Arrivals <img src="assets/img/shapes/border-line.svg" alt="border line" className="position-absolute border-line"/></mark><br className="d-none d-sm-block"/>& Other Information.</h4>
+                            <h4 className="text-white gshop-title" style={{fontSize:"21px"}}>Subscribe to the Creamyafairs <mark className="p-0 position-relative text-secondary bg-transparent">New Arrivals <img src={BorderLine} alt="border line" className="position-absolute border-line"/></mark><br className="d-none d-sm-block"/>& Other Information.</h4>
                             <form className="mt-5 d-flex align-items-center bg-white rounded subscribe_form">
                                 <input type="email" className="form-control" placeholder="Enter Email Address"/>
                                 <button type="submit" className="btn btn-primary flex-shrink-0">Subscribe Now</button>
@@ -92,27 +99,27 @@ const Footer = () => {
                     <div className="row align-items-center g-3">
                         <div className="col-lg-4">
                             <div className="copyright-text">
-                                <p className="mb-0 text-white">&copy; All rights reserved Made by <a href="#" className="text-secondary">ThemeTags</a></p>
+                                <p className="mb-0 text-white">&copy;Made by <a href="#" className="text-secondary">Emunity</a></p>
                             </div>
                         </div>
                         <div className="col-lg-4 d-none d-lg-block">
                             <div className="logo-wrapper text-center">
-                                <a href="index-2.html" className="logo"><img src="assets/img/logo-white.png" alt="logo" className="img-fluid"/></a>
+                                <span  className="logo"><img src={images && images.logo} alt="logo" className="img-fluid"/></span>
                             </div>
                         </div>
                         <div className="col-lg-4">
                             <div className="footer-payments-info d-flex align-items-center justify-content-lg-end gap-2">
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src="assets/img/brands/visa.png" alt="visa" className="img-fluid"/>
+                                    <img src={Visa} alt="visa" className="img-fluid"/>
                                 </div>
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src="assets/img/brands/mastercard.png" alt="visa" className="img-fluid"/>
+                                    <img src={MaterCard} alt="visa" className="img-fluid"/>
                                 </div>
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src="assets/img/brands/payoneer.png" alt="visa" className="img-fluid"/>
+                                    <img src={Payoner} alt="visa" className="img-fluid"/>
                                 </div>
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src="assets/img/brands/paypal.png" alt="visa" className="img-fluid"/>
+                                    <img src={Paypal} alt="visa" className="img-fluid"/>
                                 </div>
                             </div>
                         </div>

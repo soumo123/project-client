@@ -1,25 +1,25 @@
-import React, { useState ,useRef,useEffect} from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Modal from "react-bootstrap/Modal";
 import Button from '@mui/material/Button';
 import Rating from '@mui/material/Rating';
 import addToCart from '../../utils/addToCart';
 import { noteRefs } from '../../redux/actions/userAction'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Slider from "react-slick";
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlert } from 'react-alert'
-
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 
 const ViewProduct = ({ open, viewData, setOpen }) => {
-    const alert = useAlert() 
+    const alert = useAlert()
     const [selectedImage, setSelectedImage] = useState(""); // State to hold the selected image
-    const [count,setCount] = useState(1)
+    const [count, setCount] = useState(1)
     const dispatch = useDispatch();
-    console.log("viewData", viewData);
-
+    const [description, setDescription] = useState("")
+    const categories = useSelector((state) => state.categoryDetails.categories)
     const handleCloseModal = () => {
         setOpen(!open);
     }
@@ -67,23 +67,27 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
         fade: false,
         arrows: true,
     };
-console.log("selectedImage",selectedImage)
+    console.log("selectedImage", selectedImage)
 
-useEffect(() => {
-    setSelectedImage(viewData && viewData?.thumbnailimage)
-}, [viewData])
+    useEffect(() => {
+        setSelectedImage(viewData && viewData?.thumbnailimage)
+    }, [viewData])
 
 
-const handleDecrement = ()=>{
-    if (count > 1) {
-        setCount(count - 1);
+    const handleDecrement = () => {
+        if (count > 1) {
+            setCount(count - 1);
+        }
     }
-}
 
-const handleIncrement = ()=>{
-    setCount(count+1)
+    const handleIncrement = () => {
+        setCount(count + 1)
+    }
+    console.log("viewDataviewData", viewData)
+    useEffect(() => {
+        setDescription(viewData && viewData?.description?.split('.').map((paragraph, index) => paragraph.trim() && paragraph.trim() + '.'))
+    }, [viewData])
 
-}
 
     return (
 
@@ -97,7 +101,7 @@ const handleIncrement = ()=>{
                 dialogclassNameNameName="modal-md patient_notes_popup"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title classNameNameName="text-center">Add Tag</Modal.Title>
+                    <Modal.Title classNameNameName="text-center">View Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body classNameNameName="">
 
@@ -108,7 +112,7 @@ const handleIncrement = ()=>{
                                     <div className="quickview-product-slider swiper">
                                         <div className="swiper-wrapper">
                                             <div className="swiper-slide text-center">
-                                            <InnerImageZoom zoomScale={2} zoomType="hover" src={selectedImage && selectedImage} />
+                                                <InnerImageZoom zoomScale={2} zoomType="hover" src={selectedImage && selectedImage} />
                                             </div>
 
                                         </div>
@@ -134,7 +138,6 @@ const handleIncrement = ()=>{
                                     <div className="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
                                         <ul className="d-flex align-items-center me-2">
                                             <Rating name="size-small" defaultValue={viewData?.ratings} precision={0.5} readOnly size="small" />
-
                                         </ul>
                                         <span className="flex-shrink-0">({viewData?.numOfReviews} Reviews)</span>
                                     </div>
@@ -146,27 +149,30 @@ const handleIncrement = ()=>{
                                         <h6 className="mb-1 flex-shrink-0">Description</h6>
                                         <span className="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
                                     </div>
-                                    <p className="mb-3">{viewData?.description}</p>
-                                    {/* <ul className="d-flex flex-column gap-2">
-                                        <li><span className="me-2 text-primary"><i className="fa-solid fa-circle-check"></i></span>Natural ingredients</li>
-                                        <li><span className="me-2 text-primary"><i className="fa-solid fa-circle-check"></i></span>Tastes better with milk</li>
-                                        <li><span className="me-2 text-primary"><i className="fa-solid fa-circle-check"></i></span>Vitamins B2, B3, B5 and B6</li>
-                                        <li><span className="me-2 text-primary"><i className="fa-solid fa-circle-check"></i></span>Refrigerate for freshness</li>
-                                    </ul> */}
-                                    <h6 className="fs-md mb-2 mt-3">Weight:</h6>
-                                    <ul className="product-radio-btn mb-4 d-flex align-items-center gap-2">
-                                        <li>
-                                            <input type="radio" name="weight" value="250g" checked />
-                                            <label>150g</label>
-                                        </li>
-                                        <li>
-                                            <input type="radio" name="weight" value="250g" />
-                                            <label>500g</label>
-                                        </li>
-                                        <li>
-                                            <input type="radio" name="weight" value="250g" />
-                                            <label>1kg</label>
-                                        </li>
+                                    {description && description.slice(0, 3).map((paragraph, index) => (
+                                        <p class="mb-3" key={index}>{paragraph}</p>
+                                    ))}
+                                    <ul class="d-flex flex-column gap-2">
+                                        {description && description.slice(3).map((paragraph, index) => (
+                                            <li key={index}><span class="me-2 text-primary"><CheckCircleIcon style={{ color: 'rgb(109 179 84)', fontWeight: "900" }} />{paragraph}</span></li>
+                                        ))}
+                                        {/* <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Natural ingredients</li>
+                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Tastes better with milk</li>
+                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Vitamins B2, B3, B5 and B6</li>
+                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Refrigerate for freshness</li> */}
+                                    </ul>
+                                    {viewData && viewData?.weight?.length > 0 ? (<h6 class="fs-md mb-2 mt-3">Weight:</h6>) : ("")}
+
+                                    <ul class="product-radio-btn mb-4 d-flex align-items-center gap-2">
+                                        {
+                                            viewData && viewData?.weight?.map((ele) => (
+                                                <li>
+                                                    <input type="radio" name="weight" value="250g" checked />
+                                                    <label>{ele.value} {viewData.unit.charAt(0).toLowerCase()}</label>
+                                                </li>
+                                            ))
+                                        }
+
                                     </ul>
                                     <div className="d-flex align-items-center gap-4 flex-wrap">
                                         <div className="product-qty d-flex align-items-center">
@@ -174,13 +180,27 @@ const handleIncrement = ()=>{
                                             <input type="text" value={count} />
                                             <button className="increase" onClick={handleIncrement}>+</button>
                                         </div>
-                                        <span className="btn btn-secondary btn-md" onClick={() => handleCart(viewData?.productId, viewData)}><span className="me-2"><AddShoppingCartIcon/></span>Add to Cart</span>
+                                        <span className="btn btn-secondary btn-md" onClick={() => handleCart(viewData?.productId, viewData)}><span className="me-2"><AddShoppingCartIcon /></span>Add to Cart</span>
                                     </div>
-                                    <div className="categories mt-4">
-                                        <a href="#" className="btn btn-outline btn-sm">Vegetable</a>
+                                    <div className="tt-category-tag mt-4">
+                                        {/* <a href="#" className="btn btn-outline btn-sm">Vegetable</a>
                                         <a href="#" className="btn btn-outline btn-sm">Healthy</a>
-                                        <a href="#" className="btn btn-outline btn-sm">Organic</a>
+                                        <a href="#" className="btn btn-outline btn-sm">Organic</a> */}
+                                        {categories
+                                            .filter(item => viewData?.tags?.includes(item.value))
+                                            .map((item, index) => (
+                                                <a
+                                                    className="text-muted fs-xxs"
+                                                    key={item.value}
+                                                    data-toggle="tooltip"
+                                                    title={item.label}
+                                                >
+                                                    {item.label}
+                                                    {/* {index !== viewData?.tags?.length - 1 && ''} */}
+                                                </a>
+                                            ))}
                                     </div>
+                                  
                                 </div>
                             </div>
                         </div>

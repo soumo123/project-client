@@ -14,6 +14,9 @@ import Cart from './components/cart/Cart';
 import Whishlist from './components/Header/Home/Whishlist';
 import { fetchCategoriesSuccess } from './redux/actions/productAction';
 import {fetchSettingData} from './redux/actions/settingAction'
+import Account from './components/Header/Home/Account';
+import Details from './components/products/Details';
+import Aboutus from './components/Header/Home/Aboutus';
 
 
 function App() {
@@ -126,10 +129,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact={true} path="/" element={<Home />} />
+          <Route exact={true} path="/about-us" element={<Aboutus />} />
           <Route exact={true} path="/products" element={<AllProduct/>} />
+          <Route exact={true} path="/details/:id" element={<Details/>}/>
           <Route exact={true} path="/cart" element={<Cart/>} />
           <Route exact={true} path="/whishlist" element={<Whishlist/>} />
-
+          <Route exact={true} path="/account" element={<Account/>} />
 
         </Routes>
   

@@ -10,7 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios'
 import { useAlert } from 'react-alert'
 
-const BestDeals = ({ dealsData,load,setLoad }) => {
+const BestDeals = ({ dealsData, load, setLoad }) => {
     const alert = useAlert()
     const images = useSelector((state) => state.imageReducer.images.staticImages)
     const [data, setData] = useState([])
@@ -30,7 +30,7 @@ const BestDeals = ({ dealsData,load,setLoad }) => {
         }
     }, [dealsData]);
 
-    const handleAddWhish = async (status, productId ,name,description, price,discount,thumbnailimage,stock,ratings,numOfReviews) => {
+    const handleAddWhish = async (status, productId, name, description, price, discount, thumbnailimage, stock, ratings, numOfReviews) => {
         try {
 
             if (!userId || userId === undefined || userId === null) {
@@ -38,14 +38,14 @@ const BestDeals = ({ dealsData,load,setLoad }) => {
                 return
             }
             let json = {
-                name:name,
-                description:description, 
-                price:price,
-                discount:discount,
-                thumbnailimage:thumbnailimage,
-                stock:stock,
-                numOfReviews:numOfReviews,
-                ratings:ratings
+                name: name,
+                description: description,
+                price: price,
+                discount: discount,
+                thumbnailimage: thumbnailimage,
+                stock: stock,
+                numOfReviews: numOfReviews,
+                ratings: ratings
             }
             const config = {
                 headers: {
@@ -53,12 +53,12 @@ const BestDeals = ({ dealsData,load,setLoad }) => {
                 },
                 withCredentials: true
             }
-            const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/add_whishlist?status=${status}&userId=${userId}&type=${Number(type)}&productId=${productId}`, json,config)
+            const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/add_whishlist?status=${status}&userId=${userId}&type=${Number(type)}&productId=${productId}`, json, config)
             if (response.status === 200) {
-                if(status===true || status==="true"){
+                if (status === true || status === "true") {
                     alert.success("Product add to whsihlist");
                     setLoad(new Date().getSeconds())
-                }else{
+                } else {
                     alert.success("Product remove to whsihlist");
                     setLoad(new Date().getSeconds())
                 }
@@ -82,7 +82,7 @@ const BestDeals = ({ dealsData,load,setLoad }) => {
                                 <h6 className="mb-0">Vegetable</h6>
                                 <h4 className="mb-2">Fresh & Healthy</h4>
                                 <p className="fw-medium mb-5">Get 50% Off on Selected Organic Items</p>
-                                <a href="product-details.html" className="btn btn-primary btn-md">Show Now<span className="ms-2"><ArrowForwardIcon/></span></a>
+                                <a href="product-details.html" className="btn btn-primary btn-md">Show Now<span className="ms-2"><ArrowForwardIcon /></span></a>
                                 <div className="banner-img-wrapper text-end mt--40">
                                     <img src={images?.middle_banner2} alt="vegetables" className="" />
                                 </div>
@@ -112,55 +112,55 @@ const BestDeals = ({ dealsData,load,setLoad }) => {
                             </div>
                             <div className="mt-4">
                                 <div className="row g-4">
-                                 {
-                                    data.map((ele)=>(
-                                       <div className="col-lg-6">
-                                       <div className="horizontal-product-card d-sm-flex align-items-center p-3 bg-white rounded-2 shadow gap-4">
-                                           <div className="thumbnail position-relative rounded-2">
-                                               <a href="product-details.html"><img src={ele.thumbnailimage} alt="product" className="img-fluid" /></a>
-                                               <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
-                                               {
-                                                    ele.whishListIds && ele.whishListIds.includes(userId) ? (
-                                                        <span className="rounded-btn1" style={{ cursor: 'pointer', color:"#6eb356" }} onClick={() => handleAddWhish(false,ele.productId,ele.name,ele.description, ele.actualpricebydiscount,ele.discount,ele.thumbnailimage,ele.stock,ele.ratings,ele.numOfReviews)}><FavoriteIcon /></span>
+                                    {
+                                        data.map((ele) => (
+                                            <div className="col-lg-6">
+                                                <div className="horizontal-product-card d-sm-flex align-items-center p-3 bg-white rounded-2 shadow gap-4">
+                                                    <div className="thumbnail position-relative rounded-2">
+                                                        <img src={ele.thumbnailimage} alt="product" className="img-fluid" />
+                                                        <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
+                                                            {
+                                                                ele.whishListIds && ele.whishListIds.includes(userId) ? (
+                                                                    <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteIcon /></span>
 
-                                                    ) : (
-                                                        <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true,ele.productId,ele.name,ele.description, ele.actualpricebydiscount,ele.discount,ele.thumbnailimage,ele.stock,ele.ratings,ele.numOfReviews)}><FavoriteBorderIcon /></span>
-                                                    )
-                                                }
-                                                   <span className="rounded-btn" style={{cursor: 'pointer'}} onClick={()=>handleModalOpen(ele)}><VisibilityOutlinedIcon/></span>
-                                                   
-                                               </div>
-                                           </div>
-                                           <div className="card-content mt-4 mt-sm-0">
-                                               <div className="d-flex align-items-center flex-nowrap star-rating">
-                                                   <ul className="d-flex align-items-center me-2">
-                                                   <Rating  name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
-                                                   </ul>
-                                                   <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
-                                               </div>
-                                               <a href="product-details.html" className="fw-bold text-heading title d-block">{ele.name}</a>
-                                               <div className="pricing mt-2">
-                                               <span className="fw-bold h4 deleted me-1">₹ {ele.price}</span>
-                                                <span className="fw-bold h4 text-danger">₹ {ele.actualpricebydiscount}</span>
+                                                                ) : (
+                                                                    <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteBorderIcon /></span>
+                                                                )
+                                                            }
+                                                            <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
 
-                                               </div>
-                                               <Link to="/products" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon/></span></Link>
+                                                        </div>
+                                                    </div>
+                                                    <Link to={`/details/${ele.productId}`}>
+                                                        <div className="card-content mt-4 mt-sm-0">
+                                                            <div className="d-flex align-items-center flex-nowrap star-rating">
+                                                                <ul className="d-flex align-items-center me-2">
+                                                                    <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
+                                                                </ul>
+                                                                <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
+                                                            </div>
+                                                            <span  className="fw-bold text-heading title d-block">{ele.name}</span>
+                                                            <div className="pricing mt-2">
+                                                                <span className="fw-bold h4 deleted me-1">₹ {ele.price}</span>
+                                                                <span className="fw-bold h4 text-danger">₹ {ele.actualpricebydiscount}</span>
+                                                            </div>
+                                                            <Link to="/products" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></Link>
+                                                        </div>
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
 
-                                           </div>
-                                       </div>
-                                   </div>
-                                    ))
-                                 }
-                                    
-                                   
-                                  
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <ViewProduct setOpen={setOpen} open={open} viewData={viewData}/>
+            <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
 
         </>
     )

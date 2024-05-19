@@ -50,7 +50,7 @@ const Filter = ({onChange}) => {
                 To: <strong className="text-success">₹ {value[1]}</strong>
               </span>
             </div>
-            <button type="submit" className="btn btn-primary btn-sm mt-3">Filter</button>
+            {/* <button type="submit" className="btn btn-primary btn-sm mt-3">Filter</button> */}
           </form>
         </div>
       </div>

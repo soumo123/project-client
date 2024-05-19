@@ -10,8 +10,8 @@ const Posts = () => {
   return (
     <>
      <section className="blog-section pb-120 position-relative overflow-hidden z-1">
-            <img src="assets/img/shapes/dal.png" alt="shape" className="position-absolute dal-shape z--1"/>
-            <img src="assets/img/shapes/frame-circle.svg" alt="frame circle" className="position-absolute frame-circle z--1 d-none d-md-block"/>
+            {/* <img src="assets/img/shapes/dal.png" alt="shape" className="position-absolute dal-shape z--1"/>
+            <img src="assets/img/shapes/frame-circle.svg" alt="frame circle" className="position-absolute frame-circle z--1 d-none d-md-block"/> */}
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-xl-5 col-md-8">

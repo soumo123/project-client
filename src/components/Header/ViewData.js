@@ -16,13 +16,13 @@ const ViewData = () => {
     return (
         <>
             <section className="ptb-120 bg-shade position-relative overflow-hidden z-1 feedback-section">
-                <img src="assets/img/shapes/bg-shape-5.png" alt="bg shape" className="position-absolute start-0 bottom-0 z--1 w-100" />
+                {/* <img src="assets/img/shapes/bg-shape-5.png" alt="bg shape" className="position-absolute start-0 bottom-0 z--1 w-100" />
                 <img src="assets/img/shapes/map-bg.png" alt="map" className="position-absolute start-50 top-50 translate-middle z--1" />
                 <img src="assets/img/shapes/fd-1.png" alt="shape" className="position-absolute z--1 fd-1" />
                 <img src="assets/img/shapes/fd-2.png" alt="shape" className="position-absolute z--1 fd-2" />
                 <img src="assets/img/shapes/fd-3.png" alt="shape" className="position-absolute z--1 fd-3" />
                 <img src="assets/img/shapes/fd-4.png" alt="shape" className="position-absolute z--1 fd-4" />
-                <img src="assets/img/shapes/fd-5.png" alt="shape" className="position-absolute z--1 fd-5" />
+                <img src="assets/img/shapes/fd-5.png" alt="shape" className="position-absolute z--1 fd-5" /> */}
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-xl-6">
@@ -35,19 +35,19 @@ const ViewData = () => {
                                 <div className="swiper gshop-feedback-thumb-slider">
                                     <div className="swiper-wrapper">
                                         <div className="swiper-slide control-thumb">
-                                            <img src="assets/img/authors/client-1.png" alt="clients" className="img-fluid rounded-circle" />
+                                            {/* <img src="assets/img/authors/client-1.png" alt="clients" className="img-fluid rounded-circle" /> */}
                                         </div>
                                         <div className="swiper-slide control-thumb">
-                                            <img src="assets/img/authors/client-2.png" alt="clients" className="img-fluid rounded-circle" />
+                                            {/* <img src="assets/img/authors/client-2.png" alt="clients" className="img-fluid rounded-circle" /> */}
                                         </div>
                                         <div className="swiper-slide control-thumb">
-                                            <img src="assets/img/authors/client-3.png" alt="clients" className="img-fluid rounded-circle" />
+                                            {/* <img src="assets/img/authors/client-3.png" alt="clients" className="img-fluid rounded-circle" /> */}
                                         </div>
                                         <div className="swiper-slide control-thumb">
-                                            <img src="assets/img/authors/client-4.png" alt="clients" className="img-fluid rounded-circle" />
+                                            {/* <img src="assets/img/authors/client-4.png" alt="clients" className="img-fluid rounded-circle" /> */}
                                         </div>
                                         <div className="swiper-slide control-thumb">
-                                            <img src="assets/img/authors/client-5.png" alt="clients" className="img-fluid rounded-circle" />
+                                            {/* <img src="assets/img/authors/client-5.png" alt="clients" className="img-fluid rounded-circle" /> */}
                                         </div>
                                     </div>
                                 </div>
