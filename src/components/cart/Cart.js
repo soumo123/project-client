@@ -40,22 +40,23 @@ const Cart = () => {
 
     }
 
-    const handleDecreaseProduct = async(pdId,item,price,totalPrice) => {
+    const handleDecreaseProduct = async(pdId,item,price,totalPrice,weight,color) => {
         if(Number(item)===1){
             return 
         }else{
             let actualPrice = Number(totalPrice) - Number(price);
             setCount(Number(item) - 1)
-            await updateCount(pdId,Number(item) - 1,actualPrice)
+            await updateCount(pdId,Number(item) - 1,actualPrice,(weight),color)
         }
         
     }
 
 
-    const handleIncrease = async(pdId,item,price) => {
+    const handleIncrease = async(pdId,item,price,weight,color) => {
+        
         setCount(Number(item)+1)
 
-        await updateCount(pdId,Number(item)+1,price*(Number(item)+1))
+        await updateCount(pdId,Number(item)+1,price*(Number(item)+1),(weight),color)
     }
 
     const handleSelectAll = () => {
@@ -67,7 +68,7 @@ const Cart = () => {
         }
     };
 
-    const updateCount = async(productId,count,price)=>{
+    const updateCount = async(productId,count,price,w,c)=>{
         try {
 
             console.log("productId , count" , productId , count)
@@ -78,7 +79,9 @@ const Cart = () => {
                 withCredentials: true
             }
             const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/count_update?type=${type}&userId=${userId}&productId=${productId}&count=${count}`, {
-                totalPrice: price
+                totalPrice: price,
+                weight:w,
+                color:c
             }, config)
 
             if (response.status === 200) {
@@ -167,9 +170,9 @@ console.log("totalPriceitem",totalPriceItem)
                                                                             </td>
                                                                             <td>
                                                                                 <div className="product-qty d-inline-flex align-items-center">
-                                                                                    <button className="decrese" value={ele.itemCount} onClick={(e)=>handleDecreaseProduct(ele.productId,e.target.value,ele.price,ele.totalPrice)}>-</button>
+                                                                                    <button className="decrese" value={ele.itemCount} onClick={(e)=>handleDecreaseProduct(ele.productId,e.target.value,ele.price,ele.totalPrice,ele.weight,ele.color)}>-</button>
                                                                                     <input type="text" name="count" value={ele.itemCount} />
-                                                                                    <button className="increase" value={ele.itemCount} onClick={(e)=>handleIncrease(ele.productId,e.target.value,ele.price)}>+</button>
+                                                                                    <button className="increase" value={ele.itemCount} onClick={(e)=>handleIncrease(ele.productId,e.target.value,ele.price,ele.weight,ele.color)}>+</button>
                                                                                 </div>
                                                                             </td>
                                                                             <td>

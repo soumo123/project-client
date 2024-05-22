@@ -1,5 +1,6 @@
 import React from 'react'
 import Slider from "react-slick";
+import { useSelector } from 'react-redux'
 
 const ViewData = () => {
 
@@ -12,10 +13,14 @@ const ViewData = () => {
         fade: true,
         arrows: true,
     };
+    const images = useSelector((state) => state.imageReducer.images.staticImages)
+    const settings1 = useSelector((state) => state.settingReducer.settings)
 
     return (
         <>
-            <section className="ptb-120 bg-shade position-relative overflow-hidden z-1 feedback-section">
+        {
+            settings1 && settings1.client ? (
+                <section className="ptb-120 bg-shade position-relative overflow-hidden z-1 feedback-section">
                 {/* <img src="assets/img/shapes/bg-shape-5.png" alt="bg shape" className="position-absolute start-0 bottom-0 z--1 w-100" />
                 <img src="assets/img/shapes/map-bg.png" alt="map" className="position-absolute start-50 top-50 translate-middle z--1" />
                 <img src="assets/img/shapes/fd-1.png" alt="shape" className="position-absolute z--1 fd-1" />
@@ -128,6 +133,10 @@ const ViewData = () => {
                     </div>
                 </div>
             </section>
+
+            ):("")
+        }
+          
 
         </>
     )

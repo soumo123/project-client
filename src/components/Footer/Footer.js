@@ -5,6 +5,9 @@ import MaterCard from '../../images/brands/mastercard.png'
 import Payoner from '../../images/brands/payoneer.png'
 import Paypal from '../../images/brands/paypal.png'
 import { useSelector, useDispatch } from 'react-redux'
+import {Link} from 'react-router-dom'
+
+
 const Footer = () => {
      const images = useSelector((state) => state.imageReducer.images.staticImages)
 
@@ -45,7 +48,7 @@ const Footer = () => {
                             <ul className="footer-nav">
                                 <li><a href="#">Testimonials</a></li>
                                 <li><a href="#">Contact</a></li>
-                                <li><a href="#">Location & Working Hours</a></li>
+                                <li><Link to="/about-us">About us</Link></li>
                                 <li><a href="#">Our Guarantee</a></li>
                                 <li><a href="#">Track Your Order</a></li>
                                 <li><a href="#">Help Page</a></li>

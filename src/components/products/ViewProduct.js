@@ -19,6 +19,8 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
     const [count, setCount] = useState(1)
     const dispatch = useDispatch();
     const [description, setDescription] = useState("")
+    const userId = localStorage.getItem("userId");
+
     const categories = useSelector((state) => state.categoryDetails.categories)
     const handleCloseModal = () => {
         setOpen(!open);
@@ -26,11 +28,17 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
 
     const handleCart = async (id, data) => {
         try {
+            if (!userId || userId === undefined || userId === null) {
+                alert.error("Please Signin First")
+                return
+            }
             let json = {
                 name: data.name,
                 description: data.description,
                 price: data.actualpricebydiscount,
                 itemCount: Number(count),
+                weight:data.weight[0].value + " " + data.unit,
+                color:'',
                 discount: data.discount,
                 thumbImage: data.thumbnailimage,
                 totalPrice: data.actualpricebydiscount * Number(count)

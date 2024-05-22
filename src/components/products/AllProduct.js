@@ -159,10 +159,17 @@ const AllProduct = () => {
 
     const handleCart = async (id, data) => {
         try {
+            if (!userId || userId === undefined || userId === null) {
+                alert.error("Please Signin First")
+                return
+            }
+            
             let json = {
                 name: data.name,
                 description: data.description,
                 price: data.actualpricebydiscount,
+                weight:data.weight[0].value + " " + data.unit,
+                color:'',
                 itemCount: 1,
                 discount: data.discount,
                 thumbImage: data.thumbnailimage,

@@ -2,14 +2,20 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {Link} from 'react-router-dom'
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 const Posts = () => {
 
     const images = useSelector((state) => state.imageReducer.images.staticImages)
+    const settings = useSelector((state) => state.settingReducer.settings)
+
 
   return (
     <>
-     <section className="blog-section pb-120 position-relative overflow-hidden z-1">
+    {
+        settings && settings.browse_recent_post ? (
+            <section className="blog-section pb-120 position-relative overflow-hidden z-1">
             {/* <img src="assets/img/shapes/dal.png" alt="shape" className="position-absolute dal-shape z--1"/>
             <img src="assets/img/shapes/frame-circle.svg" alt="frame circle" className="position-absolute frame-circle z--1 d-none d-md-block"/> */}
             <div className="container">
@@ -29,8 +35,8 @@ const Posts = () => {
                             </div>
                             <div className="blog-card-content">
                                 <div className="blog-meta d-flex align-items-center gap-3 mb-1">
-                                    <span className="fs-xs fw-medium"><i className="fa-solid fa-tags me-1"></i>Organic Vegetable</span>
-                                    <span className="fs-xs fw-medium"><i className="fa-regular fa-clock me-1"></i>May 24, 2022</span>
+                                    <span className="fs-xs fw-medium"><LocalOfferIcon/>Organic Vegetable</span>
+                                    <span className="fs-xs fw-medium"><AccessTimeIcon/>May 24, 2022</span>
                                 </div>
                                 <a href="blog-details.html">
                                     <h4 className="mb-3">Holiday Home Delivery We have Recently Ordered</h4>
@@ -47,8 +53,8 @@ const Posts = () => {
                             </div>
                             <div className="blog-card-content">
                                 <div className="blog-meta d-flex align-items-center gap-3 mb-1">
-                                    <span className="fs-xs fw-medium"><i className="fa-solid fa-tags me-1"></i>Organic Vegetable</span>
-                                    <span className="fs-xs fw-medium"><i className="fa-regular fa-clock me-1"></i>May 24, 2022</span>
+                                    <span className="fs-xs fw-medium"><LocalOfferIcon/>Organic Vegetable</span>
+                                    <span className="fs-xs fw-medium"><AccessTimeIcon/>May 24, 2022</span>
                                 </div>
                                 <a href="blog-details.html">
                                     <h4 className="mb-3">Holiday Home Delivery We have Recently Ordered</h4>
@@ -65,8 +71,8 @@ const Posts = () => {
                             </div>
                             <div className="blog-card-content">
                                 <div className="blog-meta d-flex align-items-center gap-3 mb-1">
-                                    <span className="fs-xs fw-medium"><i className="fa-solid fa-tags me-1"></i>Organic Vegetable</span>
-                                    <span className="fs-xs fw-medium"><i className="fa-regular fa-clock me-1"></i>May 24, 2022</span>
+                                    <span className="fs-xs fw-medium"><LocalOfferIcon/>Organic Vegetable</span>
+                                    <span className="fs-xs fw-medium"><AccessTimeIcon/>May 24, 2022</span>
                                 </div>
                                 <a href="blog-details.html">
                                     <h4 className="mb-3">Holiday Home Delivery We have Recently Ordered</h4>
@@ -79,6 +85,9 @@ const Posts = () => {
                 </div>
             </div>
         </section>
+        ) : ("")
+    }
+   
     
     </>
   )

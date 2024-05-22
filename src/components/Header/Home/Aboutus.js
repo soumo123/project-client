@@ -1,8 +1,13 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Fruits from '../../../images/home1/fruits.png'
 import HandIcon from '../../../images/hand-icon.svg'
 
 const Aboutus = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    
   return (
     <>
     

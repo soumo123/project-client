@@ -56,7 +56,7 @@ const Details = () => {
     const [addRating, setAddRating] = useState(0);
     const dataRefe = useSelector((state) => state.noteRef.arr);
     const categories = useSelector((state) => state.categoryDetails.categories)
-
+    const[cartWeight,setCartWeight] = useState("")
     const [featuredData, setFeaturedData] = useState([])
 
 
@@ -104,6 +104,7 @@ const Details = () => {
                 setSelectedImage(response.data.data[0].thumbnailimage)
                 setOtherImages(response.data.data[0].otherimages)
                 setTags(response.data.data[0].tags)
+                setCartWeight(response.data.data[0].weight[0].value + " "+ response.data.data[0].unit)
             }
         } catch (error) {
 
@@ -149,10 +150,16 @@ const Details = () => {
 
     const handleCart = async (id, pdName, description1, actualPrice, discount, thunbImage) => {
         try {
+            if (!userId || userId === undefined || userId === null) {
+                alert.error("Please Signin First")
+                return
+            }
             let json = {
                 name: pdName,
                 description: description1,
                 price: actualPrice,
+                weight:cartWeight,
+                color:'',
                 itemCount: Number(count),
                 discount: discount,
                 thumbImage: thunbImage,
@@ -218,12 +225,22 @@ const Details = () => {
         setComment(e)
     }
 
+    const handleWeightChange = (w,u)=>{
+        console.log("w,u",w,u)
+        setCartWeight(w+" " + u)
+    }
+
     useEffect(() => {
         getProductDetails()
         getFeatureProducts()
     }, [id, dataRefe])
 
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+    
     console.log("addRating", addRating)
+    console.log("cartWeight",cartWeight)
 
     return (
         <>
@@ -297,7 +314,7 @@ const Details = () => {
                                                         {
                                                             weight && weight.map((ele) => (
                                                                 <li>
-                                                                    <input type="radio" name="weight" value="250g" checked />
+                                                                    <input type="radio" name="weight" value={ele.value} onClick={(e)=>handleWeightChange(ele.value,unit)} />
                                                                     <label>{ele.value} {unit.charAt(0).toLowerCase()}</label>
                                                                 </li>
                                                             ))
