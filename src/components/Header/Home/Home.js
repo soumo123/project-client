@@ -77,7 +77,7 @@ const Home = () => {
             <ViewData />
             <Others newProducts={newProducts} load={load} setLoad={setLoad}/>
             <Posts />
-           
+            
         </>
     )
 }

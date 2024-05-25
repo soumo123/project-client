@@ -68,7 +68,7 @@ const Navbar = () => {
      const settings = useSelector((state) => state.settingReducer.settings)
      const [search, setSearch] = useState("")
      const [aboutOpen, setAboutOpen] = useState(false)
-     
+
 
      const [formData, setFormData] = useState({
           name: '',
@@ -182,6 +182,7 @@ const Navbar = () => {
 
           } catch (error) {
                setCarts([])
+               setTotalPrice("")
                dispatch(fetchCartProductsFail([]))
           }
      }
@@ -437,7 +438,7 @@ const Navbar = () => {
 
                                                        {
                                                             settings && settings.browse_category ? (
-                                                                 <span className="category-dropdown-btn fw-bold d-none d-sm-inline-block" onClick={() => setBrowseCat(!browseCategory)}>Browse Category
+                                                                 <span className="category-dropdown-btn fw-bold d-none d-sm-inline-block" style={{cursor:"pointer"}}onClick={() => setBrowseCat(!browseCategory)}>Browse Category
                                                                       <span
                                                                            className="ms-1"><KeyboardArrowDownIcon />
                                                                       </span>
@@ -558,63 +559,72 @@ const Navbar = () => {
                                                        {
                                                             settings && settings.cart ? (
                                                                  <div className="gshop-header-cart position-relative">
-                                                                 <button type="button" className="header-icon">
-                                                                      <svg width="18" height="25" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                           <path d="M21.1704 23.9559L19.6264 7.01422C19.5843 6.55156 19.1908 6.19718 18.7194 6.19718H15.5355V4.78227C15.5355 2.14533 13.3583 0 10.6823 0C8.00628 0 5.82937 2.14533 5.82937 4.78227V6.19718H2.6433C2.17192 6.19718 1.77839 6.55156 1.73625 7.01422L0.186259 24.0225C0.163431 24.2735 0.248671 24.5223 0.421216 24.7082C0.593761 24.8941 0.837705 25 1.0933 25H20.2695C20.2702 25 20.2712 25 20.2719 25C20.775 25 21.1826 24.5982 21.1826 24.1027C21.1825 24.0528 21.1784 24.0036 21.1704 23.9559ZM7.65075 4.78227C7.65075 3.1349 9.01071 1.79465 10.6824 1.79465C12.3542 1.79465 13.7142 3.1349 13.7142 4.78227V6.19718H7.65075V4.78227ZM2.08948 23.2055L3.47591 7.99183H5.82937V9.59649C5.82937 10.0921 6.237 10.4938 6.74006 10.4938C7.24313 10.4938 7.65075 10.0921 7.65075 9.59649V7.99183H13.7142V9.59649C13.7142 10.0921 14.1219 10.4938 14.6249 10.4938C15.128 10.4938 15.5356 10.0921 15.5356 9.59649V7.99183H17.8869L19.2733 23.2055H2.08948Z" fill="#5D6374" />
-                                                                      </svg>
-                                                                 </button>
-     
-     
-     
-                                                                 <div className="cart-box-wrapper">
-                                                                      <div className="apt_cart_box theme-scrollbar">
-                                                                           <ul className="at_scrollbar scrollbar">
-                                                                                {
-                                                                                     carts && carts.length === 0 ? (
-                                                                                          <span>No Cart Items</span>
-                                                                                     ) : (
-                                                                                          <>
-                                                                                               {
-                                                                                                    carts.map((ele) => (
-                                                                                                         <li className="d-flex align-items-center">
-                                                                                                              <div className="thumb-wrapper">
-                                                                                                                   <a href="#">
-                                                                                                                        <img src={ele.thumbImage} alt="products" className="img-fluid" />
-                                                                                                                   </a>
-                                                                                                              </div>
-                                                                                                              <div className="items-content ms-3">
-                                                                                                                   <a href="product-details.html">
-                                                                                                                        <h6 className="mb-1">{ele.name}</h6>
-                                                                                                                   </a>
-                                                                                                                   <div className="products_meta d-flex align-items-center">
-                                                                                                                        <div>
-                                                                                                                             <span className="price text-primary fw-semibold">₹ {ele.price}</span>
-                                                                                                                             <span className="count">x {ele.itemCount}</span>
-                                                                                                                        </div>
-                                                                                                                        <button className="remove_cart_btn" onClick={() => handleDelete(ele.productId)}><DeleteIcon /></button>
+                                                                      <button type="button" className="header-icon">
+                                                                           <svg width="18" height="25" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M21.1704 23.9559L19.6264 7.01422C19.5843 6.55156 19.1908 6.19718 18.7194 6.19718H15.5355V4.78227C15.5355 2.14533 13.3583 0 10.6823 0C8.00628 0 5.82937 2.14533 5.82937 4.78227V6.19718H2.6433C2.17192 6.19718 1.77839 6.55156 1.73625 7.01422L0.186259 24.0225C0.163431 24.2735 0.248671 24.5223 0.421216 24.7082C0.593761 24.8941 0.837705 25 1.0933 25H20.2695C20.2702 25 20.2712 25 20.2719 25C20.775 25 21.1826 24.5982 21.1826 24.1027C21.1825 24.0528 21.1784 24.0036 21.1704 23.9559ZM7.65075 4.78227C7.65075 3.1349 9.01071 1.79465 10.6824 1.79465C12.3542 1.79465 13.7142 3.1349 13.7142 4.78227V6.19718H7.65075V4.78227ZM2.08948 23.2055L3.47591 7.99183H5.82937V9.59649C5.82937 10.0921 6.237 10.4938 6.74006 10.4938C7.24313 10.4938 7.65075 10.0921 7.65075 9.59649V7.99183H13.7142V9.59649C13.7142 10.0921 14.1219 10.4938 14.6249 10.4938C15.128 10.4938 15.5356 10.0921 15.5356 9.59649V7.99183H17.8869L19.2733 23.2055H2.08948Z" fill="#5D6374" />
+                                                                           </svg>
+                                                                      </button>
+
+
+
+                                                                      <div className="cart-box-wrapper">
+                                                                           <div className="apt_cart_box theme-scrollbar">
+                                                                                <ul className="at_scrollbar scrollbar">
+                                                                                     {
+                                                                                          carts && carts.length === 0 ? (
+                                                                                               <span>No Cart Items</span>
+                                                                                          ) : (
+                                                                                               <>
+                                                                                                    {
+                                                                                                         carts.map((ele) => (
+                                                                                                              <li className="d-flex align-items-center">
+                                                                                                                   <div className="thumb-wrapper">
+                                                                                                                        <a href="#">
+                                                                                                                             <img src={ele.thumbImage} alt="products" className="img-fluid" />
+                                                                                                                        </a>
                                                                                                                    </div>
-                                                                                                              </div>
-                                                                                                         </li>
-     
-                                                                                                    ))
-                                                                                               }
+                                                                                                                   <div className="items-content ms-3">
+                                                                                                                        <a href="product-details.html">
+                                                                                                                             <h6 className="mb-1">{ele.name}</h6>
+                                                                                                                        </a>
+                                                                                                                        <div className="products_meta d-flex align-items-center">
+                                                                                                                             <div>
+                                                                                                                                  <span className="price text-primary fw-semibold">₹ {ele.price}</span>
+                                                                                                                                  <span className="count">x {ele.itemCount}</span>
+                                                                                                                             </div>
+                                                                                                                             <button className="remove_cart_btn" onClick={() => handleDelete(ele.productId)}><DeleteIcon /></button>
+                                                                                                                        </div>
+                                                                                                                   </div>
+                                                                                                              </li>
+
+                                                                                                         ))
+                                                                                                    }
+                                                                                               </>
+                                                                                          )
+                                                                                     }
+
+                                                                                </ul>
+                                                                                {
+                                                                                     carts && carts.length===0 ? (
+                                                                                          ""
+                                                                                     ):(
+                                                                                          <>
+                                                                                          <div className="d-flex align-items-center justify-content-between mt-3">
+                                                                                     <h6 className="mb-0">Subtotal:</h6>
+                                                                                     <span className="fw-semibold text-primary">₹ {totalPrice}</span>
+                                                                                </div>
+                                                                                <Link to="/checkout" className="btn btn-primary btn-md d-block mt-4"><span
+                                                                                     className="me-2"><WalletIcon /></span>Checkout</Link>
                                                                                           </>
                                                                                      )
                                                                                 }
-     
-                                                                           </ul>
-                                                                           <div className="d-flex align-items-center justify-content-between mt-3">
-                                                                                <h6 className="mb-0">Subtotal:</h6>
-                                                                                <span className="fw-semibold text-primary">₹ {totalPrice}</span>
+                                                                                
                                                                            </div>
-                                                                           <Link to="/checkout" className="btn btn-primary btn-md d-block mt-4"><span
-                                                                                className="me-2"><WalletIcon /></span>Checkout</Link>
                                                                       </div>
                                                                  </div>
-                                                            </div>
-                                                            ):("")  
+                                                            ) : ("")
                                                        }
-                                                      
+
                                                   </div>
                                                   {
                                                        settings && settings?.phone ? (
@@ -688,11 +698,10 @@ const Navbar = () => {
                                              </address>
                                         </div>
                                         <div class="social-contact offcanvas_social mt-4">
-                                             <a href="#" class="social-btn"><FacebookIcon /></a>
-                                             <a href="#" class="social-btn"><InstagramIcon /></a>
-                                             <a href="#" class="social-btn"><LinkedInIcon /></a>
-                                             <a href="#" class="social-btn"><TwitterIcon /></a>
-                                             <a href="#" class="social-btn"><YouTubeIcon /></a>
+                                             <a href={settings.fb} target="_blank" class="social-btn"><FacebookIcon /></a>
+                                             <a href={settings.insta} target="_blank" class="social-btn"><InstagramIcon /></a>
+                                             <a href={settings.linkdin} target="_blank" class="social-btn"><LinkedInIcon /></a>
+                                             <a href={settings.youtube} target="_blank" class="social-btn"><YouTubeIcon /></a>
                                         </div>
                                    </div>
 

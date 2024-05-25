@@ -95,7 +95,7 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                                 <div className="col-xl-6">
                                     <div className="section-title text-center mb-4">
                                         <h3 className="mb-2">Featured Brand Products</h3>
-                                        <p className="mb-0">Platform mindshare through effective infomediaries Dynamically implement.</p>
+                                        <p className="mb-0">{settings.featureHeading}</p>
                                     </div>
                                 </div>
                             </div>
@@ -164,10 +164,10 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                                             <div className="product-card-lg bg-white rounded-2 d-flex flex-coloumn h-100">
                                                 <div>
                                                     <div className="card-content position-relative z-2">
-                                                        <span className="fs-xs gshop-subtitle text-secondary">100% Organic Products</span>
-                                                        <h4 className="mb-0">Fresh Fruits</h4>
-                                                        <h3 className="mb-3">Healthy Juice</h3>
-                                                        <p className="mb-4">Get 50% Off on Selected Organic Items</p>
+                                                        <span className="fs-xs gshop-subtitle text-secondary">{settings.headerFeatureCard}</span>
+                                                        <h4 className="mb-0">{settings.middleFeatureCard}</h4><br/>
+                                                       
+                                                        <p className="mb-4">{settings.footerFeatureCard}</p><br/>
                                                         <Link to="/products" className="btn btn-secondary">Shop Now <span className="ms-2"><ArrowForwardIcon /></span></Link>
                                                     </div>
 

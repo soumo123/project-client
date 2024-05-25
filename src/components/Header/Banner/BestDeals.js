@@ -84,10 +84,10 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
                                     settings && settings.deals_products_card ? (
                                         <div className="col-xxl-4 col-xl-5 order-2 order-xxl-1">
                                             <div className="banner-box banner-color-green position-relative overflow-hidden z-1 rounded-2 pe-0 pb-0">
-                                                <span className="gshop-subtitle text-secondary mb-1">100% Organic Vegetable</span>
-                                                <h6 className="mb-0">Vegetable</h6>
-                                                <h4 className="mb-2">Fresh & Healthy</h4>
-                                                <p className="fw-medium mb-5">Get 50% Off on Selected Organic Items</p>
+                                                <span className="gshop-subtitle text-secondary mb-1">{settings.dealsCardHeader}</span>
+                                                <h6 className="mb-0">{settings.dealsCardMiddle}</h6><br/>
+                                                {/* <h4 className="mb-2">Fresh & Healthy</h4> */}
+                                                <p className="fw-medium mb-5">{settings.dealsCardFooter}</p><br/>
                                                 <Link to="/products" className="btn btn-primary btn-md">Show Now<span className="ms-2"><ArrowForwardIcon /></span></Link>
                                                 <div className="banner-img-wrapper text-end mt--40">
                                                     <img src={images?.middle_banner2} alt="vegetables" className="" />
