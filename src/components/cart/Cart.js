@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
 import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
 import axios from 'axios'
 import { noteRefs } from '../../redux/actions/userAction'
 
+
 const Cart = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const cartData = useSelector((state) => state.cartDetails.carts)
     const [selectedIds, setSelectedIds] = useState([])
     const [count, setCount] = useState(1)
@@ -93,6 +95,10 @@ const Cart = () => {
         }
     }
 
+
+    const handleCheckout = ()=>{
+        navigate('/checkout', { state: { data: cartData } });
+    }
 
     useEffect(() => {
         if (cartData) {
@@ -221,7 +227,7 @@ console.log("totalPriceitem",totalPriceItem)
                                                     </table>
                                                     <p className="mb-5 mt-2">Shipping options will be updated during checkout.</p>
                                                     <div className="btns-group d-flex gap-3">
-                                                        <button type="submit" className="btn btn-primary btn-md rounded-1">Confirm Order</button>
+                                                    <button type="submit" onClick={handleCheckout} className="btn btn-primary btn-md rounded-1">Confirm Order</button>
                                                         <Link to='/products'><button type="button" className="btn btn-outline-secondary border-secondary btn-md rounded-1">Continue Shopping</button></Link>
                                                     </div>
                                                 </div>

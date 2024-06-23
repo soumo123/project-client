@@ -139,7 +139,7 @@ const Navbar = () => {
                     const profileData = response.data
                     localStorage.setItem("token", response.data.token)
                     localStorage.setItem("userId", response.data.user.userId)
-                    localStorage.setItem("type", response.data.user.type)
+                    // localStorage.setItem("type", response.data.user.type)
                     localStorage.setItem("profile", JSON.stringify(profileData))
                     dispatch(fetchUserDetails(response.data.user))
                } else {
