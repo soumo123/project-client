@@ -54,19 +54,20 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
             console.log("json-www", json)
 
             const response = await addToCart(id, json)
-
-            if (response) {
+            console.log("responseresponse",response)
+            if (response===true) {
                 alert.success("Item added in cart")
+                setOpen(false)
                 dispatch(noteRefs(new Date().getSeconds()))
 
             } else {
                 alert.error("Item already in cart")
-
+                setOpen(false)
             }
 
         } catch (error) {
             alert.error("Item not added in cart")
-
+            setOpen(false)
         }
     }
 
