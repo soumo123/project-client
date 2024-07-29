@@ -31,7 +31,7 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
         setOpen(true)
     }
 
-    const handleAddWhish = async (status, productId, name, description, price, discount, thumbnailimage, stock, ratings, numOfReviews) => {
+    const handleAddWhish = async (status, productId, name, description, price, thumbnailimage, stock, ratings, numOfReviews,weight) => {
         try {
 
             if (!userId || userId === undefined || userId === null) {
@@ -42,9 +42,10 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
                 name: name,
                 description: description,
                 price: price,
-                discount: discount,
+                // discount: discount,
                 thumbnailimage: thumbnailimage,
                 stock: stock,
+                weight:weight,
                 numOfReviews: numOfReviews,
                 ratings: ratings
             }
@@ -91,13 +92,14 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
             let json = {
                 name: data.name,
                 description: data.description,
-                price: data.actualpricebydiscount,
-                weight:data.weight[0].value + " " + data.unit,
+                price: data.weight[0].price,
+                weight:data.weight[0].weight,
+                stock:data.weight[0].stock,
                 color:'',
                 itemCount: 1,
-                discount: data.discount,
+                // discount: data.discount,
                 thumbImage: data.thumbnailimage,
-                totalPrice: data.actualpricebydiscount * 1
+                totalPrice: Number(data.weight[0].price) * 1
             }
             console.log("json", json)
 
@@ -149,16 +151,16 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
                                         <div className="col-xxl-3 col-lg-4 col-md-6 col-sm-10 filter_item sea_food">
 
                                             <div className="vertical-product-card rounded-2 position-relative">
-                                                {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)}
+                                                {/* {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)} */}
                                                 <div className="thumbnail position-relative text-center p-4">
                                                     <img src={ele.thumbnailimage} alt="apple" className="img-fluid" />
                                                     <div className="product-btns position-absolute d-flex gap-2 flex-column">
                                                         {
                                                             ele.whishListIds && ele.whishListIds.includes(userId) ? (
-                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteIcon /></span>
+                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews,ele.weight[0].weight)}><FavoriteIcon /></span>
 
                                                             ) : (
-                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteBorderIcon /></span>
+                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews,ele.weight[0].weight)}><FavoriteBorderIcon /></span>
                                                             )
                                                         }
                                                         <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
@@ -176,11 +178,11 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
                                                             </ul>
                                                             <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                         </div>
-                                                        <h6 className="price text-danger mb-3"> ₹ {ele.actualpricebydiscount}</h6>
+                                                        <h6 className="price text-danger mb-3"> ₹ {ele?.weight[0]?.price}</h6>
                                                         <div className="card-progressbar mb-2 rounded-pill">
                                                             <span className="card-progress bg-primary" data-progress="60%"></span>
                                                         </div>
-                                                        <p className="mb-0 fw-semibold">Available: <span className="fw-bold text-secondary">{ele.stock}/100</span></p>
+                                                        <p className="mb-0 fw-semibold">Available: <span className="fw-bold text-secondary">{ele.weight[0]?.stock}/100</span></p>
                                                     </div>
                                                 </Link>
                                                 <div className="card-btn bg-white">
@@ -197,7 +199,11 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
                 ) : ("")
             }
 
-            <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+            {
+                open === true ? (
+                    <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+                ) : ("")
+            }
 
         </>
     )

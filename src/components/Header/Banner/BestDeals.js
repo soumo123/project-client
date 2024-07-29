@@ -4,7 +4,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import ViewProduct from '../../products/ViewProduct';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios'
@@ -12,6 +12,7 @@ import { useAlert } from 'react-alert'
 
 const BestDeals = ({ dealsData, load, setLoad }) => {
     const alert = useAlert()
+    const navigate = useNavigate()
     const images = useSelector((state) => state.imageReducer.images.staticImages)
     const settings = useSelector((state) => state.settingReducer.settings)
 
@@ -32,7 +33,7 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
         }
     }, [dealsData]);
 
-    const handleAddWhish = async (status, productId, name, description, price, discount, thumbnailimage, stock, ratings, numOfReviews) => {
+    const handleAddWhish = async (status, productId, name, description, price, thumbnailimage, stock, ratings, numOfReviews,weight) => {
         try {
 
             if (!userId || userId === undefined || userId === null) {
@@ -43,7 +44,8 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
                 name: name,
                 description: description,
                 price: price,
-                discount: discount,
+                // discount: discount,
+                weight:weight,
                 thumbnailimage: thumbnailimage,
                 stock: stock,
                 numOfReviews: numOfReviews,
@@ -72,6 +74,28 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
 
 
     }
+
+
+
+    const handleCheckout = (pd) => {
+        let data = [{
+            color: pd.color,
+            description: pd.description,
+            // discount: pd.discount,
+            itemCount: 1,
+            name: pd.name,
+            price: pd.weight[0].price,
+            productId: pd.productId,
+            thumbImage: pd.thumbnailimage,
+            totalPrice: pd.weight[0].price,
+            weight: pd.weight[0].weight,
+            _id: pd._id,
+        }]
+
+        navigate('/checkout', { state: { data:  data} });
+    }
+
+
 
     return (
         <>
@@ -132,17 +156,17 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
                                                                         <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
                                                                             {
                                                                                 ele.whishListIds && ele.whishListIds.includes(userId) ? (
-                                                                                    <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteIcon /></span>
+                                                                                    <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews,ele.weight[0].weight)}><FavoriteIcon /></span>
 
                                                                                 ) : (
-                                                                                    <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteBorderIcon /></span>
+                                                                                    <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.weight[0].price,  ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews,ele.weight[0].weight)}><FavoriteBorderIcon /></span>
                                                                                 )
                                                                             }
                                                                             <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
 
                                                                         </div>
                                                                     </div>
-                                                                    <Link to={`/details/${ele.productId}`}>
+                                                                  
                                                                         <div className="card-content mt-4 mt-sm-0">
                                                                             <div className="d-flex align-items-center flex-nowrap star-rating">
                                                                                 <ul className="d-flex align-items-center me-2">
@@ -150,14 +174,14 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
                                                                                 </ul>
                                                                                 <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                                             </div>
-                                                                            <span className="fw-bold text-heading title d-block">{ele.name}</span>
+                                                                            <Link to={`/details/${ele.productId}`}> <span className="fw-bold text-heading title d-block">{ele.name}</span> </Link>
                                                                             <div className="pricing mt-2">
-                                                                                <span className="fw-bold h4 deleted me-1">₹ {ele.price}</span>
-                                                                                <span className="fw-bold h4 text-danger">₹ {ele.actualpricebydiscount}</span>
+                                                                                {/* <span className="fw-bold h4 deleted me-1">₹ {ele.price}</span> */}
+                                                                                <span className="fw-bold h4 text-danger">₹ {ele?.weight[0]?.price}</span>
                                                                             </div>
-                                                                            <Link to="/products" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></Link>
+                                                                            <span onClick={() => handleCheckout(ele)}  style={{cursor:"pointer"}} className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></span>
                                                                         </div>
-                                                                    </Link>
+                                                                   
                                                                 </div>
                                                             </div>
                                                         ))
@@ -178,7 +202,11 @@ const BestDeals = ({ dealsData, load, setLoad }) => {
                 ) : ("")
             }
 
-            <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+{
+                open === true ? (
+                    <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+                ) : ("")
+            }
 
         </>
     )

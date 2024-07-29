@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { noteRefs } from '../../../redux/actions/userAction'
 import addToCart from '../../../utils/addToCart';
 import { useAlert } from 'react-alert'
+import { LineWeight } from '@mui/icons-material';
 
 const Whishlist = () => {
     const dispatch = useDispatch()
@@ -59,23 +60,25 @@ const Whishlist = () => {
                 name: data.name,
                 description: data.description,
                 price: data.price,
+                stock:data.stock,
+                weight:data.weight,
                 itemCount: 1,
-                discount: data.discount,
+                // discount: data.discount,
                 thumbImage: data.thumbnailimage,
                 totalPrice: data.price
             }
+            console.log("jsonjsonjson",json)
 
+            // const response = await addToCart(id, json)
 
-            const response = await addToCart(id, json)
+            // if (response) {
+            //     alert.success("Product added in cart")
+            //     dispatch(noteRefs(new Date().getSeconds()))
 
-            if (response) {
-                alert.success("Product added in cart")
-                dispatch(noteRefs(new Date().getSeconds()))
+            // } else {
+            //     alert.error("Product alreday in cart")
 
-            } else {
-                alert.error("Product alreday in cart")
-
-            }
+            // }
 
         } catch (error) {
             alert.error("Product not added in cart")
@@ -163,6 +166,7 @@ const Whishlist = () => {
                                                                                 <td className="text-center">
                                                                                     <span className={`stock-btn text-dark fw-bold fs-xxs d-inline-block rounded-pill`}>{ele.stock > 0 ? "In Stock" : "Out of stock"}</span>
                                                                                 </td>
+                                                                               
                                                                                 <td className="text-end">
                                                                                     <span className="price fw-bold text-dark">₹ {ele.price}</span>
                                                                                     <span className="btn btn-secondary btn-sm ms-5 rounded-1" onClick={() => handleCart(ele.productId, ele)}>Add to Cart</span>

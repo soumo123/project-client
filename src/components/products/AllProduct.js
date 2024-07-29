@@ -86,7 +86,7 @@ const AllProduct = () => {
     }, [offset, limit, searchData, tagss, tagssearch, dataRefe, sort]);
 
 
-    const handleAddWhish = async (status, productId, name, description, price, discount, thumbnailimage, stock, ratings, numOfReviews) => {
+    const handleAddWhish = async (status, productId, name, description, thumbnailimage, ratings, numOfReviews,price,stock,weight) => {
         try {
 
             if (!userId || userId === undefined || userId === null) {
@@ -96,13 +96,15 @@ const AllProduct = () => {
             let json = {
                 name: name,
                 description: description,
-                price: price,
-                discount: discount,
+                price: Number(price),
+                // discount: discount,
                 thumbnailimage: thumbnailimage,
                 stock: stock,
+                weight:weight,
                 numOfReviews: numOfReviews,
                 ratings: ratings
             }
+            console.log("wishhh json",json)
             const config = {
                 headers: {
                     'Content-Type': "application/json",
@@ -167,15 +169,16 @@ const AllProduct = () => {
             let json = {
                 name: data.name,
                 description: data.description,
-                price: data.actualpricebydiscount,
-                weight:data.weight[0].value + " " + data.unit,
+                price: data.weight[0].price,
+                weight:data.weight[0].weight || "",
+                stock:data.weight[0].stock || 0, 
                 color:'',
                 itemCount: 1,
-                discount: data.discount,
+                // discount: data.discount,
                 thumbImage: data.thumbnailimage,
-                totalPrice: data.actualpricebydiscount * 1
+                totalPrice: Number(data.weight[0].price) * 1
             }
-            console.log("json", json)
+            console.log("jsonssss", json)
 
             const response = await addToCart(id, json)
 
@@ -276,16 +279,16 @@ const AllProduct = () => {
                                                         products?.map((ele) => (
                                                             <div class="col-lg-4 col-md-6 col-sm-10">
                                                                 <div class="vertical-product-card rounded-2 position-relative border-0 bg-white bg-white">
-                                                                    {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)}
+                                                                    {/* {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)} */}
                                                                     <div class="thumbnail position-relative text-center p-4">
                                                                         <img src={ele.thumbnailimage} alt="" class="img-fluid" />
                                                                         <div class="product-btns position-absolute d-flex gap-2 flex-column">
                                                                             {
                                                                                 ele.whishListIds && ele.whishListIds.includes(userId) ? (
-                                                                                    <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteIcon /></span>
+                                                                                    <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.thumbnailimage, ele.ratings, ele.numOfReviews,ele.weight[0]?.price,ele.weight[0]?.stock,ele.weight[0]?.weight)}><FavoriteIcon /></span>
 
                                                                                 ) : (
-                                                                                    <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteBorderIcon /></span>
+                                                                                    <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description,ele.thumbnailimage, ele.ratings, ele.numOfReviews,ele.weight[0]?.price,ele.weight[0]?.stock,ele.weight[0]?.weight)}><FavoriteBorderIcon /></span>
                                                                                 )
                                                                             }
 
@@ -316,7 +319,7 @@ const AllProduct = () => {
                                                                             </ul>
                                                                             <span class="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                                         </div>
-                                                                        <h6 class="price text-danger mb-4"> ₹ {ele.actualpricebydiscount}</h6>
+                                                                        {/* <h6 class="price text-danger mb-4"> ₹ {ele?.weight[0]?.price}</h6> */}
                                                                         <span class="btn btn-outline-secondary d-block btn-md" onClick={() => handleCart(ele.productId, ele)}>Add to Cart</span>
                                                                     </div>
 
@@ -347,7 +350,11 @@ const AllProduct = () => {
 
 
 
-            <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+            {
+                open === true ? (
+                    <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+                ) : ("")
+            }
 
         </>
     )

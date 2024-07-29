@@ -90,12 +90,12 @@ const Details = () => {
                 setDescription(response.data.data[0].description.split('.').map((paragraph, index) => paragraph.trim() && paragraph.trim() + '.'))
                 setDescription1(response.data.data[0].description)
                 setNoOfReview(response.data.data[0].numOfReviews)
-                setPrice(response.data.data[0].price)
-                setActualPrice(response.data.data[0].actualpricebydiscount)
+                setPrice(response.data.data[0].weight[0].price)
+                // setActualPrice(response.data.data[0].actualpricebydiscount)
                 setDiscount(response.data.data[0].discount)
                 setWeight(response.data.data[0].weight)
                 setUnit(response.data.data[0].unit)
-                setStock(response.data.data[0].stock)
+                setStock(response.data.data[0].weight[0].stock)
                 setOtherdescription1(response.data.data[0].other_description1)
                 setOtherdescription2(response.data.data[0].other_description2)
                 setThumbImage(response.data.data[0].thumbnailimage)
@@ -104,7 +104,7 @@ const Details = () => {
                 setSelectedImage(response.data.data[0].thumbnailimage)
                 setOtherImages(response.data.data[0].otherimages)
                 setTags(response.data.data[0].tags)
-                setCartWeight(response.data.data[0].weight[0].value + " "+ response.data.data[0].unit)
+                setCartWeight(response.data.data[0].weight[0].weight)
             }
         } catch (error) {
 
@@ -127,7 +127,8 @@ const Details = () => {
 
 
     const handleIncrement = () => {
-        if (count > stock) {
+        console.log("count , stock" , count , stock)
+        if (count+1 > stock) {
             setErr(true)
             return
         } else {
@@ -148,7 +149,7 @@ const Details = () => {
         setSelectedImage(imageUrl); // Update selected image when clicked
     };
 
-    const handleCart = async (id, pdName, description1, actualPrice, discount, thunbImage) => {
+    const handleCart = async (id, pdName, description1, discount, thunbImage) => {
         try {
             if (!userId || userId === undefined || userId === null) {
                 alert.error("Please Signin First")
@@ -157,13 +158,14 @@ const Details = () => {
             let json = {
                 name: pdName,
                 description: description1,
-                price: actualPrice,
+                price:price,
                 weight:cartWeight,
+                stock:stock,
                 color:'',
                 itemCount: Number(count),
                 discount: discount,
                 thumbImage: thunbImage,
-                totalPrice: actualPrice * Number(count)
+                totalPrice: Number(price) * Number(count)
             }
             console.log("json", json)
 
@@ -225,10 +227,27 @@ const Details = () => {
         setComment(e)
     }
 
-    const handleWeightChange = (w,u)=>{
-        console.log("w,u",w,u)
-        setCartWeight(w+" " + u)
+    const handleWeightChange = async(w,u)=>{
+
+        console.log("w,u",w)
+        setCartWeight(w)
+        await getPrice(w)
     }
+
+    const getPrice = async(weight)=>{
+
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/variation_price?type=${type}&productId=${id}&weight=${weight}`) 
+            if(response.status===200){
+                setPrice(Number(response.data.data.price))
+                setStock(Number(response.data.data.stock))
+            }
+        } catch (error) {
+            setPrice(null)
+        }
+    }
+
+    console.log("priceeeeeeeeeeee",price)
 
     useEffect(() => {
         getProductDetails()
@@ -288,8 +307,8 @@ const Details = () => {
                                                         <span class="flex-shrink-0">({noofReview} Reviews)</span>
                                                     </div>
                                                     <div class="pricing mt-2">
-                                                        <span class="fw-bold fs-xs text-danger">₹ {actualPrice}</span>
-                                                        <span class="fw-bold fs-xs deleted ms-1">₹ {price}</span>
+                                                        <span class="fw-bold fs-xs text-danger">₹ {price}</span>
+                                                        {/* <span class="fw-bold fs-xs deleted ms-1">₹ {price}</span> */}
                                                     </div>
                                                     <div class="widget-title d-flex mt-4">
                                                         <h6 class="mb-1 flex-shrink-0">Description</h6>
@@ -314,8 +333,8 @@ const Details = () => {
                                                         {
                                                             weight && weight.map((ele) => (
                                                                 <li>
-                                                                    <input type="radio" name="weight" value={ele.value} onClick={(e)=>handleWeightChange(ele.value,unit)} />
-                                                                    <label>{ele.value} {unit.charAt(0).toLowerCase()}</label>
+                                                                    <input type="radio" name="weight" value={ele.weight} onClick={(e)=>handleWeightChange(ele.weight,unit)}/>
+                                                                    <label>{ele.weight} {unit.charAt(0).toLowerCase()}</label>
                                                                 </li>
                                                             ))
                                                         }
@@ -329,7 +348,7 @@ const Details = () => {
 
                                                         </div>
 
-                                                        <span class="btn btn-secondary btn-md" onClick={() => handleCart(id, pdName, description1, actualPrice, discount, thunbImage)}><span class="me-2"><LocalMallIcon /></span>Add to Cart</span>
+                                                        <span class="btn btn-secondary btn-md" onClick={() => handleCart(id, pdName, description1, discount, thunbImage)}><span class="me-2"><LocalMallIcon /></span>Add to Cart</span>
                                                     </div>
                                                     {
                                                         err ? (<p className='text-danger'>Product out of stock</p>) : ("")
@@ -516,7 +535,7 @@ const Details = () => {
                                                     <>
                                                         <div class="horizontal-product-card card-md d-sm-flex align-items-center bg-white rounded-2 gap-3 mt-4" >
                                                             <div class="thumbnail position-relative rounded-2">
-                                                                <a href="#"><img src={ele.thumbnailimage} alt="product" class="img-fluid" /></a>
+                                                                <span><img src={ele.thumbnailimage} alt="product" class="img-fluid" /></span>
                                                                 <div class="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
                                                                     <Link to={`/details/${ele.productId}`} class="rounded-btn"><VisibilityOutlinedIcon /></Link>
                                                                 </div>
@@ -524,7 +543,7 @@ const Details = () => {
                                                             <div class="card-content mt-3 mt-sm-0">
                                                                 <a href="#" class="d-block fs-sm fw-bold text-heading title d-block">{ele.name}</a>
                                                                 <div class="pricing mt-0">
-                                                                    <span class="fw-bold fs-xxs text-danger">₹ {ele.actualpricebydiscount}</span>
+                                                                    {/* <span class="fw-bold fs-xxs text-danger">₹ {ele.actualpricebydiscount}</span> */}
                                                                 </div>
                                                                 <div class="d-flex align-items-center flex-nowrap star-rating mt-1">
                                                                     <ul class="d-flex align-items-center me-2">

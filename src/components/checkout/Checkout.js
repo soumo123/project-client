@@ -30,10 +30,16 @@ const Checkout = () => {
     const [adressSelection, setAdressSelection] = useState("")
     const [partPrice, setPartPrice] = useState([100, 150, 200])
     const [ptPrice, setPtPrice] = useState(0)
-    let shippingHandling = 2;
-    let tax = 2;
+    const [sgst, setSgst] = useState(0)
+    const [cgst, setCgst] = useState(0)
+    const [value1, setValue1] = useState(0)
+    const [value2, setValue2] = useState(0)
+    // let cgst = 2.5;
+    // let sgst = 2.5;
     const location = useLocation();
     const receivedData = location.state?.data; // using optional chaining to handle undefined state
+
+
 
     console.log("receivedDatareceivedData", receivedData)
     let totalPrice = receivedData && receivedData.reduce((sum, item) => sum + item.totalPrice, 0)
@@ -116,6 +122,33 @@ const Checkout = () => {
     }
 
 
+    const getTax = async () => {
+
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/get_tax`);
+          if (response.status === 200) {
+            setSgst(response.data.data.sgst)
+            setCgst(response.data.data.cgst)
+            setValue1(response.data.data.sgstvalue)
+            setValue2(response.data.data.cgstvalue)
+          }
+    
+        } catch (error) {
+          console.log(error)
+          setSgst(0)
+          setCgst(0)
+          setValue1(0)
+          setValue2(0)
+        }
+    
+    
+      }
+    
+      useEffect(() => {
+        getTax()
+      }, [])
+      
+
     const getShopId = async () => {
 
         try {
@@ -153,16 +186,16 @@ const Checkout = () => {
         setPtPrice(e)
     }
 
-    const handleCreateOrder = async() => {
+    const handleCreateOrder = async () => {
 
         try {
 
-            let json  = {
-                receivedData:receivedData,
-                shippingPrice:2,
-                tax:2,
-                initialDeposit:ptPrice,
-                orderedPrice:(totalPrice + shippingHandling + tax) - (ptPrice),
+            let json = {
+                receivedData: receivedData,
+                cgst: (totalPrice * Number(value2)),
+                sgst: (totalPrice * Number(value1)),
+                initialDeposit: ptPrice,
+                orderedPrice: (totalPrice + ((totalPrice * Number(value2))) + ((totalPrice * Number(value1)))),
             }
             const config = {
                 headers: {
@@ -171,14 +204,14 @@ const Checkout = () => {
                 withCredentials: true
             }
 
-            const response  = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/create?type=${type}&userId=${userId}&shop_id=${shopId}`,json,config)
-            if(response.status===201){
+            const response = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/create?type=${type}&userId=${userId}&shop_id=${shopId}`, json, config)
+            if (response.status === 201) {
                 alert.success("order created")
                 dispatch(noteRefs(new Date().getSeconds()))
                 setTimeout(() => {
                     navigate("/account")
                 }, 2000);
-            }else{
+            } else {
                 alert.error("Something went wrong")
             }
 
@@ -536,7 +569,7 @@ const Checkout = () => {
                                         </div>
                                         <table className="sidebar-table w-100 mt-5">
                                             <tr>
-                                                <td>Items({receivedData.length}):</td>
+                                                <td>Items({receivedData?.length}):</td>
                                                 <td className="text-end">
                                                     {
                                                         receivedData && receivedData.map((ele) => (
@@ -549,12 +582,12 @@ const Checkout = () => {
                                             </tr>
 
                                             <tr>
-                                                <td>Shipping & handling:</td>
-                                                <td className="text-end">₹ {shippingHandling}</td>
+                                                <td>CGST:</td>
+                                                <td className="text-end">{Number(cgst)} %</td>
                                             </tr>
                                             <tr>
-                                                <td>Before tax:</td>
-                                                <td className="text-end">₹ {tax}</td>
+                                                <td>SGST:</td>
+                                                <td className="text-end">{Number(sgst)}%</td>
                                             </tr>
                                             <tr>
                                                 <td class="text-dark fw-semibold">* Initial Payment (You have to select some amount while you order )</td>
@@ -577,7 +610,7 @@ const Checkout = () => {
                                                 <>
                                                     <div className="d-flex align-items-center justify-content-between">
                                                         <h6 className="mb-0 fs-md">Total</h6>
-                                                        <h6 className="mb-0 fs-md">₹ {(totalPrice + shippingHandling + tax) - (ptPrice)}</h6>
+                                                        <h6 className="mb-0 fs-md">₹ {((totalPrice + (totalPrice * Number(value1)) + (totalPrice * Number(value2))) - (ptPrice)).toFixed(2)}</h6>
                                                     </div>
                                                     <button type="submit" className="btn btn-primary btn-md rounded mt-6 w-100" onClick={handleCreateOrder}>Place Order</button>
                                                     <p className="mt-3 mb-0 fs-xs">By Placing your order your agree to our company <a href="#">Privacy-policy</a></p>

@@ -17,6 +17,8 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 
 const ViewOrderModal = ({ show, setModalShow, viewData, setViewData, setLoad }) => {
 
+    console.log("viewData",viewData)
+
     const dispatch = useDispatch()
     const alert = useAlert()
     const userId = localStorage.getItem("userId")
@@ -149,7 +151,7 @@ const ViewOrderModal = ({ show, setModalShow, viewData, setViewData, setLoad }) 
                                                             <div class="row  my-auto flex-column flex-md-row">
                                                                 <div class="col my-auto"> <h6 class="mb-0">{ele.name}</h6>  </div>
                                                                 <div class="col-auto my-auto"> <small>Golden Rim </small></div>
-                                                                {ele.weight === "" ? "" : (<div class="col my-auto"> <small>Weight : {ele.weight}</small></div>)}
+                                                                {/* {ele.weight === "" ? "" : (<div class="col my-auto"> <small>Weight : {ele.weight.map(item=>(item.value))}</small></div>)} */}
                                                                 {ele.color === "" ? "" : (<div class="col my-auto"> <small>Color : {ele.color}</small></div>)}
 
                                                                 <div class="col my-auto"> <small>Price : ₹ {ele.price}</small></div>
@@ -203,12 +205,12 @@ const ViewOrderModal = ({ show, setModalShow, viewData, setViewData, setLoad }) 
                                 <div class="col">
                                     <div class="row justify-content-between">
                                         {/* <div class="col-auto"><p class="mb-1 text-dark"><b>Order Details</b></p></div> */}
-                                        <div class="flex-sm-col text-right col"> <p class="mb-1"><b>Tax</b></p> </div>
-                                        <div class="flex-sm-col col-auto"> <p class="mb-1">&#8377;{viewData?.tax}</p> </div>
+                                        <div class="flex-sm-col text-right col"> <p class="mb-1"><b>CGST</b></p> </div>
+                                        <div class="flex-sm-col col-auto"> <p class="mb-1">&#8377;{viewData?.cgst?.toFixed(2)}</p> </div>
                                     </div>
                                     <div class="row justify-content-between">
-                                        <div class="flex-sm-col text-right col"><p class="mb-1"> <b>Shipping Cost</b></p> </div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1">&#8377;{viewData?.shippingPrice}</p></div>
+                                        <div class="flex-sm-col text-right col"><p class="mb-1"> <b>SGST</b></p> </div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1">&#8377;{viewData?.sgst?.toFixed(2)}</p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="flex-sm-col text-right col"><p class="mb-1"><b>Initial Deposit</b></p></div>
@@ -216,11 +218,11 @@ const ViewOrderModal = ({ show, setModalShow, viewData, setViewData, setLoad }) 
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="flex-sm-col text-right col"><p class="mb-1"><b>Total</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1">₹ {viewData?.orderedPrice}</p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1">₹ {viewData?.orderedPrice?.toFixed(2)}</p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="flex-sm-col text-right col"><p class="mb-1"><b>Remaining</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1">₹{viewData?.orderedPrice - viewData?.initialDeposit}</p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1">₹{(viewData?.orderedPrice - viewData?.initialDeposit)?.toFixed(2)}</p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="flex-sm-col text-right col"><p class="mb-1"><b>Paid</b></p></div>

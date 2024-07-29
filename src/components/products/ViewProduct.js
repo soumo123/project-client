@@ -11,15 +11,22 @@ import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useAlert } from 'react-alert'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
+import axios from 'axios'
 
 const ViewProduct = ({ open, viewData, setOpen }) => {
+    console.log("comming viewwww")
     const alert = useAlert()
     const [selectedImage, setSelectedImage] = useState(""); // State to hold the selected image
     const [count, setCount] = useState(1)
     const dispatch = useDispatch();
     const [description, setDescription] = useState("")
     const userId = localStorage.getItem("userId");
+    const type = localStorage.getItem("type")
+    const [pdId, setPdId] = useState("")
+    const [price, setPrice] = useState("")
+    const [stock, setStock] = useState("")
+    const [cartWeight, setCartWeight] = useState("")
+    const [err, setErr] = useState(false)
 
     const categories = useSelector((state) => state.categoryDetails.categories)
     const handleCloseModal = () => {
@@ -35,15 +42,16 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
             let json = {
                 name: data.name,
                 description: data.description,
-                price: data.actualpricebydiscount,
+                price: Number(price),
                 itemCount: Number(count),
-                weight:data.weight[0].value + " " + data.unit,
-                color:'',
-                discount: data.discount,
+                stock: Number(stock),
+                weight: cartWeight,
+                color: '',
+                // discount: data.discount,
                 thumbImage: data.thumbnailimage,
-                totalPrice: data.actualpricebydiscount * Number(count)
+                totalPrice: Number(price) * Number(count)
             }
-            console.log("json", json)
+            console.log("json-www", json)
 
             const response = await addToCart(id, json)
 
@@ -82,18 +90,53 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
     }, [viewData])
 
 
-    const handleDecrement = () => {
-        if (count > 1) {
-            setCount(count - 1);
+    const handleIncrement = () => {
+        console.log("count , stock", count, stock)
+        if (count + 1 > stock) {
+            setErr(true)
+            return
+        } else {
+            setErr(false)
+            setCount(count + 1)
         }
     }
 
-    const handleIncrement = () => {
-        setCount(count + 1)
+    const handleDecrement = () => {
+        if (count <= 1) {
+            return
+        } else {
+            setErr(false)
+            setCount(count - 1)
+        }
     }
+    const handleWeightChange = async (w, u) => {
+
+        console.log("w,u", w)
+        setCartWeight(w)
+        await getPrice(w)
+    }
+    const getPrice = async (weight) => {
+
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/variation_price?type=${type}&productId=${pdId}&weight=${weight}`)
+            if (response.status === 200) {
+                setPrice(Number(response.data.data.price))
+                setStock(Number(response.data.data.stock))
+            }
+        } catch (error) {
+            setPrice(null)
+        }
+    }
+
     console.log("viewDataviewData", viewData)
+    console.log("stock222", stock)
+
     useEffect(() => {
+        setPdId(viewData && viewData?.productId)
         setDescription(viewData && viewData?.description?.split('.').map((paragraph, index) => paragraph.trim() && paragraph.trim() + '.'))
+        setPrice(viewData && viewData?.weight[0]?.price)
+        setCartWeight(viewData && viewData?.weight[0]?.weight)
+        setStock(viewData && viewData?.weight[0]?.stock)
     }, [viewData])
 
 
@@ -150,8 +193,8 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                         <span className="flex-shrink-0">({viewData?.numOfReviews} Reviews)</span>
                                     </div>
                                     <div className="pricing mt-2">
-                                        <span className="fw-bold fs-xs text-danger">₹ {viewData?.actualpricebydiscount}</span>
-                                        <span className="fw-bold fs-xs deleted ms-1">₹ {viewData?.price}</span>
+                                        <span className="fw-bold fs-xs text-danger">₹ {price}</span>
+                                        {/* <span className="fw-bold fs-xs deleted ms-1">₹ {price}</span> */}
                                     </div>
                                     <div className="widget-title d-flex mt-4">
                                         <h6 className="mb-1 flex-shrink-0">Description</h6>
@@ -175,8 +218,8 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                         {
                                             viewData && viewData?.weight?.map((ele) => (
                                                 <li>
-                                                    <input type="radio" name="weight" value="250g" checked />
-                                                    <label>{ele.value} {viewData.unit.charAt(0).toLowerCase()}</label>
+                                                    <input type="radio" name="weight" value={ele.weight} onClick={(e) => handleWeightChange(ele.weight)} />
+                                                    <label>{ele.weight} {viewData.unit.charAt(0).toLowerCase()}</label>
                                                 </li>
                                             ))
                                         }
@@ -190,6 +233,9 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                         </div>
                                         <span className="btn btn-secondary btn-md" onClick={() => handleCart(viewData?.productId, viewData)}><span className="me-2"><AddShoppingCartIcon /></span>Add to Cart</span>
                                     </div>
+                                    {
+                                        err ? (<p className='text-danger'>Product out of stock</p>) : ("")
+                                    }
                                     <div className="tt-category-tag mt-4">
                                         {/* <a href="#" className="btn btn-outline btn-sm">Vegetable</a>
                                         <a href="#" className="btn btn-outline btn-sm">Healthy</a>
@@ -208,7 +254,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                                 </a>
                                             ))}
                                     </div>
-                                  
+
                                 </div>
                             </div>
                         </div>

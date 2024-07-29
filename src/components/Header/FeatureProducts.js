@@ -5,13 +5,14 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useSelector } from 'react-redux'
 import ViewProduct from '../products/ViewProduct';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import axios from 'axios'
 import { useAlert } from 'react-alert'
 
 const FeatureProducts = ({ featuredData, load, setLoad }) => {
     const alert = useAlert()
+    const navigate = useNavigate()
     const [firstHalf, setFirstHalf] = useState([]);
     const [secondHalf, setSecondHalf] = useState([]);
     const [open, setOpen] = useState(false)
@@ -23,12 +24,12 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
     const type = localStorage.getItem("type")
 
     const handleModalOpen = (e) => {
-        setViewData(e)
         setOpen(true)
+        setViewData(e)
     }
 
 
-    const handleAddWhish = async (status, productId, name, description, price, discount, thumbnailimage, stock, ratings, numOfReviews) => {
+    const handleAddWhish = async (status, productId, name, description, price, thumbnailimage, stock, ratings, numOfReviews, weight) => {
         try {
 
             if (!userId || userId === undefined || userId === null) {
@@ -39,12 +40,14 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                 name: name,
                 description: description,
                 price: price,
-                discount: discount,
+                // discount: discount,
                 thumbnailimage: thumbnailimage,
+                weight: weight,
                 stock: stock,
                 numOfReviews: numOfReviews,
                 ratings: ratings
             }
+            console.log("json11", json)
             const config = {
                 headers: {
                     'Content-Type': "application/json",
@@ -69,7 +72,23 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
 
     }
 
+    const handleCheckout = (pd) => {
+        let data = [{
+            color: pd.color,
+            description: pd.description,
+            // discount: pd.discount,
+            itemCount: 1,
+            name: pd.name,
+            price: pd.weight[0].price,
+            productId: pd.productId,
+            thumbImage: pd.thumbnailimage,
+            totalPrice: pd.weight[0].price,
+            weight: pd.weight[0].weight,
+            _id: pd._id,
+        }]
 
+        navigate('/checkout', { state: { data: data } });
+    }
 
 
 
@@ -110,33 +129,33 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                                                     <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
                                                         {
                                                             ele.whishListIds && ele.whishListIds.includes(userId) ? (
-                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteIcon /></span>
+                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews, ele.weight[0].weight)}><FavoriteIcon /></span>
 
                                                             ) : (
-                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews)}><FavoriteBorderIcon /></span>
+                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews, ele.weight[0].weight)}><FavoriteBorderIcon /></span>
                                                             )
                                                         }
                                                         <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
 
                                                     </div>
                                                 </div>
-                                                <Link to={`/details/${ele.productId}`}>
-                                                    <div className="card-content mt-4 mt-sm-0">
-                                                        <div className="d-flex align-items-center flex-nowrap star-rating">
-                                                            <ul className="d-flex align-items-center me-2">
-                                                                <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
 
-                                                            </ul>
-                                                            <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
-                                                        </div>
-                                                        <span className="fw-bold text-heading title d-block">{ele.name}</span>
-                                                        <div className="pricing mt-2">
-                                                            <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele.price}</span>
-                                                            <span className="fw-bold h4 text-danger"> ₹ {ele.actualpricebydiscount}</span>
-                                                        </div>
-                                                        <Link to="/order" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></Link>
+                                                <div className="card-content mt-4 mt-sm-0">
+                                                    <div className="d-flex align-items-center flex-nowrap star-rating">
+                                                        <ul className="d-flex align-items-center me-2">
+                                                            <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
+
+                                                        </ul>
+                                                        <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                     </div>
-                                                </Link>
+                                                    <Link to={`/details/${ele.productId}`}>  <span className="fw-bold text-heading title d-block">{ele.name}</span></Link>
+                                                    <div className="pricing mt-2">
+                                                        {/* <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele?.weight[0]?.price}</span> */}
+                                                        <span className="fw-bold h4 text-danger"> ₹ {ele?.weight[0]?.price}</span>
+                                                    </div>
+                                                    <span onClick={() => handleCheckout(ele)} style={{ cursor: "pointer" }} className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></span>
+                                                </div>
+
                                             </div>
 
                                         ))
@@ -165,9 +184,9 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                                                 <div>
                                                     <div className="card-content position-relative z-2">
                                                         <span className="fs-xs gshop-subtitle text-secondary">{settings.headerFeatureCard}</span>
-                                                        <h4 className="mb-0">{settings.middleFeatureCard}</h4><br/>
-                                                       
-                                                        <p className="mb-4">{settings.footerFeatureCard}</p><br/>
+                                                        <h4 className="mb-0">{settings.middleFeatureCard}</h4><br />
+
+                                                        <p className="mb-4">{settings.footerFeatureCard}</p><br />
                                                         <Link to="/products" className="btn btn-secondary">Shop Now <span className="ms-2"><ArrowForwardIcon /></span></Link>
                                                     </div>
 
@@ -194,33 +213,33 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                                                     <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
                                                         {
                                                             ele.whishListIds && ele.whishListIds.includes(userId) ? (
-                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings)}><FavoriteIcon /></span>
+                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews, ele.weight[0].weight)}><FavoriteIcon /></span>
 
                                                             ) : (
-                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.actualpricebydiscount, ele.discount, ele.thumbnailimage, ele.stock, ele.ratings)}><FavoriteBorderIcon /></span>
+                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.weight[0].price, ele.thumbnailimage, ele.weight[0].stock, ele.ratings, ele.numOfReviews, ele.weight[0].weight)}><FavoriteBorderIcon /></span>
                                                             )
                                                         }
                                                         <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
 
                                                     </div>
                                                 </div>
-                                                <Link to={`/details/${ele.productId}`}>
-                                                    <div className="card-content mt-4 mt-sm-0">
-                                                        <div className="d-flex align-items-center flex-nowrap star-rating">
-                                                            <ul className="d-flex align-items-center me-2">
-                                                                <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
 
-                                                            </ul>
-                                                            <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
-                                                        </div>
-                                                        <span className="fw-bold text-heading title d-block">{ele.name}</span>
-                                                        <div className="pricing mt-2">
-                                                            <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele.price}</span>
-                                                            <span className="fw-bold h4 text-danger"> ₹ {ele.actualpricebydiscount}</span>
-                                                        </div>
-                                                        <Link to="/order" className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></Link>
+                                                <div className="card-content mt-4 mt-sm-0">
+                                                    <div className="d-flex align-items-center flex-nowrap star-rating">
+                                                        <ul className="d-flex align-items-center me-2">
+                                                            <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
+
+                                                        </ul>
+                                                        <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                     </div>
-                                                </Link>
+                                                    <Link to={`/details/${ele.productId}`}>  <span className="fw-bold text-heading title d-block">{ele.name}</span></Link>
+                                                    <div className="pricing mt-2">
+                                                        {/* <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele.price}</span> */}
+                                                        <span className="fw-bold h4 text-danger"> ₹ {ele?.weight[0]?.price}</span>
+                                                    </div>
+                                                    <span onClick={() => handleCheckout(ele)} style={{ cursor: "pointer" }} className="fs-xs fw-bold mt-3 d-inline-block explore-btn">Shop Now<span className="ms-1"><ArrowForwardIcon /></span></span>
+                                                </div>
+
                                             </div>
 
                                         ))
@@ -234,8 +253,12 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                     </section>
                 ) : ("")
             }
-
-            <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+          
+            {
+                open === true ? (
+                    <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+                ) : ("")
+            }
         </>
     )
 }

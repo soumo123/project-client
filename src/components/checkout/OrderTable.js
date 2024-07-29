@@ -133,7 +133,7 @@ const OrderTable = ({ shopId }) => {
                             <td class="thumbnail">
                               {ele.products.length}
                             </td>
-                            <td class="text-secondary">₹ {ele.orderedPrice}</td>
+                            <td class="text-secondary">₹ {ele.orderedPrice?.toFixed(2)}</td>
                             <td>{ele.status === 0 ? ("Pending") : ele.status === 1 ? ("Accepted") : ele.status===2 ? ("Start Processing") : ele.status===3 ? ("Processing...") : ("Complete")}</td>
                             <td class="text-center">
                               <span className="view-invoice fs-xs">
