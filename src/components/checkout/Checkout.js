@@ -196,6 +196,7 @@ const Checkout = () => {
                 sgst: (totalPrice * Number(value1)),
                 initialDeposit: ptPrice,
                 orderedPrice: (totalPrice + ((totalPrice * Number(value2))) + ((totalPrice * Number(value1)))),
+                order_method:"online"
             }
             const config = {
                 headers: {

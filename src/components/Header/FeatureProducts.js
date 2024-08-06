@@ -42,7 +42,7 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                 price: price,
                 // discount: discount,
                 thumbnailimage: thumbnailimage,
-                weight: weight,
+                weight: Number(weight),
                 stock: stock,
                 numOfReviews: numOfReviews,
                 ratings: ratings
