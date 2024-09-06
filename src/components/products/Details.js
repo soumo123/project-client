@@ -23,6 +23,10 @@ import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import axios from 'axios'
 import InterestedProducts from './InterestedProducts';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ViewProduct from './ViewProduct';
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
 const Details = () => {
     const alert = useAlert()
@@ -43,7 +47,7 @@ const Details = () => {
     const [stock, setStock] = useState("")
     const [colors, setColors] = useState("")
     const [reviews, setReviews] = useState([])
-    const [tags,setTags] = useState([])
+    const [tags, setTags] = useState([])
     const [otherDescription1, setOtherdescription1] = useState("")
     const [otherDescription2, setOtherdescription2] = useState("")
     const [comment, setComment] = useState("")
@@ -56,9 +60,15 @@ const Details = () => {
     const [addRating, setAddRating] = useState(0);
     const dataRefe = useSelector((state) => state.noteRef.arr);
     const categories = useSelector((state) => state.categoryDetails.categories)
-    const[cartWeight,setCartWeight] = useState("")
+    const [cartWeight, setCartWeight] = useState("")
     const [featuredData, setFeaturedData] = useState([])
+    const userData = useSelector((state) => state.userDetails.user)
+    const [viewData, setViewData] = useState([])
+    const [open, setOpen] = useState(false)
 
+
+    const sentences = description.match(/[^.!?]+[.!?]/g) || [];
+    console.log("description", description)
 
     var settings = {
         dots: false,
@@ -70,15 +80,15 @@ const Details = () => {
         arrows: true,
     };
     var settings1 = {
-        dots: true,
-        infinite: true,
+        // dots: true,
+        infinite: false,
         speed: 500,
-        slidesToShow: 7,
+        slidesToShow: 3,
         slidesToScroll: 1,
         fade: false,
         arrows: true,
         autoplay: 2000,
-        centerMode: true
+        // centerMode: true
     };
 
     const getProductDetails = async () => {
@@ -87,7 +97,7 @@ const Details = () => {
             if (response.status === 200) {
                 setPdName(response.data.data[0].name)
                 setRatings(response.data.data[0].ratings)
-                setDescription(response.data.data[0].description.split('.').map((paragraph, index) => paragraph.trim() && paragraph.trim() + '.'))
+                setDescription(response.data.data[0].description)
                 setDescription1(response.data.data[0].description)
                 setNoOfReview(response.data.data[0].numOfReviews)
                 setPrice(response.data.data[0].weight[0].price)
@@ -124,11 +134,14 @@ const Details = () => {
         }
     }
 
-
+    const handleModalOpen = (e) => {
+        setViewData(e)
+        setOpen(true)
+    }
 
     const handleIncrement = () => {
-        console.log("count , stock" , count , stock)
-        if (count+1 > stock) {
+        console.log("count , stock", count, stock)
+        if (count + 1 > stock) {
             setErr(true)
             return
         } else {
@@ -149,25 +162,62 @@ const Details = () => {
         setSelectedImage(imageUrl); // Update selected image when clicked
     };
 
-    const handleCart = async (id, pdName, description1, discount, thunbImage) => {
+    const handleCart = async (id, pdName, description1, thunbImage) => {
         try {
-            if (!userId || userId === undefined || userId === null) {
+            if (userData.length === 0) {
                 alert.error("Please Signin First")
                 return
             }
             let json = {
                 name: pdName,
                 description: description1,
-                price:price,
-                weight:cartWeight,
-                stock:stock,
-                color:'',
+                price: price,
+                weight: cartWeight,
+                stock: stock,
+                color: '',
                 itemCount: Number(count),
-                discount: discount,
+                // discount: discount,
                 thumbImage: thunbImage,
                 totalPrice: Number(price) * Number(count)
             }
-            console.log("json", json)
+            console.log("json---carttttt", json)
+
+            const response = await addToCart(id, json)
+
+            if (response) {
+                alert.success("Item added in cart")
+                dispatch(noteRefs(new Date().getSeconds()))
+
+            } else {
+                alert.error("Item alreday in cart")
+
+            }
+
+        } catch (error) {
+            alert.error("Item not added in cart")
+
+        }
+    }
+
+    const handleCart1 = async (id, data) => {
+        try {
+            if (userData.length === 0) {
+                alert.error("Please Signin First")
+                return
+            }
+            let json = {
+                name: data.name,
+                description: data.description,
+                price: data.weight[0].price,
+                weight: data.weight[0].weight,
+                stock: data.weight[0].stock,
+                color: '',
+                itemCount: 1,
+                // discount: data.discount,
+                thumbImage: data.thumbnailimage,
+                totalPrice: Number(data.weight[0].price) * 1
+            }
+            console.log("json---carttttt", json)
 
             const response = await addToCart(id, json)
 
@@ -227,18 +277,18 @@ const Details = () => {
         setComment(e)
     }
 
-    const handleWeightChange = async(w,u)=>{
+    const handleWeightChange = async (w, u) => {
 
-        console.log("w,u",w)
+        console.log("w,u", w)
         setCartWeight(w)
         await getPrice(w)
     }
 
-    const getPrice = async(weight)=>{
+    const getPrice = async (weight) => {
 
         try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/variation_price?type=${type}&productId=${id}&weight=${weight}`) 
-            if(response.status===200){
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/variation_price?type=${type}&productId=${id}&weight=${weight}`)
+            if (response.status === 200) {
                 setPrice(Number(response.data.data.price))
                 setStock(Number(response.data.data.stock))
             }
@@ -247,7 +297,7 @@ const Details = () => {
         }
     }
 
-    console.log("priceeeeeeeeeeee",price)
+    console.log("priceeeeeeeeeeee", price)
 
     useEffect(() => {
         getProductDetails()
@@ -257,9 +307,12 @@ const Details = () => {
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
-    
+
+    useEffect(() => {
+        Aos.init()
+    }, [])
     console.log("addRating", addRating)
-    console.log("cartWeight",cartWeight)
+    console.log("cartWeight", cartWeight)
 
     return (
         <>
@@ -314,18 +367,19 @@ const Details = () => {
                                                         <h6 class="mb-1 flex-shrink-0">Description</h6>
                                                         <span class="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
                                                     </div>
-                                                    {description && description.slice(0, 3).map((paragraph, index) => (
-                                                        <p class="mb-3" key={index}>{paragraph}</p>
+                                                    {sentences.slice(0, 3).map((sentence, index) => (
+                                                        <p className="mb-3" key={index}>{sentence}</p>
                                                     ))}
 
-                                                    <ul class="d-flex flex-column gap-2">
-                                                        {description && description.slice(3).map((paragraph, index) => (
-                                                            <li key={index}><span class="me-2 text-primary"><CheckCircleIcon style={{ color: 'rgb(109 179 84)', fontWeight: "900" }} />{paragraph}</span></li>
+                                                    <ul className="d-flex flex-column gap-2">
+                                                        {sentences.slice(3).map((sentence, index) => (
+                                                            <li key={index}>
+                                                                <span className="me-2 text-primary">
+                                                                    <CheckCircleIcon style={{ color: 'rgb(109 179 84)', fontWeight: "900" }} />
+                                                                    {sentence}
+                                                                </span>
+                                                            </li>
                                                         ))}
-                                                        {/* <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Natural ingredients</li>
-                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Tastes better with milk</li>
-                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Vitamins B2, B3, B5 and B6</li>
-                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Refrigerate for freshness</li> */}
                                                     </ul>
 
                                                     {weight && weight.length > 0 ? (<h6 class="fs-md mb-2 mt-3">Weight:</h6>) : ("")}
@@ -333,7 +387,7 @@ const Details = () => {
                                                         {
                                                             weight && weight.map((ele) => (
                                                                 <li>
-                                                                    <input type="radio" name="weight" value={ele.weight} onClick={(e)=>handleWeightChange(ele.weight,unit)}/>
+                                                                    <input type="radio" name="weight" value={ele.weight} onClick={(e) => handleWeightChange(ele.weight, unit)} />
                                                                     <label>{ele.weight} {unit.charAt(0).toLowerCase()}</label>
                                                                 </li>
                                                             ))
@@ -348,7 +402,7 @@ const Details = () => {
 
                                                         </div>
 
-                                                        <span class="btn btn-secondary btn-md" onClick={() => handleCart(id, pdName, description1, discount, thunbImage)}><span class="me-2"><LocalMallIcon /></span>Add to Cart</span>
+                                                        <span class="btn btn-secondary btn-md" onClick={() => handleCart(id, pdName, description1, thunbImage)}><span class="me-2"><LocalMallIcon /></span>Add to Cart</span>
                                                     </div>
                                                     {
                                                         err ? (<p className='text-danger'>Product out of stock</p>) : ("")
@@ -417,11 +471,11 @@ const Details = () => {
                                                     {
                                                         weight && weight.length > 0 ? (
                                                             <tr>
-                                                                <td class="text-dark fw-semibold">Weight</td>
+                                                                <td class="text-dark fw-semibold">Variation</td>
                                                                 <td>
                                                                     {weight?.map((ele) => (
                                                                         <p>
-                                                                            {ele.value} {unit.charAt(0).toLowerCase()}
+                                                                            {ele.weight} {unit.charAt(0).toLowerCase()}
                                                                         </p>
                                                                     ))}
                                                                 </td>
@@ -541,7 +595,7 @@ const Details = () => {
                                                                 </div>
                                                             </div>
                                                             <div class="card-content mt-3 mt-sm-0">
-                                                                <a href="#" class="d-block fs-sm fw-bold text-heading title d-block">{ele.name}</a>
+                                                                <span class="d-block fs-sm fw-bold text-heading title d-block">{ele.name}</span>
                                                                 <div class="pricing mt-0">
                                                                     {/* <span class="fw-bold fs-xxs text-danger">₹ {ele.actualpricebydiscount}</span> */}
                                                                 </div>
@@ -594,74 +648,84 @@ const Details = () => {
                         </div>
                     </div>
                 </section>
-                <section class="related-product-slider pb-120">
+
+                <section class="related-product-slider pb-120" data-aos="fade-right">
                     <div class="container">
                         <div class="row align-items-center justify-content-between">
                             <div class="col-sm-8">
                                 <div class="section-title text-center text-sm-start">
-                                    <h2 class="mb-0">You may be interested</h2>
+                                    <h6 class="mb-0">You may be interested</h6>
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="rl-slider-btns text-center text-sm-end mt-3 mt-sm-0">
+                                {/* <div class="rl-slider-btns text-center text-sm-end mt-3 mt-sm-0">
                                     <button class="rl-slider-btn slider-btn-prev"><i class="fas fa-arrow-left"></i></button>
                                     <button class="rl-slider-btn slider-btn-next ms-3"><i class="fas fa-arrow-right"></i></button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
-                        <div class="rl-products-slider swiper mt-8">
-
-                            <div class="swiper-wrapper1">
-                                {
-                                    featuredData && featuredData.map((ele) => (
-                                        <Slider {...settings}>
-
+                        <div class="rl-products-slider mt-8">
+                            <div class="">
+                                <Slider {...settings1}>
+                                    {
+                                        featuredData && featuredData.map((ele) => (
                                             <div class="vertical-product-card rounded-2 position-relative swiper-slide">
-                                                <span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">-12% OFF</span>
+                                                {/* <span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">-12% OFF</span> */}
                                                 <div class="thumbnail position-relative text-center p-4">
-                                                    <img src="assets/img/products/apple.png" alt="apple" class="img-fluid" />
+                                                    <img src={ele?.thumbnailimage} alt="apple" class="img-fluid" />
                                                     <div class="product-btns position-absolute d-flex gap-2 flex-column">
-                                                        <a href="#" class="rounded-btn"><i class="fa-regular fa-heart"></i></a>
-                                                        <a href="#" class="rounded-btn">
-                                                            <svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.705 0.201222C10.4317 0.469526 10.4317 0.904522 10.705 1.17283L11.6101 2.06107H7.70001C6.15364 2.06107 4.90001 3.29144 4.90001 4.80917V5.49619C4.90001 5.87564 5.21341 6.18322 5.60001 6.18322C5.98662 6.18322 6.30001 5.87564 6.30001 5.49619V4.80917C6.30001 4.0503 6.92679 3.43512 7.70001 3.43512H11.6101L10.705 4.32337C10.4317 4.59166 10.4317 5.02668 10.705 5.29496C10.9784 5.56325 11.4216 5.56325 11.695 5.29496L13.795 3.2339C14.0683 2.96559 14.0683 2.5306 13.795 2.26229L11.695 0.201222C11.4216 -0.0670741 10.9784 -0.0670741 10.705 0.201222ZM8.40001 4.80917C8.0134 4.80917 7.70001 5.11675 7.70001 5.49619V6.18322C7.70001 6.9421 7.07323 7.55726 6.30001 7.55726H2.38995L3.29498 6.66901C3.56835 6.40073 3.56835 5.9657 3.29498 5.69742C3.02161 5.42914 2.5784 5.42914 2.30503 5.69742L0.205023 7.75849C-0.0683411 8.02678 -0.0683411 8.4618 0.205023 8.73008L2.30503 10.7912C2.5784 11.0594 3.02161 11.0594 3.29498 10.7912C3.56835 10.5229 3.56835 10.0878 3.29498 9.81957L2.38995 8.93131H6.30001C7.84638 8.93131 9.10001 7.70092 9.10001 6.18322V5.49619C9.10001 5.11675 8.78662 4.80917 8.40001 4.80917Z" fill="#AEB1B9"></path>
-                                                            </svg>
-                                                        </a>
-                                                        <a href="#" class="rounded-btn"><i class="fa-regular fa-eye"></i></a>
+                                                        {
+                                                            ele.whishListIds && ele.whishListIds.includes(userId) ? (
+                                                                <span className="rounded-btn1" style={{ cursor: 'pointer', color: "#6eb356" }} onClick={() => handleAddWhish(false, ele.productId, ele.name, ele.description, ele.thumbnailimage, ele.ratings, ele.numOfReviews, ele.weight[0]?.price, ele.weight[0]?.stock, ele.weight[0]?.weight)}><FavoriteIcon /></span>
+
+                                                            ) : (
+                                                                <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleAddWhish(true, ele.productId, ele.name, ele.description, ele.thumbnailimage, ele.ratings, ele.numOfReviews, ele.weight[0]?.price, ele.weight[0]?.stock, ele.weight[0]?.weight)}><FavoriteBorderIcon /></span>
+                                                            )
+                                                        }
+
+                                                        <span style={{ cursor: 'pointer' }} class="rounded-btn" onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
                                                     </div>
                                                 </div>
                                                 <div class="card-content">
-                                                    <a href="#" class="mb-2 d-inline-block text-secondary fw-semibold fs-xxs">Fresh Organic</a>
-                                                    <a href="#" class="card-title fw-bold d-block mb-2">Popped Rice Crisps Snacks Chocolate.</a>
-                                                    <div class="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
-                                                        <ul class="d-flex align-items-center me-2">
-                                                            <li class="text-warning"><i class="fa-solid fa-star"></i></li>
-                                                            <li class="text-warning"><i class="fa-solid fa-star"></i></li>
-                                                            <li class="text-warning"><i class="fa-solid fa-star"></i></li>
-                                                            <li class="text-warning"><i class="fa-solid fa-star"></i></li>
-                                                            <li class="text-warning"><i class="fa-solid fa-star"></i></li>
-                                                        </ul>
-                                                        <span class="flex-shrink-0">(5.2k Reviews)</span>
+                                                    <div class="mb-2 tt-category tt-line-clamp tt-clamp-1">
+                                                        {categories
+                                                            .filter(item => ele.tags.includes(item.value))
+                                                            .map((item, index) => (
+                                                                <span
+                                                                    key={item.value}
+                                                                    data-toggle="tooltip"
+                                                                    title={item.label}
+                                                                >
+                                                                    {item.label}
+                                                                    {index !== ele.tags.length - 1 && ', '}
+                                                                </span>
+                                                            ))}
                                                     </div>
-                                                    <h6 class="price text-danger mb-3">$140.00</h6>
+                                                    {/* <a href="#" class="mb-2 d-inline-block text-secondary fw-semibold fs-xxs">Fresh Organic</a> */}
+                                                    <a href="#" class="card-title fw-bold d-block mb-2">{ele?.name}</a>
+                                                    <div class="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
+                                                        <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
+                                                        <span class="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
+                                                    </div>
+                                                    <h6 class="price text-danger mb-3">₹ {ele?.weight[0]?.price}</h6>
                                                     <div class="card-progressbar mb-2 rounded-pill">
                                                         <span class="card-progress bg-primary" data-progress="60%" style={{ width: "60%" }}></span>
                                                     </div>
-                                                    <p class="mb-0 fw-semibold">Available: <span class="fw-bold text-secondary">40/100</span></p>
-                                                    <a href="#" class="btn btn-outline-secondary btn-md border-secondary d-block mt-4">Add to Cart</a>
+                                                    {/* <p class="mb-0 fw-semibold">Available: <span class="fw-bold text-secondary">40/100</span></p> */}
+                                                    <a href="#" class="btn btn-outline-secondary btn-md border-secondary d-block mt-4" onClick={() => handleCart1(ele.productId, ele)}>Add to Cart</a>
                                                 </div>
                                             </div>
-
-                                        </Slider>
-
-                                    ))
-                                }
+                                        ))
+                                    }
 
 
+                                </Slider>
                             </div>
                         </div>
                     </div>
                 </section>
+
+
             </div>
 
 
@@ -711,6 +775,11 @@ const Details = () => {
             </Dialog>
 
 
+            {
+                open === true ? (
+                    <ViewProduct setOpen={setOpen} open={open} viewData={viewData} />
+                ) : ("")
+            }
         </>
     )
 }
