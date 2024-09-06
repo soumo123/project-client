@@ -319,7 +319,7 @@ const AllProduct = () => {
                                                                             </ul>
                                                                             <span class="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                                         </div>
-                                                                        {/* <h6 class="price text-danger mb-4"> ₹ {ele?.weight[0]?.price}</h6> */}
+                                                                        <h6 class="price text-danger mb-4"> ₹ {ele?.weight[0]?.price}</h6>
                                                                         <span class="btn btn-outline-secondary d-block btn-md" onClick={() => handleCart(ele.productId, ele)}>Add to Cart</span>
                                                                     </div>
 
