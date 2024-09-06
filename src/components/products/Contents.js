@@ -40,7 +40,7 @@ const Contents = () => {
                                                 <div className="card-content mt-3 mt-sm-0">
                                                     <span className="d-block fs-sm fw-bold text-heading title d-block">{ele.name}</span>
                                                     <div className="pricing mt-0">
-                                                        <span className="fw-bold fs-xxs text-danger"> ₹ {ele.actualpricebydiscount}</span>
+                                                         <span className="fw-bold fs-xxs text-danger">  ₹ {ele?.weight[0]?.price}</span>
                                                     </div>
                                                     <div className="d-flex align-items-center flex-nowrap star-rating mt-1">
                                                         <ul className="d-flex align-items-center me-2">
