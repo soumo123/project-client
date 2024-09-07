@@ -18,6 +18,7 @@ import Account from './components/Header/Home/Account';
 import Details from './components/products/Details';
 import Aboutus from './components/Header/Home/Aboutus';
 import Checkout from './components/checkout/Checkout';
+import Contactus from './components/Footer/Contactus';
 
 
 function App() {
@@ -137,6 +138,8 @@ function App() {
         <Route exact={true} path="/whishlist" element={<Whishlist />} />
         <Route exact={true} path="/account" element={<Account />} />
         <Route exact={true} path="/checkout" element={<Checkout />}></Route>
+        <Route exact={true} path="/contact-us" element={<Contactus />}></Route>
+
       </Routes>
 
       <Footer />

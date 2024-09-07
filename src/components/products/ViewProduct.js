@@ -28,6 +28,9 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
     const [cartWeight, setCartWeight] = useState("")
     const [err, setErr] = useState(false)
 
+
+    const sentences = description.match(/[^.!?]+[.!?]/g) || [];
+
     const categories = useSelector((state) => state.categoryDetails.categories)
     const handleCloseModal = () => {
         setOpen(!open);
@@ -54,8 +57,8 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
             console.log("json-www", json)
 
             const response = await addToCart(id, json)
-            console.log("responseresponse",response)
-            if (response===true) {
+            console.log("responseresponse", response)
+            if (response === true) {
                 alert.success("Item added in cart")
                 setOpen(false)
                 dispatch(noteRefs(new Date().getSeconds()))
@@ -134,7 +137,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
 
     useEffect(() => {
         setPdId(viewData && viewData?.productId)
-        setDescription(viewData && viewData?.description?.split('.').map((paragraph, index) => paragraph.trim() && paragraph.trim() + '.'))
+        setDescription(viewData && viewData?.description)
         setPrice(viewData && viewData?.weight[0]?.price)
         setCartWeight(viewData && viewData?.weight[0]?.weight)
         setStock(viewData && viewData?.weight[0]?.stock)
@@ -164,7 +167,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                     <div className="quickview-product-slider swiper">
                                         <div className="swiper-wrapper">
                                             <div className="swiper-slide text-center">
-                                                <InnerImageZoom zoomScale={2} zoomType="hover" src={selectedImage && selectedImage} />
+                                                <InnerImageZoom zoomScale={0.3} zoomType="hover" src={selectedImage && selectedImage} />
                                             </div>
 
                                         </div>
@@ -201,17 +204,19 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                         <h6 className="mb-1 flex-shrink-0">Description</h6>
                                         <span className="hr-line w-100 position-relative d-block align-self-end ms-1"></span>
                                     </div>
-                                    {description && description.slice(0, 3).map((paragraph, index) => (
-                                        <p class="mb-3" key={index}>{paragraph}</p>
+                                    {sentences.slice(0, 3).map((sentence, index) => (
+                                        <p className="mb-3" key={index}>{sentence}</p>
                                     ))}
                                     <ul class="d-flex flex-column gap-2">
-                                        {description && description.slice(3).map((paragraph, index) => (
-                                            <li key={index}><span class="me-2 text-primary"><CheckCircleIcon style={{ color: 'rgb(109 179 84)', fontWeight: "900" }} />{paragraph}</span></li>
+                                        {sentences.slice(3).map((sentence, index) => (
+                                            <li key={index}>
+                                                <span className="me-2 text-primary">
+                                                    <CheckCircleIcon style={{ color: 'rgb(109 179 84)', fontWeight: "900" }} />
+                                                    {sentence}
+                                                </span>
+                                            </li>
                                         ))}
-                                        {/* <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Natural ingredients</li>
-                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Tastes better with milk</li>
-                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Vitamins B2, B3, B5 and B6</li>
-                                                        <li><span class="me-2 text-primary"><i class="fa-solid fa-circle-check"></i></span>Refrigerate for freshness</li> */}
+
                                     </ul>
                                     {viewData && viewData?.weight?.length > 0 ? (<h6 class="fs-md mb-2 mt-3">Weight:</h6>) : ("")}
 

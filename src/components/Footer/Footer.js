@@ -46,12 +46,12 @@ const Footer = () => {
                         <div className="footer-widget">
                             <h5 className="text-white mb-4">Category</h5>
                             <ul className="footer-nav">
-                                <li><a href="#">Testimonials</a></li>
-                                <li><a href="#">Contact</a></li>
+                                {/* <li><a href="#">Testimonials</a></li> */}
+                                <li><Link to="/contact-us">Contact</Link></li>
                                 <li><Link to="/about-us">About us</Link></li>
-                                <li><a href="#">Our Guarantee</a></li>
-                                <li><a href="#">Track Your Order</a></li>
-                                <li><a href="#">Help Page</a></li>
+                                {/* <li><a href="#">Our Guarantee</a></li> */}
+                                {/* <li><a href="#">Track Your Order</a></li> */}
+                                {/* <li><a href="#">Help Page</a></li> */}
                             </ul>
                         </div>
                     </div>

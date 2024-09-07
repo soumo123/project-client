@@ -45325,6 +45325,47 @@ blockquote::before {
 .healthcare-hero-thumbnail-slider .thumbnail-single.swiper-slide-prev,.healthcare-hero-thumbnail-slider .thumbnail-single.swiper-slide-next {
 	opacity: .7;
 }
+.thumbnail{
+	width: 100%;
+    height: 200px;
+}
+.thumbnail img{
+	width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+
+
+
+
+
+.gstore-product-quick-view .product-thumb-single {
+   
+   height: 111px;
+
+}
+.gstore-product-quick-view .product-thumb-single img{
+   
+	width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    object-fit: cover;
+ 
+ }
+ .gstore-product-quick-view .slick-slide{
+	margin: 6px;
+}
+
+.gstore-product-quick-view .slick-track{
+	width: 600px !important;
+}
+
+
+
 
 .healthcare-hero-thumbnail-slider .thumbnail-single.swiper-slide-active {
 	-webkit-transform: scale(1);

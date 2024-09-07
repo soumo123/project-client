@@ -297,6 +297,55 @@ const Details = () => {
         }
     }
 
+
+    const handleAddWhish = async (status, productId, name, description, thumbnailimage, ratings, numOfReviews, price, stock, weight) => {
+        try {
+
+            if (!userId || userId === undefined || userId === null) {
+                alert.error("Please Signin First")
+                return
+            }
+            let json = {
+                name: name,
+                description: description,
+                price: Number(price),
+                // discount: discount,
+                thumbnailimage: thumbnailimage,
+                stock: stock,
+                weight: weight,
+                numOfReviews: numOfReviews,
+                ratings: ratings
+            }
+            console.log("wishhh json", json)
+            const config = {
+                headers: {
+                    'Content-Type': "application/json",
+                },
+                withCredentials: true
+            }
+            const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/add_whishlist?status=${status}&userId=${userId}&type=${Number(type)}&productId=${productId}`, json, config)
+            if (response.status === 200) {
+                if (status === true || status === "true") {
+                    alert.success("Product add to whsihlist");
+                    dispatch(noteRefs(new Date().getSeconds()))
+
+                } else {
+                    alert.success("Product remove to whsihlist");
+                    dispatch(noteRefs(new Date().getSeconds()))
+
+                }
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
+
+
+
     console.log("priceeeeeeeeeeee", price)
 
     useEffect(() => {
@@ -329,7 +378,7 @@ const Details = () => {
                                                     <div class="quickview-product-slider swiper">
                                                         <div class="swiper-wrapper">
                                                             <div class="swiper-slide text-center">
-                                                                <InnerImageZoom zoomScale={2} zoomType="hover" src={selectedImage && selectedImage} />
+                                                                <InnerImageZoom zoomScale={0.3} zoomType="hover" src={selectedImage && selectedImage} />
 
                                                             </div>
 
@@ -384,15 +433,18 @@ const Details = () => {
 
                                                     {weight && weight.length > 0 ? (<h6 class="fs-md mb-2 mt-3">Weight:</h6>) : ("")}
                                                     <ul class="product-radio-btn mb-4 d-flex align-items-center gap-2">
-                                                        {
-                                                            weight && weight.map((ele) => (
-                                                                <li>
-                                                                    <input type="radio" name="weight" value={ele.weight} onClick={(e) => handleWeightChange(ele.weight, unit)} />
-                                                                    <label>{ele.weight} {unit.charAt(0).toLowerCase()}</label>
-                                                                </li>
-                                                            ))
-                                                        }
-
+                                                        {weight && weight.map((ele, index) => (
+                                                            <li key={index}>
+                                                                <input
+                                                                    type="radio"
+                                                                    name="weight"
+                                                                    value={ele.weight}
+                                                                    onClick={(e) => handleWeightChange(ele.weight, unit)}
+                                                                    defaultChecked={index === 0}
+                                                                />
+                                                                <label>{ele.weight} {unit.charAt(0).toLowerCase()}</label>
+                                                            </li>
+                                                        ))}
                                                     </ul>
                                                     <div class="d-flex align-items-center gap-4 flex-wrap">
                                                         <div class="product-qty d-flex align-items-center">

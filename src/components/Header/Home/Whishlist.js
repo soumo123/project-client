@@ -34,16 +34,31 @@ const Whishlist = () => {
 
     }
 
-    const handleRemove = async (status, productId) => {
+    const handleRemove = async (status, productId, name, description, price, thumbnailimage, stock, ratings, numOfReviews, weight) => {
 
         try {
+            if (!userId || userId === undefined || userId === null) {
+                alert.error("Please Signin First")
+                return
+            }
+            let json = {
+                name: name,
+                description: description,
+                price: price,
+                // discount: discount,
+                thumbnailimage: thumbnailimage,
+                weight: Number(weight),
+                stock: stock,
+                numOfReviews: numOfReviews,
+                ratings: ratings
+            }
             const config = {
                 headers: {
                     'Content-Type': "application/json",
                 },
                 withCredentials: true
             }
-            const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/add_whishlist?status=${status}&userId=${userId}&type=${Number(type)}&productId=${productId}`, config)
+            const response = await axios.put(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/add_whishlist?status=${status}&userId=${userId}&type=${Number(type)}&productId=${productId}`,json, config)
             if (response.status === 200) {
                 alert.success("Product remove to whsihlist");
                 dispatch(noteRefs(new Date().getSeconds()))
@@ -92,7 +107,7 @@ const Whishlist = () => {
     }, [dataRefe])
 
 
-
+console.log("whishlistData",whishlistData)
     return (
         <>
 
@@ -170,7 +185,7 @@ const Whishlist = () => {
                                                                                 <td className="text-end">
                                                                                     <span className="price fw-bold text-dark">₹ {ele.price}</span>
                                                                                     <span className="btn btn-secondary btn-sm ms-5 rounded-1" onClick={() => handleCart(ele.productId, ele)}>Add to Cart</span>
-                                                                                    <span style={{ cursor: "pointer" }} className="close-btn ms-3" onClick={() => handleRemove(false, ele.productId)}><CloseIcon /></span>
+                                                                                    <span style={{ cursor: "pointer" }} className="close-btn ms-3" onClick={() => handleRemove(false, ele.productId, ele.name, ele.description, ele.price, ele.thumbnailimage, ele.stock, ele.ratings, ele.numOfReviews, ele.weight)}><CloseIcon /></span>
                                                                                 </td>
                                                                             </tr>
                                                                         ))
