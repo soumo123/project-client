@@ -372,8 +372,8 @@ const Details = () => {
                             <div class="col-xl-9">
                                 <div class="product-details">
                                     <div class="gstore-product-quick-view bg-white rounded-3 py-6 px-4">
-                                        <div class="row align-items-center g-4">
-                                            <div class="col-xl-6 align-self-end">
+                                        <div class="row align-items-start g-4">
+                                            <div class="col-xl-6">
                                                 <div class="quickview-double-slider">
                                                     <div class="quickview-product-slider swiper">
                                                         <div class="swiper-wrapper">
@@ -754,7 +754,8 @@ const Details = () => {
                                                             ))}
                                                     </div>
                                                     {/* <a href="#" class="mb-2 d-inline-block text-secondary fw-semibold fs-xxs">Fresh Organic</a> */}
-                                                    <a href="#" class="card-title fw-bold d-block mb-2">{ele?.name}</a>
+                                              
+                                                    <Link to={`/details/${ele.productId}`} class="card-title fw-bold d-block mb-2">{ele?.name}</Link>
                                                     <div class="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
                                                         <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
                                                         <span class="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
@@ -764,7 +765,7 @@ const Details = () => {
                                                         <span class="card-progress bg-primary" data-progress="60%" style={{ width: "60%" }}></span>
                                                     </div>
                                                     {/* <p class="mb-0 fw-semibold">Available: <span class="fw-bold text-secondary">40/100</span></p> */}
-                                                    <a href="#" class="btn btn-outline-secondary btn-md border-secondary d-block mt-4" onClick={() => handleCart1(ele.productId, ele)}>Add to Cart</a>
+                                                    <span class="btn btn-outline-secondary btn-md border-secondary d-block mt-4" onClick={() => handleCart1(ele.productId, ele)}>Add to Cart</span>
                                                 </div>
                                             </div>
                                         ))

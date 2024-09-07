@@ -161,8 +161,8 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                 <Modal.Body classNameNameName="">
 
                     <div className="gstore-product-quick-view bg-white rounded-3 py-6 px-4">
-                        <div className="row align-items-center g-4">
-                            <div className="col-xl-6 align-self-end">
+                        <div className="row align-items-start g-4">
+                            <div className="col-xl-6">
                                 <div className="quickview-double-slider">
                                     <div className="quickview-product-slider swiper">
                                         <div className="swiper-wrapper">
