@@ -222,9 +222,9 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
 
                                     <ul class="product-radio-btn mb-4 d-flex align-items-center gap-2">
                                         {
-                                            viewData && viewData?.weight?.map((ele) => (
-                                                <li>
-                                                    <input type="radio" name="weight" value={ele.weight} onClick={(e) => handleWeightChange(ele.weight)} />
+                                            viewData && viewData?.weight?.map((ele,index) => (
+                                                <li key={index}>
+                                                    <input type="radio" name="weight" defaultChecked={index === 0} value={ele.weight} onClick={(e) => handleWeightChange(ele.weight)} />
                                                     <label>{ele.weight} {viewData.unit.charAt(0).toLowerCase()}</label>
                                                 </li>
                                             ))

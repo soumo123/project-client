@@ -1,12 +1,13 @@
 import React from 'react'
 import BorderLine from '../../images/shapes/border-line.svg'
-import Visa from '../../images/brands/visa.png'
 import MaterCard from '../../images/brands/mastercard.png'
 import Payoner from '../../images/brands/payoneer.png'
 import Paypal from '../../images/brands/paypal.png'
 import { useSelector, useDispatch } from 'react-redux'
 import {Link} from 'react-router-dom'
-
+import gpay from '../../images/gpay.png';
+import Paytm from '../../images/paytm.png'
+import Phonepay from '../../images/phonepe.png'
 
 const Footer = () => {
      const images = useSelector((state) => state.imageReducer.images.staticImages)
@@ -59,12 +60,12 @@ const Footer = () => {
                         <div className="footer-widget">
                             <h5 className="text-white mb-4">Quick Links</h5>
                             <ul className="footer-nav">
-                                <li><a href="#">Your Account</a></li>
-                                <li><a href="#">Returns & Exchanges</a></li>
-                                <li><a href="#">Return Center</a></li>
+                                <li><a href="#">Business registration</a></li>
+                                <li><a href="#">Open your shop </a></li>
+                                {/* <li><a href="#">Return Center</a></li>
                                 <li><a href="#">Purchase History</a></li>
                                 <li><a href="#">Latest News Blog</a></li>
-                                <li><a href="#">Shipping & Delivery</a></li>
+                                <li><a href="#">Shipping & Delivery</a></li> */}
                             </ul>
                         </div>
                     </div>
@@ -72,12 +73,12 @@ const Footer = () => {
                         <div className="footer-widget">
                             <h5 className="text-white mb-4">Contact Us</h5>
                             <ul className="footer-nav">
-                                <li><a href="#">Testimonials</a></li>
                                 <li><a href="#">Contact</a></li>
+                                {/* <li><a href="#">Contact</a></li> */}
                                 <li><a href="#">Location & Working Hours</a></li>
-                                <li><a href="#">Our Guarantee</a></li>
+                                {/* <li><a href="#">Our Guarantee</a></li>
                                 <li><a href="#">Track Your Order</a></li>
-                                <li><a href="#">Help Page</a></li>
+                                <li><a href="#">Help Page</a></li> */}
                             </ul>
                         </div>
                     </div>
@@ -85,12 +86,12 @@ const Footer = () => {
                         <div className="footer-widget">
                             <h5 className="text-white mb-4">Customer Support</h5>
                             <ul className="footer-nav">
-                                <li><a href="#">Your Account</a></li>
-                                <li><a href="#">Returns & Exchanges</a></li>
+                                <li><a href="#">Chat with us</a></li>
+                                {/* <li><a href="#">Returns & Exchanges</a></li>
                                 <li><a href="#">Return Center</a></li>
                                 <li><a href="#">Purchase History</a></li>
                                 <li><a href="#">Latest News Blog</a></li>
-                                <li><a href="#">Shipping & Delivery</a></li>
+                                <li><a href="#">Shipping & Delivery</a></li> */}
                             </ul>
                         </div>
                     </div>
@@ -113,17 +114,17 @@ const Footer = () => {
                         <div className="col-lg-4">
                             <div className="footer-payments-info d-flex align-items-center justify-content-lg-end gap-2">
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src={Visa} alt="visa" className="img-fluid"/>
+                                    <img src={gpay} alt="G-pay" className="img-fluid"/>
                                 </div>
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src={MaterCard} alt="visa" className="img-fluid"/>
+                                    <img src={Paytm} alt="Paytm" className="img-fluid"/>
                                 </div>
                                 <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
-                                    <img src={Payoner} alt="visa" className="img-fluid"/>
+                                    <img src={Phonepay} alt="Phonpe" className="img-fluid"/>
                                 </div>
-                                <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
+                                {/* <div className="supported-payment-box rounded-1 bg-dark-light d-inline-flex align-items-center justify-content-center p-2 flex-shrink-0">
                                     <img src={Paypal} alt="visa" className="img-fluid"/>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
