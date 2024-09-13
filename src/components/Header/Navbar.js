@@ -142,6 +142,7 @@ const Navbar = () => {
                     // localStorage.setItem("type", response.data.user.type)
                     localStorage.setItem("profile", JSON.stringify(profileData))
                     dispatch(fetchUserDetails(response.data.user))
+                    dispatch(noteRefs(new Date().getSeconds()))
                     navigate("/")
                } else {
                     alert.error("Invalid email or password")
@@ -160,6 +161,7 @@ const Navbar = () => {
           alert.success("Logout successfully")
           setLogOutOpen(false);
           dispatch(fetchUserDetails([]))
+          dispatch(noteRefs(new Date().getSeconds()))
      }
      const handleClickModalOpen = () => {
           setLogOutOpen(true);
