@@ -8,7 +8,7 @@ import cartReducer from './redux/reducers/cartReducer'
 import imageReducer from './redux/reducers/imageReducer'
 import categoryReducer from './redux/reducers/categoriesReducer'
 import settingReducer from './redux/reducers/settingReducer'
-
+import qrcartReducer from './redux/reducers/QrReducer'
 
 
 const reducer = combineReducers({
@@ -19,6 +19,7 @@ const reducer = combineReducers({
     categoryDetails:categoryReducer,
     imageReducer:imageReducer,
     settingReducer:settingReducer,
+    qrProducts:qrcartReducer
 })
 
 

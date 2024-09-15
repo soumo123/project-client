@@ -47971,8 +47971,8 @@ hr {
 }
 
 .card-footer {
-	background-color: #AB47BC;
-	color: #fff;
+	/* background-color: #AB47BC;
+	color: #fff; */
 }
 
 h2 {
@@ -48010,8 +48010,8 @@ h2 {
 }
 
 .card-footer small {
-	letter-spacing: 7px !important;
-	font-size: 12px;
+	/* letter-spacing: 7px !important; */
+	/* font-size: 12px; */
 }
 
 .border-line {
@@ -48037,4 +48037,7 @@ h2 {
 	visibility: visible ;
 	z-index: 999 ;
 
+}
+.infinite-scroll-component {
+    overflow: hidden !important;
 }

@@ -19,6 +19,9 @@ import Details from './components/products/Details';
 import Aboutus from './components/Header/Home/Aboutus';
 import Checkout from './components/checkout/Checkout';
 import Contactus from './components/Footer/Contactus';
+import Qrproducts from './components/Qr-products/Qrproducts';
+import QrAppbar from './components/custom/QrAppbar';
+import QrCart from './components/Qr-products/QrCart';
 
 
 function App() {
@@ -122,17 +125,18 @@ function App() {
 
 
 
-
+  const hideNavbarRoutes = ['/results','/product-cart']; // Add any routes where you don't want to show the Navbar
 
 
   return (
     <>
 
-      <Navbar />
+      {hideNavbarRoutes.includes(location.pathname) ? <QrAppbar /> : <Navbar/>}
       <Routes>
         <Route exact={true} path="/" element={<Home />} />
         <Route exact={true} path="/about-us" element={<Aboutus />} />
         <Route exact={true} path="/products" element={<AllProduct />} />
+
         <Route exact={true} path="/details/:id" element={<Details />} />
         <Route exact={true} path="/cart" element={<Cart />} />
         <Route exact={true} path="/whishlist" element={<Whishlist />} />
@@ -140,9 +144,11 @@ function App() {
         <Route exact={true} path="/checkout" element={<Checkout />}></Route>
         <Route exact={true} path="/contact-us" element={<Contactus />}></Route>
 
+        <Route exact={true} path="/results" element={<Qrproducts />} />
+        <Route exact={true} path="/product-cart" element={<QrCart />} />
       </Routes>
-
-      <Footer />
+      {hideNavbarRoutes.includes(location.pathname) ? "" :<Footer />}
+      
     </>
   );
 }
