@@ -6,14 +6,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { addCartItems } from '../../redux/actions/productAction';
 import { useAlert } from 'react-alert'
-
+import { useLocation } from 'react-router-dom';
 
 
 const Qrproducts = () => {
+    const location = useLocation();
+
+    const queryParams = new URLSearchParams(location.search);
+    const type = queryParams.get('type');
+
+    console.log()
     // Initial states for limit, offset, products, and loading more data
     const dispatch = useDispatch()
     const alert = useAlert()
@@ -24,32 +30,11 @@ const Qrproducts = () => {
     const [selectProduct, setSelectedProduct] = useState({})
     const [quantity, setQuantity] = useState(1)
     const [open, setOpen] = React.useState(false);
-  
-    
+
+
     // Fetch products from API
 
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/qr-products?type=1&limit=${limit}&offset=${offset}`);
 
-            const fetchedProducts = response.data.data;
-
-            // Append new products to the existing products array
-            setProducts((prevProducts) => [...prevProducts, ...fetchedProducts]);
-
-            // If the number of fetched products is less than the limit, stop loading more
-            if (fetchedProducts.length < limit) {
-                setHasMore(false);
-            }
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
-    };
-
-    // Effect to initially load products and when offset changes
-    useEffect(() => {
-        fetchProducts();
-    }, [offset]);
 
     // Function to fetch more data when scrolling
     const fetchMoreData = () => {
@@ -79,12 +64,42 @@ const Qrproducts = () => {
         }
     }
 
-    const handleAddToCart = ()=>{
-        dispatch(addCartItems({...selectProduct,quantity:Number(quantity)}))
+    const handleAddToCart = () => {
+        dispatch(addCartItems({ ...selectProduct, quantity: Number(quantity) }))
         setOpen(false);
         alert.success("Product added to cart")
     }
 
+    useEffect(() => {
+        if (type) {
+            localStorage.setItem("type",1)
+        }
+    }, [type])
+
+    const exactType = localStorage.getItem("type")
+
+    const fetchProducts = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/qr-products?type=${exactType}&limit=${limit}&offset=${offset}`);
+
+            const fetchedProducts = response.data.data;
+
+            // Append new products to the existing products array
+            setProducts((prevProducts) => [...prevProducts, ...fetchedProducts]);
+
+            // If the number of fetched products is less than the limit, stop loading more
+            if (fetchedProducts.length < limit) {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
+
+    // Effect to initially load products and when offset changes
+    useEffect(() => {
+        fetchProducts();
+    }, [offset]);
 
     return (
         <>
@@ -98,7 +113,7 @@ const Qrproducts = () => {
                                         dataLength={products.length}
                                         next={fetchMoreData}
                                         hasMore={hasMore}
-                                        loader={<h4 style={{marginTop:"30px", textAlign:"center"}}>Loading...</h4>}
+                                        loader={<h4 style={{ marginTop: "30px", textAlign: "center" }}>Loading...</h4>}
                                         endMessage={
                                             <p style={{ textAlign: 'center' }}>
                                                 <b>You have seen it all!</b>
@@ -159,20 +174,20 @@ const Qrproducts = () => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        
-                                <div className="row">
-                      
-                                <div class="col">
-                                    <label for="inputEmail4" class="form-label">Quantity</label>
-                                    <input type="text" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" value={quantity} onChange={(e) => handleQuantityChange(e.target.value)} />
-                                </div>
-                                <div class="col">
-                                    <label for="inputEmail4" class="form-label">Total Price (₹)</label>
-                                    <input type="text" class="form-control" placeholder="Total Price" aria-label="Total Price" aria-describedby="basic-addon1" value={quantity * selectProduct.price} readOnly />
-                                </div>
+
+                        <div className="row">
+
+                            <div class="col">
+                                <label for="inputEmail4" class="form-label">Quantity</label>
+                                <input type="text" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" value={quantity} onChange={(e) => handleQuantityChange(e.target.value)} />
                             </div>
-                            
-                      
+                            <div class="col">
+                                <label for="inputEmail4" class="form-label">Total Price (₹)</label>
+                                <input type="text" class="form-control" placeholder="Total Price" aria-label="Total Price" aria-describedby="basic-addon1" value={quantity * selectProduct.price} readOnly />
+                            </div>
+                        </div>
+
+
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
