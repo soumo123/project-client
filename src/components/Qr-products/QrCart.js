@@ -81,20 +81,19 @@ const QrCart = () => {
     const handleOrder = async (e) => {
         e.preventDefault()
         try {
-            console.log("err || err1err || err1", err, err1)
             if (!name || !phone) {
                 setErr1(true)
                 return
             }
 
-            if(phone.length<10){
+            if (phone.length < 10) {
                 setErr(true)
                 setErrMess("Number must be at least 10 digit")
                 return
             }
 
-            if(err){
-               return 
+            if (err) {
+                return
             }
             let json = {
                 products: productData,
@@ -111,14 +110,14 @@ const QrCart = () => {
                 withCredentials: true
             }
 
-            // const result = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/manualorder?type=${type}`, json, config)
-            // if(result.status===201){
-            //     alert.success("Request Sent")
-            //     dispatch(cleanCartItems([]))
-            // }else{
-            //     alert.error("Oops..Something Went Wrong")
+            const result = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/manualorder?type=${type}`, json, config)
+            if(result.status===201){
+                alert.success("Request Sent")
+                dispatch(cleanCartItems([]))
+            }else{
+                alert.error("Oops..Something Went Wrong")
 
-            // }
+            }
 
 
         } catch (error) {
@@ -153,23 +152,7 @@ const QrCart = () => {
         <>
 
             <div className="main-wrapper">
-                <div className="gstore-breadcrumb position-relative z-1 overflow-hidden mt--50">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-12">
-                                <div className="breadcrumb-content">
-                                    <h2 className="mb-2 text-center">Cart Products</h2>
-                                    <div className="mb-2 text-center">
-
-                                        <button type="button" className="btn btn-primary justify-content-center" onClick={homePage}>Back</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <section className="wishlist-section ptb-120">
-
+                <section className="containerwishlist-section ptb-120">
                     {
                         cartData && cartData.length > 0 ? (
                             <div className="container">
@@ -219,6 +202,42 @@ const QrCart = () => {
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <div class="row g-4">
+                                            <div className="col-xl-7"></div>
+                                            <div className="col-xl-5">
+                                                <div className="cart-summery bg-white rounded-2 pt-4 pb-6 px-5 mt-4">
+                                                    <table className="w-100">
+
+                                                        <tr className="border-top">
+                                                            <td className="py-3">
+                                                                <h5 className="mb-0">Total</h5>
+                                                            </td>
+                                                            <td className="text-end py-3">
+                                                                <h5 className="mb-0">₹ {totalPrice}</h5>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <p className="mb-5 mt-2">Add Details</p>
+                                                    <input type="text" class="form-control" placeholder="* Your Name" aria-label="Your Name" aria-describedby="basic-addon1" value={name} onChange={(e) => handleNameChange(e.target.value)} />
+                                                    <input type="text" class="form-control" placeholder="* Mobile Number" aria-label="Mobile Number" aria-describedby="basic-addon1" value={phone} onChange={(e) => handlePhone(e.target.value)} />
+                                                    {
+                                                        err ? (
+                                                            <p style={{ color: "red" }}>* {errMess}</p>
+                                                        ) : ("")
+                                                    }
+                                                    {
+                                                        err1 ? (
+                                                            <p style={{ color: "red" }}>* Fill the mandatory fields</p>
+                                                        ) : ("")
+                                                    }
+                                                    <div className="btns-group d-flex gap-3 mt-5">
+                                                        <button type="submit" className="btn btn-primary btn-md rounded-1" onClick={handleOrder}>Confirm Order</button>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -238,43 +257,6 @@ const QrCart = () => {
                 </section>
 
             </div>
-            {
-                totalPrice === 0 ? ("") : (
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-6">
-                                <div className="text-center">
-                                    Total Price :₹ {totalPrice}
-                                </div>
-                            </div>
-                            <div className="col-6">
-                                <div class="row">
-                                    <div class="col">
-                                        <label for="inputEmail4" class="form-label">* Name</label>
-                                        <input type="text" class="form-control" placeholder="Your Name" aria-label="Your Name" aria-describedby="basic-addon1" value={name} onChange={(e) => handleNameChange(e.target.value)} />
-                                    </div>
-                                    <div class="col">
-                                        <label for="inputEmail4" class="form-label">* Phone Number</label>
-                                        <input type="text" class="form-control" placeholder="Mobile Number" aria-label="Mobile Number" aria-describedby="basic-addon1" value={phone} onChange={(e) => handlePhone(e.target.value)} />
-                                        {
-                                            err ? (
-                                                <p style={{ color: "red" }}>* {errMess}</p>
-                                            ) : ("")
-                                        }
-                                    </div>
-                                </div>
-                                {
-                                    err1 ? (
-                                        <p style={{ color: "red" }}>* Fill the mandatory fields</p>
-                                    ) : ("")
-                                }
-                                <button type="button" class="btn btn-primary" onClick={handleOrder}>Order</button>
-
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
 
         </>
     )
