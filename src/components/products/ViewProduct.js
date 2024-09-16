@@ -167,7 +167,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                     <div className="quickview-product-slider swiper">
                                         <div className="swiper-wrapper">
                                             <div className="swiper-slide text-center">
-                                                <InnerImageZoom zoomScale={0.3} zoomType="hover" src={selectedImage && selectedImage} />
+                                                <InnerImageZoom zoomScale={1} zoomType="hover" src={selectedImage && selectedImage} />
                                             </div>
 
                                         </div>
