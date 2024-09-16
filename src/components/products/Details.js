@@ -378,7 +378,7 @@ const Details = () => {
                                                     <div class="quickview-product-slider swiper">
                                                         <div class="swiper-wrapper">
                                                             <div class="swiper-slide text-center">
-                                                                <InnerImageZoom zoomScale={0.3} zoomType="hover" src={selectedImage && selectedImage} />
+                                                                <InnerImageZoom zoomScale={1} zoomType="hover" src={selectedImage && selectedImage} />
 
                                                             </div>
 
