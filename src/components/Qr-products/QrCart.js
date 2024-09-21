@@ -6,7 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import { cleanCartItems, removeCartItem } from '../../redux/actions/productAction';
 import { useAlert } from 'react-alert'
 import axios from 'axios'
-import { SolarPower } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 
 const QrCart = () => {
     const navigate = useNavigate()
@@ -16,6 +23,7 @@ const QrCart = () => {
 
     const cartData = useSelector((state) => state.qrProducts.carts)
     const totalPrice = cartData.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    const [open, setOpen] = useState(false);
 
     const [name, setName] = useState("")
     const [phone, setPhone] = useState("")
@@ -26,7 +34,7 @@ const QrCart = () => {
     const [value1, setValue1] = useState(0)
     const [value2, setValue2] = useState(0)
     const [productData, setProductData] = useState([])
-
+    const [tokenId, setTokenId] = useState("")
     const [err1, setErr1] = useState(false)
 
     const handleRemove = (productId, weight) => {
@@ -37,6 +45,12 @@ const QrCart = () => {
         navigate("/results")
     }
 
+
+    const handleClose = () => {
+        setOpen(false);
+        setTokenId('')
+
+    };
     const handlePhone = (e) => {
         setErr(false)
         setErrMess("")
@@ -111,10 +125,12 @@ const QrCart = () => {
             }
 
             const result = await axios.post(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/manualorder?type=${type}`, json, config)
-            if(result.status===201){
+            if (result.status === 201) {
                 alert.success("Request Sent")
+                setTokenId(result.data.token)
+                setOpen(true)
                 dispatch(cleanCartItems([]))
-            }else{
+            } else {
                 alert.error("Oops..Something Went Wrong")
 
             }
@@ -258,6 +274,41 @@ const QrCart = () => {
 
             </div>
 
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="">
+                    <CheckCircleOutlineIcon style={{ color: "green" }} /> You successfully order the items
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+
+                        <div className="row">
+                            <div className="col">
+                                <h3> This is your Tokenid : {tokenId} & get your product from the nearest shop</h3>
+                                <h5> <PriorityHighIcon style={{color: "#ff2600"}}/>Make sure , dont forget your tokenid</h5>
+
+                            </div>
+                           
+                        </div>
+                        <div className="row">
+                            <div className="col">
+                            </div>
+                        </div>
+
+                    </DialogContentText>
+           
+                        Thank You
+                  
+                </DialogContent>
+             
+                <DialogActions>
+                    <Button onClick={handleClose}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }
