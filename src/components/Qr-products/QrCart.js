@@ -288,7 +288,13 @@ const QrCart = () => {
 
                         <div className="row">
                             <div className="col">
-                                <h3> This is your Tokenid : {tokenId} & get your product from the nearest shop</h3>
+                                <h3> This is your Tokenid : {tokenId} & get your product from the nearest shop.</h3>
+                                <h3>
+                                    Creamyaffairs ,
+                                    Location - Baidyabati ,
+                                    Phone Number - +91 9836241497
+                                
+                                </h3>
                                 <h5> <PriorityHighIcon style={{color: "#ff2600"}}/>Make sure , dont forget your tokenid</h5>
 
                             </div>
