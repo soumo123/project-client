@@ -155,6 +155,7 @@ const QrCart = () => {
             thumbImage: ele.image,
             weight: ele.weight,
             price: ele.price,
+            purchaseprice:Number(ele.purchaseprice),
             itemCount: ele.quantity,
             totalPrice: ele.price * ele.quantity,
             stock: ele.stock,
