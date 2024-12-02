@@ -156,7 +156,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                 dialogclassNameNameName="modal-md patient_notes_popup"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title classNameNameName="text-center">Details</Modal.Title>
+                    <Modal.Title classNameNameName="text-center">View Product</Modal.Title>
                 </Modal.Header>
                 <Modal.Body classNameNameName="">
 

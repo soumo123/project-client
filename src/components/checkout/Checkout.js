@@ -39,6 +39,7 @@ const Checkout = () => {
     const location = useLocation();
     const receivedData = location.state?.data; // using optional chaining to handle undefined state
 
+    const token = localStorage.getItem("token")
 
 
     console.log("receivedDatareceivedData", receivedData)
@@ -195,11 +196,13 @@ const Checkout = () => {
                 cgst: (totalPrice * Number(value2)),
                 sgst: (totalPrice * Number(value1)),
                 initialDeposit: ptPrice,
-                orderedPrice: (totalPrice + ((totalPrice * Number(value2))) + ((totalPrice * Number(value1)))),
-                order_method:"online"
+                orderedPrice: (totalPrice + ((totalPrice * Number(value2))) + ((totalPrice * Number(value1))))-ptPrice,
+                order_method:"ordered",
+                phone: "",
             }
             const config = {
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': "application/json",
                 },
                 withCredentials: true

@@ -24,6 +24,7 @@ const OrderTable = ({ shopId }) => {
   const [load, setLoad] = useState(false)
   const [show, setShow] = useState(false);
   const [odId, setOdId] = useState("")
+  const token = localStorage.getItem("token")
 
 
   const handleClose = () =>{ 
@@ -53,7 +54,12 @@ const OrderTable = ({ shopId }) => {
   const getOrderById = async (id) => {
     try {
       setModalShow(true)
-      const result = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/getorder/${id}`)
+      const result = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/orders/getorder/${id}?adminId=${userId}`,  {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          // Replace `yourAccessToken` with the actual access token you want to send
+        },
+      })
       if (result.status === 200) {
         setViewData(result.data.data)
       }

@@ -22,7 +22,7 @@ import Contactus from './components/Footer/Contactus';
 import Qrproducts from './components/Qr-products/Qrproducts';
 import QrAppbar from './components/custom/QrAppbar';
 import QrCart from './components/Qr-products/QrCart';
-
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   const dispatch = useDispatch()
@@ -123,6 +123,21 @@ function App() {
     }
   }, [type, userId])
 
+
+  setInterval(() => {
+
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (currentTime > decodedToken.exp) {
+        localStorage.removeItem("userId")
+        localStorage.removeItem("type")
+        localStorage.removeItem("token")
+        window.location.reload()
+      }
+    }
+
+  }, 10000);
 
 
   const hideNavbarRoutes = ['/results','/product-cart']; // Add any routes where you don't want to show the Navbar

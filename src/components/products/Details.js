@@ -65,6 +65,7 @@ const Details = () => {
     const userData = useSelector((state) => state.userDetails.user)
     const [viewData, setViewData] = useState([])
     const [open, setOpen] = useState(false)
+    const token = localStorage.getItem("token")
 
 
     const sentences = description.match(/[^.!?]+[.!?]/g) || [];
@@ -93,7 +94,15 @@ const Details = () => {
 
     const getProductDetails = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getProductById?type=${type}&productId=${id}`)
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getProductById?type=${type}&productId=${id}`,
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        // Replace `yourAccessToken` with the actual access token you want to send
+                    },
+                }
+            )
             if (response.status === 200) {
                 setPdName(response.data.data[0].name)
                 setRatings(response.data.data[0].ratings)
@@ -754,7 +763,7 @@ const Details = () => {
                                                             ))}
                                                     </div>
                                                     {/* <a href="#" class="mb-2 d-inline-block text-secondary fw-semibold fs-xxs">Fresh Organic</a> */}
-                                              
+
                                                     <Link to={`/details/${ele.productId}`} class="card-title fw-bold d-block mb-2">{ele?.name}</Link>
                                                     <div class="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
                                                         <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />

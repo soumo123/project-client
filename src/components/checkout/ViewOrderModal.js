@@ -159,7 +159,7 @@ const ViewOrderModal = ({ show, setModalShow, viewData, setViewData, setLoad }) 
                                                                 <div class="col my-auto"><h6 class="mb-0">&#8377;{ele.totalPrice}</h6>
                                                                 </div>
                                                             </div>
-                                                            {viewData?.status === 1 ? ("") : (<button type="button" class="btn btn-primary btn-sm mt-3" onClick={() => handleCancel(viewData?.orderId, ele.productId)}>Cancel</button>)}
+                                                            {viewData?.status === 1 ? ("") : (<button type="button" class="btn btn-primary btn-sm mt-3" onClick={() => handleCancel(viewData?.orderId, ele.productId)}>Cancel order</button>)}
                                                         </div>
                                                     </div>
                                                     <hr class="my-3 " />
@@ -222,7 +222,7 @@ const ViewOrderModal = ({ show, setModalShow, viewData, setViewData, setLoad }) 
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="flex-sm-col text-right col"><p class="mb-1"><b>Remaining</b></p></div>
-                                        <div class="flex-sm-col col-auto"><p class="mb-1">₹{(viewData?.orderedPrice - viewData?.initialDeposit)?.toFixed(2)}</p></div>
+                                        <div class="flex-sm-col col-auto"><p class="mb-1">₹ {viewData?.orderedPrice?.toFixed(2)}</p></div>
                                     </div>
                                     <div class="row justify-content-between">
                                         <div class="flex-sm-col text-right col"><p class="mb-1"><b>Paid</b></p></div>

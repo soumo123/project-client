@@ -343,7 +343,7 @@ console.log("shopid",shopId)
                         Payment Methods
                       </a>
                     </li> */}
-                    <li>
+                    {/* <li>
                       <a href="#update-profile" data-bs-toggle="tab">
                         <span class="me-2">
                           <svg
@@ -373,7 +373,7 @@ console.log("shopid",shopId)
                         </span>
                         Updated Profile
                       </a>
-                    </li>
+                    </li> */}
                     {/* <li>
                       <a href="#order-tracking" data-bs-toggle="tab">
                         <span class="me-2">
@@ -405,7 +405,7 @@ console.log("shopid",shopId)
                         Order Tracking
                       </a>
                     </li> */}
-                    <li>
+                    {/* <li>
                       <a href="#">
                         <span class="me-2">
                           <svg
@@ -435,7 +435,7 @@ console.log("shopid",shopId)
                         </span>
                         Log out
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -451,7 +451,7 @@ console.log("shopid",shopId)
                     ):("")}
                   </div>
           
-                  <div class="tab-pane fade" id="payments">
+                  {/* <div class="tab-pane fade" id="payments">
                     <div class="payment-methods bg-white rounded py-5 px-4">
                       <h6 class="mb-4">Default Payment Methods</h6>
                       <div class="table-responsive">
@@ -708,7 +708,7 @@ console.log("shopid",shopId)
                         </table>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

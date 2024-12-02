@@ -69,6 +69,7 @@ const Whishlist = () => {
     }
 
     const handleCart = async (id, data) => {
+    
         try {
 
             let json = {
@@ -84,16 +85,16 @@ const Whishlist = () => {
             }
             console.log("jsonjsonjson",json)
 
-            // const response = await addToCart(id, json)
+            const response = await addToCart(id, json)
 
-            // if (response) {
-            //     alert.success("Product added in cart")
-            //     dispatch(noteRefs(new Date().getSeconds()))
+            if (response) {
+                alert.success("Product added in cart")
+                dispatch(noteRefs(new Date().getSeconds()))
 
-            // } else {
-            //     alert.error("Product alreday in cart")
+            } else {
+                alert.error("Product alreday in cart")
 
-            // }
+            }
 
         } catch (error) {
             alert.error("Product not added in cart")

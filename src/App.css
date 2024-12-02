@@ -41463,9 +41463,13 @@ body {
 	line-height: 1.75rem;
 }
 
-.horizontal-product-card .thumbnail {
+/* .horizontal-product-card .thumbnail {
 	width: 148px;
 	background-color: #f3f3f3;
+} */
+.horizontal-product-card .thumbnail {
+    width: 226px;
+    background-color: #f3f3f3;
 }
 
 .horizontal-product-card .thumbnail .product-overlay {
@@ -41747,6 +41751,8 @@ body {
 	right: 15px;
 	bottom: 25px;
 	z-index: -1;
+	width: 50%;
+    height: 80%;
 }
 
 .banner-box.banner-color-green {
@@ -44066,8 +44072,12 @@ body {
 	padding: 16px 24px;
 }
 
-.wishlist-table tbody td.thumbnail {
+/* .wishlist-table tbody td.thumbnail {
 	max-width: 110px;
+} */
+.wishlist-table tbody td.thumbnail {
+    max-width: 110px;
+    width: 40%;
 }
 
 .wishlist-table tbody td .close-btn {
