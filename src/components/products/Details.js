@@ -39,7 +39,6 @@ const Details = () => {
     const [noofReview, setNoOfReview] = useState("")
     const [price, setPrice] = useState("")
     const [actualPrice, setActualPrice] = useState("")
-    const [discount, setDiscount] = useState("")
     const [thunbImage, setThumbImage] = useState("")
     const [weight, setWeight] = useState([])
     const [unit, setUnit] = useState("")
@@ -52,9 +51,11 @@ const Details = () => {
     const [otherDescription2, setOtherdescription2] = useState("")
     const [comment, setComment] = useState("")
     const [err, setErr] = useState(false)
-    const { id } = useParams()
+    const { id,category } = useParams()
     const userId = localStorage.getItem("userId");
     const type = localStorage.getItem("type")
+    const shop_id = localStorage.getItem("shop_id")
+
     const [selectedImage, setSelectedImage] = useState("");
     const [otherImages, setOtherImages] = useState([])
     const [addRating, setAddRating] = useState(0);
@@ -66,6 +67,7 @@ const Details = () => {
     const [viewData, setViewData] = useState([])
     const [open, setOpen] = useState(false)
     const token = localStorage.getItem("token")
+    const[discount,setDiscount] = useState(0)
 
 
     const sentences = description.match(/[^.!?]+[.!?]/g) || [];
@@ -94,7 +96,7 @@ const Details = () => {
 
     const getProductDetails = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getProductById?type=${type}&productId=${id}`,
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getProductById?type=${type}&productId=${id}&category=${category}&shop_id=${shop_id}`,
 
                 {
                     headers: {
@@ -124,6 +126,7 @@ const Details = () => {
                 setOtherImages(response.data.data[0].otherimages)
                 setTags(response.data.data[0].tags)
                 setCartWeight(response.data.data[0].weight[0].weight)
+                setDiscount(response.data.data[0].discount)
             }
         } catch (error) {
 
@@ -185,10 +188,11 @@ const Details = () => {
                 stock: stock,
                 color: '',
                 itemCount: Number(count),
-                // discount: discount,
+                discount: discount,
                 thumbImage: thunbImage,
                 totalPrice: Number(price) * Number(count)
             }
+            json.totalPrice = json.totalPrice - (json.totalPrice * (json.discount / 100));
             console.log("json---carttttt", json)
 
             const response = await addToCart(id, json)
@@ -220,14 +224,15 @@ const Details = () => {
                 price: data.weight[0].price,
                 weight: data.weight[0].weight,
                 stock: data.weight[0].stock,
+                discount:data.discount,
                 color: '',
                 itemCount: 1,
                 // discount: data.discount,
                 thumbImage: data.thumbnailimage,
                 totalPrice: Number(data.weight[0].price) * 1
             }
+            json.totalPrice = json.totalPrice - (json.totalPrice * (json.discount / 100));
             console.log("json---carttttt", json)
-
             const response = await addToCart(id, json)
 
             if (response) {
@@ -416,10 +421,11 @@ const Details = () => {
                                                             <Rating name="size-small" value={ratings && ratings} precision={0.5} readOnly size="small" />
                                                         </ul>
                                                         <span class="flex-shrink-0">({noofReview} Reviews)</span>
+                                                        
                                                     </div>
+                                                   {discount === 0 ? ("" ): (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-relative start-0 top-0">{discount} % OFF</span>)} 
                                                     <div class="pricing mt-2">
                                                         <span class="fw-bold fs-xs text-danger">₹ {price}</span>
-                                                        {/* <span class="fw-bold fs-xs deleted ms-1">₹ {price}</span> */}
                                                     </div>
                                                     <div class="widget-title d-flex mt-4">
                                                         <h6 class="mb-1 flex-shrink-0">Description</h6>
@@ -764,7 +770,7 @@ const Details = () => {
                                                     </div>
                                                     {/* <a href="#" class="mb-2 d-inline-block text-secondary fw-semibold fs-xxs">Fresh Organic</a> */}
 
-                                                    <Link to={`/details/${ele.productId}`} class="card-title fw-bold d-block mb-2">{ele?.name}</Link>
+                                                    <Link to={`/details/${ele.productId}/${ele.category}`} class="card-title fw-bold d-block mb-2">{ele?.name}</Link>
                                                     <div class="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
                                                         <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
                                                         <span class="flex-shrink-0">({ele.numOfReviews} Reviews)</span>

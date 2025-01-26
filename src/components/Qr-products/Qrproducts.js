@@ -135,6 +135,7 @@ const Qrproducts = () => {
                                                                 <h5 className="card-title">
                                                                     Price : ₹ {product.price}
                                                                 </h5>
+                                                                <h5>{product.discount} % Off</h5>
                                                                 <p className="card-text">
                                                                     Product Type: {product.product_type === 1 ? "Non-veg" : product.product_type === 0 ? "Veg" : ""}
                                                                 </p>
@@ -172,8 +173,10 @@ const Qrproducts = () => {
                 <DialogTitle id="alert-dialog-title">
                     Make Order of {selectProduct.name} {selectProduct.weight} {selectProduct.unit}
                 </DialogTitle>
+                
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
+                    <label for="inputEmail4" class="form-label">{selectProduct.discount} % Off</label>
 
                         <div className="row">
 
@@ -181,6 +184,7 @@ const Qrproducts = () => {
                                 <label for="inputEmail4" class="form-label">Quantity</label>
                                 <input type="text" class="form-control" placeholder="Quantity" aria-label="Quantity" aria-describedby="basic-addon1" value={quantity} onChange={(e) => handleQuantityChange(e.target.value)} />
                             </div>
+                           
                             <div class="col">
                                 <label for="inputEmail4" class="form-label">Total Price (₹)</label>
                                 <input type="text" class="form-control" placeholder="Total Price" aria-label="Total Price" aria-describedby="basic-addon1" value={quantity * selectProduct.price} readOnly />

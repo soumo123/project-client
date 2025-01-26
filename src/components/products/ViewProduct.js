@@ -27,7 +27,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
     const [stock, setStock] = useState("")
     const [cartWeight, setCartWeight] = useState("")
     const [err, setErr] = useState(false)
-
+    const[discount,setDiscount] = useState(0)
 
     const sentences = description.match(/[^.!?]+[.!?]/g) || [];
 
@@ -50,7 +50,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                 stock: Number(stock),
                 weight: cartWeight,
                 color: '',
-                // discount: data.discount,
+                discount: data.discount || 0,
                 thumbImage: data.thumbnailimage,
                 totalPrice: Number(price) * Number(count)
             }
@@ -141,6 +141,7 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
         setPrice(viewData && viewData?.weight[0]?.price)
         setCartWeight(viewData && viewData?.weight[0]?.weight)
         setStock(viewData && viewData?.weight[0]?.stock)
+        setDiscount(viewData && viewData?.discount)
     }, [viewData])
 
 
@@ -196,9 +197,10 @@ const ViewProduct = ({ open, viewData, setOpen }) => {
                                         </ul>
                                         <span className="flex-shrink-0">({viewData?.numOfReviews} Reviews)</span>
                                     </div>
+                                    {discount === 0 ? ("" ): (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-relative start-0 top-0">{discount} % OFF</span>)} 
                                     <div className="pricing mt-2">
                                         <span className="fw-bold fs-xs text-danger">₹ {price}</span>
-                                        {/* <span className="fw-bold fs-xs deleted ms-1">₹ {price}</span> */}
+                                        <span className="fw-bold fs-xs deleted ms-1">₹ {discount}</span>
                                     </div>
                                     <div className="widget-title d-flex mt-4">
                                         <h6 className="mb-1 flex-shrink-0">Description</h6>

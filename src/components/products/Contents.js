@@ -34,7 +34,7 @@ const Contents = () => {
                                                 <div className="thumbnail position-relative rounded-2">
                                                     <img src={ele.thumbnailimage} alt="product" className="img-fluid" />
                                                     <div className="product-overlay position-absolute start-0 top-0 w-100 h-100 d-flex align-items-center justify-content-center gap-2 rounded-2">
-                                                        <Link to={`/details/${ele.productId}`} className="rounded-btn"><VisibilityOutlinedIcon/></Link>
+                                                        <Link to={`/details/${ele.productId}/${ele.category}`} className="rounded-btn"><VisibilityOutlinedIcon/></Link>
                                                     </div>
                                                 </div>
                                                 <div className="card-content mt-3 mt-sm-0">

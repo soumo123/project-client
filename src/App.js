@@ -38,6 +38,8 @@ function App() {
       localStorage.setItem("type", typess)
     } else {
       localStorage.setItem("type", 1)
+      localStorage.setItem("shop_id", "SHOP0001")
+
     }
   }, [typess])
 
@@ -152,7 +154,7 @@ function App() {
         <Route exact={true} path="/about-us" element={<Aboutus />} />
         <Route exact={true} path="/products" element={<AllProduct />} />
 
-        <Route exact={true} path="/details/:id" element={<Details />} />
+        <Route exact={true} path="/details/:id/:category" element={<Details />} />
         <Route exact={true} path="/cart" element={<Cart />} />
         <Route exact={true} path="/whishlist" element={<Whishlist />} />
         <Route exact={true} path="/account" element={<Account />} />

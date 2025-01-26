@@ -97,7 +97,7 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
                 stock:data.weight[0].stock,
                 color:'',
                 itemCount: 1,
-                // discount: data.discount,
+                discount: data.discount || 0,
                 thumbImage: data.thumbnailimage,
                 totalPrice: Number(data.weight[0].price) * 1
             }
@@ -166,7 +166,7 @@ const TrendingProducts = ({ topSellingData, load, setLoad }) => {
                                                         <span className="rounded-btn" style={{ cursor: 'pointer' }} onClick={() => handleModalOpen(ele)}><VisibilityOutlinedIcon /></span>
                                                     </div>
                                                 </div>
-                                                <Link to={`/details/${ele.productId}`}>
+                                                <Link to={`/details/${ele.productId}/${ele.category}`}>
 
 
                                                     <div className="card-content">

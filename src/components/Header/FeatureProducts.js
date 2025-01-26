@@ -148,7 +148,7 @@ const FeatureProducts = ({ featuredData, load, setLoad }) => {
                                                         </ul>
                                                         <span className="flex-shrink-0">({ele.numOfReviews} Reviews)</span>
                                                     </div>
-                                                    <Link to={`/details/${ele.productId}`}>  <span className="fw-bold text-heading title d-block">{ele.name}</span></Link>
+                                                    <Link to={`/details/${ele.productId}/${ele.category}`}>  <span className="fw-bold text-heading title d-block">{ele.name}</span></Link>
                                                     <div className="pricing mt-2">
                                                         {/* <span className="fw-bold h4 deleted me-1 text-muted"> ₹ {ele?.weight[0]?.price}</span> */}
                                                         <span className="fw-bold h4 text-danger"> ₹ {ele?.weight[0]?.price}</span>

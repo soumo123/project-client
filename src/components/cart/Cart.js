@@ -155,6 +155,7 @@ console.log("totalPriceitem",totalPriceItem)
                                                     <th>Product Name</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Price</th>
+                                                    <th>Discount</th>
                                                     <th>Price</th>
                                                 </thead>
                                                 <tbody>
@@ -184,6 +185,10 @@ console.log("totalPriceitem",totalPriceItem)
                                                                             <td>
                                                                                 <span className="text-dark fw-bold me-2 d-lg-none">Unit Price:</span>
                                                                                 <span className="text-dark fw-bold">₹ {ele.price}</span>
+                                                                            </td>
+                                                                            <td>
+                                                                                <span className="text-dark fw-bold me-2 d-lg-none">Discount:</span>
+                                                                                <span className="text-dark fw-bold">{ele.discount} % Off</span>
                                                                             </td>
                                                                             <td>
                                                                                 <span className="text-dark fw-bold me-2 d-lg-none">Total Price:</span>

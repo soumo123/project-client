@@ -42,6 +42,8 @@ const AllProduct = () => {
     const queryParams = new URLSearchParams(location.search);
     const searchData = queryParams.get('search');
     const tagssearch = queryParams.get('tags');
+    const salessearch = queryParams.get('sales');
+    const catserach = queryParams.get('category');
 
     const userId = localStorage.getItem("userId");
     const type = localStorage.getItem("type")
@@ -69,7 +71,7 @@ const AllProduct = () => {
 
     const getAllProducts = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery || searchData || ""}&tags=${tagss || tagssearch || ""}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}&sort=${Number(sort)}`)
+            const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=${offset}&type=1&key=${searchQuery || searchData || ""}&tags=${tagss || tagssearch || ""}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}&sort=${Number(sort)}&category=${catserach}&temp_id=${salessearch}`)
             if (response.status === 200) {
                 setTotalPages(Math.ceil(response.data.totalData / limit));
                 setTotalData(response.data.totalData)
@@ -83,7 +85,7 @@ const AllProduct = () => {
 
     useEffect(() => {
         getAllProducts();
-    }, [offset, limit, searchData, tagss, tagssearch, dataRefe, sort]);
+    }, [offset, limit, searchData, tagss, tagssearch, dataRefe, sort,catserach,salessearch]);
 
 
     const handleAddWhish = async (status, productId, name, description, thumbnailimage, ratings, numOfReviews,price,stock,weight) => {
@@ -140,7 +142,7 @@ const AllProduct = () => {
             const timer = setTimeout(() => {
                 const getAllProducts = async () => {
                     try {
-                        const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=0&type=1&key=${searchQuery}&tags=${tagss}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}&sort=${Number(sort)}`)
+                        const response = await axios.get(`${process.env.REACT_APP_PRODUCTION_URL}/api/v1/product/getAllProducts?limit=${limit}&offset=0&type=1&key=${searchQuery}&tags=${tagss}&startprice=${price[0] === undefined ? 0 : price[0]}&lastprice=${price[1] === undefined ? 10000 : price[1]}&sort=${Number(sort)}&category=${catserach}&temp_id=${salessearch}`)
                         if (response.status === 200) {
                             setTotalPages(Math.ceil(response.data.totalData / limit));
                             setTotalData(response.data.totalData)
@@ -279,7 +281,7 @@ const AllProduct = () => {
                                                         products?.map((ele) => (
                                                             <div class="col-lg-4 col-md-6 col-sm-10">
                                                                 <div class="vertical-product-card rounded-2 position-relative border-0 bg-white bg-white">
-                                                                    {/* {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)} */}
+                                                                    {ele.discount === 0 ? ("") : (<span class="offer-badge text-white fw-bold fs-xxs bg-danger position-absolute start-0 top-0">{ele.discount}% OFF</span>)}
                                                                     <div class="thumbnail position-relative text-center p-4">
                                                                         <img src={ele.thumbnailimage} alt="" class="img-fluid" />
                                                                         <div class="product-btns position-absolute d-flex gap-2 flex-column">
@@ -311,7 +313,7 @@ const AllProduct = () => {
                                                                                     </span>
                                                                                 ))}
                                                                         </div>
-                                                                        <Link to={`/details/${ele.productId}`}><span class="card-title fw-bold d-block mb-2 tt-line-clamp tt-clamp-2">{ele.name}</span> </Link>
+                                                                        <Link to={`/details/${ele.productId}/${ele.category}`}><span class="card-title fw-bold d-block mb-2 tt-line-clamp tt-clamp-2">{ele.name}</span> </Link>
                                                                         <div class="d-flex align-items-center flex-nowrap star-rating fs-xxs mb-2">
                                                                             <ul class="d-flex align-items-center me-2">
                                                                                 <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />

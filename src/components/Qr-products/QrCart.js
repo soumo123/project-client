@@ -22,7 +22,11 @@ const QrCart = () => {
     const type = localStorage.getItem("type")
 
     const cartData = useSelector((state) => state.qrProducts.carts)
-    const totalPrice = cartData.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    // const totalPrice = cartData.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    const totalPrice = cartData.reduce((acc, product) => {
+        const discountedPrice = product.price * product.quantity * (1 - product.discount / 100);
+        return acc + discountedPrice;
+    }, 0);
     const [open, setOpen] = useState(false);
 
     const [name, setName] = useState("")
@@ -157,13 +161,15 @@ const QrCart = () => {
             price: ele.price,
             purchaseprice:Number(ele.purchaseprice),
             itemCount: ele.quantity,
-            totalPrice: ele.price * ele.quantity,
+            totalPrice:(ele.price * ele.quantity) -(((ele.price * ele.quantity)*Number(ele.discount)/100)),
             stock: ele.stock,
             unit: ele.unit,
+            discount:Number(ele.discount)
         }));
         setProductData(updatedProductData)
     }, [cartData])
 
+    console.log("productDataproductData",productData,totalPrice)
 
     return (
         <>
@@ -195,6 +201,8 @@ const QrCart = () => {
                                                                 <td>
 
                                                                     <h6 className="mb-1 mt-1">{ele.name}</h6>
+                                                                    <h6 className="mb-1 mt-1">{ele.discount} % Off</h6>
+
                                                                     <div className="star-rating">
                                                                         <ul className="rating-fields fs-xs text-warning d-inline-flex align-items-center">
                                                                             <Rating name="size-small" defaultValue={ele.ratings} precision={0.5} readOnly size="small" />
@@ -208,7 +216,7 @@ const QrCart = () => {
                                                                 </td>
 
                                                                 <td className="text-end">
-                                                                    <span className="price fw-bold text-dark">₹ {ele.price}</span>
+                                                                    <span className="price fw-bold text-dark">₹ {ele.price} </span>
                                                                     <span style={{ cursor: "pointer" }} className="close-btn ms-3" onClick={() => handleRemove(ele._id, ele.weight)}><CloseIcon /></span>
                                                                 </td>
                                                             </tr>
